@@ -16,6 +16,9 @@ module.exports = {
         '99': '450',
         '100': '500px'
       },
+      height: {
+        '100': '500px'
+      },
       colors: {
         'primary': '#0ab68b',
         'primary2': '#028174',

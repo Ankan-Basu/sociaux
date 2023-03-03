@@ -1,6 +1,5 @@
 import './globals.css'
-import { FaBars, FaSearch, FaUserAlt, FaBell } from "react-icons/fa";
-import Profile from '@/components/profile/Profile';
+import Navbar from './Navbar'
 
 export const metadata = {
   title: 'Create Next App',
@@ -16,52 +15,11 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <Navbar />
-        {/* <div className='fixed left-0 w-60 border-2 border-solid border-black'>
-          {/* <Profile /> */}
-
-        {/* </div> */} 
-
-
-        {/* <div className='fixed right-0 w-60 border-2 border-solid border-black'>
-          Profile
-
-        </div> */}
         <div>
 
           {children}
         </div>
       </body>
     </html>
-  )
-}
-
-function Navbar() {
-  return (
-    <nav className='z-10 mb-2 shadow-lg backdrop-blur-md py-2 px-2 flex items-center gap-1 sticky top-0'>
-      <span className='flex-1'>Navbar</span>
-      <span className='flex-1'><SearchBox /></span>
-
-
-      <span className='flex-1 flex justify-end gap-4 items-center text-xl text-primary'>
-        {/* Login Logout Notification Icons */}
-        <FaBell />
-        <FaUserAlt />
-        <FaBars /></span>
-    </nav>
-  )
-}
-
-
-function SearchBox() {
-  return (
-    <div className=' bg-secondary2 rounded-full p-1'>
-      <form className='flex items-center'>
-        <input className='p-1 outline-none bg-secondary2 flex-1 rounded-full rounded-r-none'>
-        </input>
-        <button type='submit' className='p-1 text-primary rounded-full rounded-l-none'>
-          <FaSearch fontSize="1.5em" />
-        </button>
-      </form>
-    </div>
   )
 }
