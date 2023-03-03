@@ -14,28 +14,39 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <nav className='border-solid border-2 border-red-500 py-2 flex'>
-          <span className='flex-1'>Navbar</span>
-          <span className='flex-1'><SearchBox/></span>
-          <span className='flex-1'>Login Logout Notification Icons
-          <FaBell />
-          <FaUserAlt />
-          <FaBars /></span>
-          </nav>
+        <Navbar />
         {children}
       </body>
     </html>
   )
 }
 
+function Navbar() {
+  return (
+    <nav className='backdrop-blur-md py-1 px-2 flex items-center gap-1'>
+      <span className='flex-1'>Navbar</span>
+          <span className='flex-1'><SearchBox/></span>
+          
+          
+          <span className='flex-1 flex justify-end gap-4 items-center text-xl text-primary'>
+            {/* Login Logout Notification Icons */}
+          <FaBell />
+          <FaUserAlt />
+          <FaBars /></span>
+    </nav>
+  )
+}
+
 
 function SearchBox() {
   return (
-  <div className='border-solid border-2 border-green-500 rounded-lg'>
-    <form>
-    <input className='border-solid border-2 border-yellow-500 rounded-lg'>
+  <div className=' bg-secondary2 rounded-full p-1'>
+    <form className='flex items-center'>
+    <input className='p-1 outline-none bg-secondary2 flex-1 rounded-full rounded-r-none'>
     </input>
-    <button type='submit' className='border-solid border-2 border-yellow-500 rounded-lg'><FaSearch color='red' fontSize="1.5em"/></button>
+    <button type='submit' className='p-1 text-primary rounded-full rounded-l-none'>
+      <FaSearch fontSize="1.5em"/>
+      </button>
     </form>
   </div>
   )
