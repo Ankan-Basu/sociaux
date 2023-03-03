@@ -71,38 +71,78 @@ function SearchBox() {
 function Notif({display, type}: {display: boolean, type: String}) {
   return (
     <div className={`
-    ${display?'block':'hidden'} absolute top-14 right-4 w-72 h-100 overflow-auto p-2 border-2 rounded-lg shadow-lg border-solid border-red-500`}>
-      <h3>{type}</h3>
-      <div>
+    ${display?'block':'hidden'} bg-white absolute top-14 right-4 w-72 h-100 overflow-auto p-2 border-2 rounded-lg shadow-lg`}>
+      <h3 className='text-2xl font-medium'>{type}</h3>
+      <div className='mb-4'>
         {type==='Notifications'?
-        <span>Mark all as read</span>
+        <span className='cursor-pointer hover:text-primary active:text-primary2'>
+            Mark all as read</span>
         :
         <span className='flex justify-between'>
-        <span>Accept All</span>
-        <span>Reject All</span>    
+        <span className='cursor-pointer hover:text-primary active:text-primary2'>
+            Accept All</span>
+        <span className='cursor-pointer hover:text-primary active:text-primary2'>
+            Reject All</span>    
         </span>}
 
       </div>
-      <NotifItem />
-      <NotifItem />
-      <NotifItem />
-      <NotifItem />
-      <NotifItem />
-      <NotifItem />
-      <NotifItem />
+
+      {
+        type==='Notifications'?
+        (
+            <>
+        <NotifItem />
+        <NotifItem />
+        <NotifItem />
+        <NotifItem />
+        <NotifItem />
+        <NotifItem />
+        <NotifItem />
+        </>
+        ):
+        (
+            <>
+            <FrenReq />
+            <FrenReq />
+            <FrenReq />
+            <FrenReq />
+            <FrenReq />
+            <FrenReq />
+            </>
+        )
+      }
     </div>
   )
 }
 
 function NotifItem() {
     return (
-        <div className='mb-4 flex border-2 border-solid border-red-300'>
-            <div className='w-12 h-12 rounded-full border-2 border-solid border-red-300'>Img</div>
-            <div className='flex-1 w-100 rounded-lg rounded-tl-none border-2 border-solid border-red-300'>
-                <div className='h-12 text-ellipsis overflow-hidden border-2 border-solid border-black'>
+        <div className='mb-4 shadow-lg rounded-lg p-1 flex gap-1'>
+            <img src='ayaka.jpg' className='w-12 h-12 rounded-full' />
+            <div className='flex-1 w-100'>
+                <div className='p-1 bg-secondary rounded-lg rounded-tl-none h-12 text-ellipsis overflow-hidden'>
                     Do text clipping
                     </div>
-                <div className='text-sm'>Mark as read</div>
+                <div className='text-xs font-medium cursor-pointer hover:text-primary active:text-primary2'>Mark as read</div>
+            </div>
+        </div>
+    )
+}
+
+function FrenReq() {
+    return (
+        <div className='mb-4 shadow-lg rounded-lg p-1 flex gap-1'>
+            <img src='ayaka.jpg' className='w-12 h-12 rounded-full' />
+            <div className='flex-1 w-100'>
+                <div className='p-1 bg-secondary rounded-lg rounded-tl-none h-12 text-ellipsis overflow-hidden'>
+                    fren?
+                    </div>
+                    <div className='flex justify-between pl-1 pr-2'>
+                <span className='text-xs font-medium cursor-pointer hover:text-primary active:text-primary2'>
+                    Accept</span>
+                <span className='text-xs font-medium cursor-pointer hover:text-primary active:text-primary2'>
+                    Reject</span>
+                    </div>
             </div>
         </div>
     )
