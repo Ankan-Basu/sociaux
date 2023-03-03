@@ -5,33 +5,32 @@ import { FaShare, FaLock, FaGlobe, FaEllipsisV, FaEllipsisH, FaTrash, FaRegTimes
 
 export default function Modal() {
     return (
-        <div className='border-solid border-2 border-red-500 w-100 p-2 pt-1 rounded-lg'>
-            <div className='border-solid border-2 border-green-500 flex justify-end'>
-                <span>
+        <div className='border-solid border-2 border-secondary w-100 p-2 pt-1 rounded-lg'>
+            <div className='flex justify-end'>
+                <span className='text-primary'>
                 <FaRegTimesCircle />
                 </span>
                 </div>
-            <div className='border-solid border-2 border-orange-500 flex py-1 pt-0'>
+            <div className='flex py-1 pt-0'>
                 Privacy:
                <DropDown />
             </div>
-            <div className='border-solid border-2 border-blue-500'>
+            <div className=''>
             <label htmlFor="textarea" className='py-1'>Write post here:</label>
 
 
-                <textarea id="textarea" name="textarea" rows='4' cols='40'>
-                At w3schools.com you will learn how to make a website. They offer free tutorials in all web development technologies.
+                <textarea id="textarea" name="textarea" rows={4} cols={50} className='bg-secondary2 w-99 rounded-lg outline-none p-1 resize-none'>
                 </textarea>
             </div>
-            <div className='border-solid border-2 border-yellow-500 flex justify-center gap-2 py-1'>
-                <button className='p-2 flex-1 flex justify-center rounded-md border-solid border-2 border-black'><FaImage /></button>
-                <button className='p-2 flex-1 flex justify-center rounded-md border-solid border-2 border-black'><FaVideo /></button>
+            <div className='flex justify-center gap-2 py-1'>
+                <button className='bg-deactiv p-2 flex-1 flex justify-center rounded-md'><FaImage /></button>
+                <button className='bg-deactiv p-2 flex-1 flex justify-center rounded-md'><FaVideo /></button>
             </div>
-            <div className='border-solid border-2 border-black-500 flex justify-center flex-col gap-1 pt-1'>
+            <div className='flex justify-center flex-col gap-1 pt-1'>
                 <span className='flex-1'>
                 <Button>
                     <FaTrash />Discard
-                    </Button>
+                </Button>
                 </span>
                 <span className='flex-1'>
                 <Button type='normal'><FaShare/>Post</Button>
@@ -47,9 +46,9 @@ function DropDown() {
     return (
         <div>
             <select>
-                <option value="public"> <FaGlobe /> Public</option>
+                <option value="public"> Public</option>
                 <option value="friends">Friends</option>
-                <option value="onlyMe"><FaLock /> Only Me</option>
+                <option value="onlyMe"> Only Me</option>
             </select>
         </div>
     )
@@ -57,7 +56,7 @@ function DropDown() {
 
 function Button({children, type}: {children: React.ReactNode, type?: string}) {
     return (
-        <button className={`p-1 rounded-md ${type==='normal'?'bg-green-400':''} flex w-full justify-center items-center gap-2`}>
+        <button className={`p-1 rounded-md ${type==='normal'?'bg-primary':'bg-deactiv'} flex w-full justify-center items-center gap-2`}>
             {children}
         </button>
     )

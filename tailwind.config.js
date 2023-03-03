@@ -20,7 +20,8 @@ module.exports = {
         'primary': '#0ab68b',
         'primary2': '#028174',
         'secondary': '#92de8b',
-        'secondary2': '#ffe3b3' 
+        'secondary2': '#ffe3b3',
+        'deactiv': '#e2e8f0'
       },
     },
     
