@@ -37,7 +37,7 @@ export default function RootLayout({
 
 function Navbar() {
   return (
-    <nav className='z-10 backdrop-blur-md py-1 px-2 flex items-center gap-1 sticky top-0'>
+    <nav className='z-10 mb-2 shadow-lg backdrop-blur-md py-2 px-2 flex items-center gap-1 sticky top-0'>
       <span className='flex-1'>Navbar</span>
       <span className='flex-1'><SearchBox /></span>
 

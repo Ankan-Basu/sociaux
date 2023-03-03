@@ -4,7 +4,7 @@ import {  FaShare, FaLock, FaGlobe, FaEllipsisV, FaEllipsisH, FaTrash, FaRegTime
 
 export default function Post() {
   return (
-    <div className='shadow-lg border-2 border-solid border-secondary w-100 p-2 pt-1 rounded-lg'>
+    <div className='mb-8 shadow-lg border-2 border-solid border-secondary w-100 p-2 pt-1 rounded-lg'>
             <div className='text-xs flex justify-between'>
                 
                 <div className='flex'><DropDown /></div>

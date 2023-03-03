@@ -8,10 +8,10 @@ export default function PersonalOptions(){
         border-2 border-solid border-primary2 rounded-lg cursor-pointer bg-primary hover:bg-primary2 hover:text-white'>
             <FaEdit /><h4>Add Post</h4>
         </div>
-        <div className='p-2 flex gap-1 items-center rounded-lg cursor-pointer hover:bg-secondary'>
+        <div className='p-2 flex gap-1 items-center rounded-lg cursor-pointer hover:bg-primary'>
             <FaUserAlt /><h4>My Profile</h4>
         </div>
-        <div className='p-2 flex gap-1 items-center rounded-lg cursor-pointer hover:bg-secondary'>
+        <div className='p-2 flex gap-1 items-center rounded-lg cursor-pointer hover:bg-primary'>
             <FaRegSun />
             <h4>Settings</h4>
         </div>
