@@ -19,7 +19,7 @@ export default function Home() {
     }
   return (
     <main>
-      {/* <div className='relative flex justify-center gap-5'>
+      <div className='relative flex justify-center gap-5'>
       <div className='fixed left-6 w-60'>
           <Profile />
 
@@ -42,7 +42,7 @@ export default function Home() {
           <PersonalOptions />
         </div>
       
-      </div> */}
+      </div>
     </main>
   )
 }
