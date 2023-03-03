@@ -1,6 +1,6 @@
 import React from 'react'
-import {  FaShare, FaLock, FaGlobe, FaEllipsisV, FaEllipsisH, FaTrash, FaRegTimesCircle, FaImage, FaVideo, 
-    FaRegThumbsUp, FaThumbsUp, FaRegComment, FaComment, FaPen} from 'react-icons/fa';
+
+import { FiEdit3, FiTrash, FiX, FiThumbsUp, FiCornerUpRight, FiMessageSquare, FiSettings, FiLogOut, FiUser } from "react-icons/fi";
 
 export default function Post() {
   return (
@@ -11,20 +11,20 @@ export default function Post() {
                 
                 <div className='flex gap-2 text-primary'>
                 <span>
-                <FaPen />
+                <FiEdit3 />
                 </span>
                 <span>
-                <FaTrash />
+                <FiTrash />
                 </span>
                 <span>
-                <FaRegTimesCircle />
+                <FiX />
                 </span>
                 </div>
                 </div>
             <div className='flex flex-col py-1 pt-0'>
                 <div>
                     <h3 className='font-medium text-lg'>
-                        Ayaka Kamisato
+                        Kamisato Ayaka
                     </h3>
                 </div>
                 <div>
@@ -46,12 +46,12 @@ Optional Img/ Vid
             </div>
             <div className='text-primary flex justify-center gap-2 pt-1'>
                <span className='py-1 flex-1 flex justify-center items-center gap-1 border-solid border-2 border-primary rounded-lg'>
-                <FaThumbsUp /> Like
+                <FiThumbsUp /> Like
                 </span>
                <span className='py-1 flex-1 flex justify-center items-center gap-1 border-solid border-2 border-primary rounded-lg'> 
-               <FaComment /> Comment</span>
+               <FiMessageSquare /> Comment</span>
                <span className='py-1 flex-1 flex justify-center items-center gap-1 border-solid border-2 border-primary rounded-lg'> 
-               <FaShare /> Share</span>
+               <FiCornerUpRight /> Share</span>
                 
             </div>
         </div>
@@ -64,9 +64,9 @@ function DropDown() {
     return (
         <div>
             <select>
-                <option value="public"> <FaGlobe /> Public</option>
+                <option value="public">Public</option>
                 <option value="friends">Friends</option>
-                <option value="onlyMe"><FaLock /> Only Me</option>
+                <option value="onlyMe">Only Me</option>
             </select>
         </div>
     )

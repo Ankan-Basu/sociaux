@@ -1,14 +1,15 @@
 import React from 'react'
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
-import { FaShare, FaLock, FaGlobe, FaEllipsisV, FaEllipsisH, FaTrash, FaRegTimesCircle, FaImage, FaVideo } from 'react-icons/fa';
+// import { FaShare, FaLock, FaGlobe, FaEllipsisV, FaEllipsisH, FaTrash, FaRegTimesCircle, FaImage, FaVideo } from 'react-icons/fa';
+import { FiTrash, FiArrowRight, FiCornerUpRight, FiX, FiImage, FiVideo } from "react-icons/fi";
 
 export default function Modal() {
     return (
         <div className='border-solid border-2 border-secondary w-100 p-2 pt-1 rounded-lg'>
             <div className='flex justify-end'>
                 <span className='text-primary'>
-                <FaRegTimesCircle />
+                <FiX />
                 </span>
                 </div>
             <div className='flex py-1 pt-0'>
@@ -23,17 +24,20 @@ export default function Modal() {
                 </textarea>
             </div>
             <div className='flex justify-center gap-2 py-1'>
-                <button className='bg-deactiv p-2 flex-1 flex justify-center rounded-md'><FaImage /></button>
-                <button className='bg-deactiv p-2 flex-1 flex justify-center rounded-md'><FaVideo /></button>
+                <button className='bg-deactiv p-2 flex-1 flex justify-center rounded-md'>
+                    <FiImage /></button>
+                <button className='bg-deactiv p-2 flex-1 flex justify-center rounded-md'>
+                    <FiVideo /></button>
             </div>
             <div className='flex justify-center flex-col gap-1 pt-1'>
                 <span className='flex-1'>
                 <Button>
-                    <FaTrash />Discard
+                    <FiTrash />Discard
                 </Button>
                 </span>
                 <span className='flex-1'>
-                <Button type='normal'><FaShare/>Post</Button>
+                <Button type='normal'>
+                    <FiCornerUpRight />Post</Button>
                 </span>
                 
             </div>

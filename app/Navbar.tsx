@@ -1,7 +1,8 @@
 'use client'
 
 import React, { useState } from 'react'
-import { FaBars, FaSearch, FaUserAlt, FaBell } from "react-icons/fa";
+// import { FaBars, FaUserFriends, FaSearch, FaUserAlt, FaBell } from "react-icons/fa";
+import { FiSearch, FiBell, FiUsers } from "react-icons/fi";
 
 
 export default function Navbar() {
@@ -26,7 +27,7 @@ export default function Navbar() {
         }
         }
         className={`${notifSelected?'bg-primary2 text-white':''} cursor-pointer rounded-full p-2`}>
-        <FaBell />
+        <FiBell />
         </span>
         <span 
         onClick={() => {
@@ -37,7 +38,7 @@ export default function Navbar() {
         }
         }
         className={`${friendReqSelected?'bg-primary2 text-white':''} cursor-pointer rounded-full p-2`}>
-        <FaUserAlt />
+        <FiUsers />
         </span>
         {/* <span className='cursor-pointer border-2 border-solid border-red-300 rounded-full p-2'>
         <FaBars />
@@ -59,7 +60,7 @@ function SearchBox() {
         <input className='p-1 outline-none bg-secondary2 flex-1 rounded-full rounded-r-none'>
         </input>
         <button type='submit' className='p-1 text-primary rounded-full rounded-l-none'>
-          <FaSearch fontSize="1.5em" />
+          <FiSearch fontSize="1.5em" />
         </button>
       </form>
     </div>

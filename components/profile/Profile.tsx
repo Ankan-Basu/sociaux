@@ -1,5 +1,6 @@
 import React from 'react'
 import {FaPen} from 'react-icons/fa';
+import { FiEdit2, FiEdit3 } from "react-icons/fi";
 
 export default function Profile(){
   return (
@@ -8,7 +9,7 @@ export default function Profile(){
     <div className='flex items-baseline'>
         <img src='ayaka.jpg' height='220px' width='220px' className='rounded-full shadow-lg'/>
         <div className='p-3 relative bottom-4 right-9 bg-secondary2 text-primary rounded-full inline-block shadow-lg'>
-            <FaPen />
+            <FiEdit3 />
             </div>
     </div>
     <div className='p-1 flex flex-col gap-1 rounded-lg shadow-lg'>
@@ -22,7 +23,7 @@ export default function Profile(){
         <div>
             <div className='mt-1 p-1 flex items-center justify-between'>
                 <h3 className='font-medium'>Bio:</h3>
-             <FaPen />    
+             <FiEdit3/>    
             </div>
              
         <div className='bg-secondary2 p-1 h-28 rounded-lg'>
