@@ -2,7 +2,7 @@ import React from 'react'
 import {  FaShare, FaLock, FaGlobe, FaEllipsisV, FaEllipsisH, FaTrash, FaRegTimesCircle, FaImage, FaVideo, 
     FaRegThumbsUp, FaThumbsUp, FaRegComment, FaComment, FaPen} from 'react-icons/fa';
 
-export default function Page() {
+export default function Post() {
   return (
     <div className='shadow-lg border-2 border-solid border-secondary w-100 p-2 pt-1 rounded-lg'>
             <div className='text-xs flex justify-between'>
