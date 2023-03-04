@@ -8,6 +8,7 @@ import Post from '@/components/posts/Post'
 import PersonalOptions from '@/components/PersonalOptions/PersonalOptions'
 import { useState } from 'react';
 import Modal from '@/components/modal/Modal'
+import Plus from '@/components/Plus/Plus'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -19,12 +20,12 @@ export default function Home() {
     }
   return (
     <main>
-      <div className='relative flex justify-center gap-5'>
-      <div className='fixed left-6 w-60'>
+      <div className='relative flex flex-col lg:flex-row justify-center gap-5'>
+      {/* <div className='fixed left-6 w-60'> */}
           <Profile />
 
-        </div>
-      <div className='w-100'>
+        {/* </div> */}
+      <div className='lg:w-100'>
       Posts:
          <Post />
         <Post />
@@ -33,15 +34,17 @@ export default function Home() {
         <Post />
         <Post />
         <Post /> 
-
-<input type="file" onChange={handleChange} />
-            <img src={file} />
-      </div>
-
-      <div className='fixed right-6 w-60'>          
-          <PersonalOptions />
         </div>
-      
+
+{/* <input type="file" onChange={handleChange} />
+            <img src={file} />
+  </div> */}
+
+      {/* <div className='fixed right-6 w-60'>          
+          <PersonalOptions /> 
+         </div> 
+       */}
+       <Plus />
       </div>
     </main>
   )

@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react'
 // import { FaBars, FaUserFriends, FaSearch, FaUserAlt, FaBell } from "react-icons/fa";
-import { FiSearch, FiBell, FiUsers } from "react-icons/fi";
+import { FiSearch, FiBell, FiUsers, FiMenu } from "react-icons/fi";
 
 
 export default function Navbar() {
@@ -26,7 +26,7 @@ export default function Navbar() {
             setNotifSelected(currState => !currState)
         }
         }
-        className={`${notifSelected?'bg-primary2 text-white':''} cursor-pointer rounded-full p-2`}>
+        className={`${notifSelected?'bg-primary2 text-white':''} hidden lg:inline cursor-pointer rounded-full p-2`}>
         <FiBell />
         </span>
         <span 
@@ -37,12 +37,19 @@ export default function Navbar() {
             setFriendReqSelected(currState => !currState)
         }
         }
-        className={`${friendReqSelected?'bg-primary2 text-white':''} cursor-pointer rounded-full p-2`}>
+        className={`${friendReqSelected?'bg-primary2 text-white':''} hidden lg:inline cursor-pointer rounded-full p-2`}>
         <FiUsers />
         </span>
         {/* <span className='cursor-pointer border-2 border-solid border-red-300 rounded-full p-2'>
         <FaBars />
         </span> */}
+
+
+      <span 
+        className={`lg:hidden inline cursor-pointer rounded-full p-2`}>
+        <FiMenu />
+        </span>
+
         </span>
 
         <Notif
@@ -57,7 +64,7 @@ function SearchBox() {
   return (
     <div className=' bg-secondary2 rounded-full p-1'>
       <form className='flex items-center'>
-        <input className='p-1 outline-none bg-secondary2 flex-1 rounded-full rounded-r-none'>
+        <input className='p-1 w-36 lg:w-auto outline-none bg-secondary2 flex-1 rounded-full rounded-r-none'>
         </input>
         <button type='submit' className='p-1 text-primary rounded-full rounded-l-none'>
           <FiSearch fontSize="1.5em" />

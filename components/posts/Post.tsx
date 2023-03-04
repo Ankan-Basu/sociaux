@@ -4,7 +4,9 @@ import { FiEdit3, FiTrash, FiX, FiThumbsUp, FiCornerUpRight, FiMessageSquare, Fi
 
 export default function Post() {
   return (
-    <div className='mb-8 shadow-lg border-2 border-solid border-secondary w-100 p-2 pt-1 rounded-lg'>
+    <div className='
+    w-80 mb-8 shadow-lg border-2 border-solid border-secondary 
+    lg:w-100 p-2 pt-1 rounded-lg'>
             <div className='text-xs flex justify-between'>
                 
                 <div className='flex'><DropDown /></div>
@@ -46,12 +48,24 @@ Optional Img/ Vid
             </div>
             <div className='text-primary flex justify-center gap-2 pt-1'>
                <span className='py-1 flex-1 flex justify-center items-center gap-1 border-solid border-2 border-primary rounded-lg'>
-                <FiThumbsUp /> Like
+                <FiThumbsUp /> 
+                
+                {/* Display Text only in big screen */}
+                <span className='hidden lg:inline'>Like</span>
+                
                 </span>
                <span className='py-1 flex-1 flex justify-center items-center gap-1 border-solid border-2 border-primary rounded-lg'> 
-               <FiMessageSquare /> Comment</span>
+               <FiMessageSquare /> 
+               
+               {/* Display Text only in big screen */}
+               <span className='hidden lg:inline'>Comment</span>
+               </span>
                <span className='py-1 flex-1 flex justify-center items-center gap-1 border-solid border-2 border-primary rounded-lg'> 
-               <FiCornerUpRight /> Share</span>
+               <FiCornerUpRight /> 
+               
+               {/* Display Text only in big screen */}
+               <span className='hidden lg:inline'>Share</span>
+               </span>
                 
             </div>
         </div>
