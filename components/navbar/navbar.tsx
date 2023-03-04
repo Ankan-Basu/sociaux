@@ -11,7 +11,7 @@ export default function Navbar() {
     const [mobileNotifSelected, setMobileNotifSelected] = useState<boolean>(false)
 
   return (
-    <div>
+    <>
     <nav className='z-10 mb-2 shadow-lg backdrop-blur-md py-2 px-2 flex items-center gap-1 sticky top-0'>
       <span className='flex-1'>Navbar</span>
       <span className='flex-1'><SearchBox /></span>
@@ -73,7 +73,7 @@ export default function Navbar() {
         selfDisplayState={mobileNotifSelected}
         selfDisplayStateToggler={setMobileNotifSelected}
         />
-        </div>
+        </>
     
   )
 }
@@ -202,7 +202,8 @@ function NotifScreenMobile(
     lg:hidden
     z-30 pt-2
     fixed top-0 w-screen h-screen
-    bg-white border-2 border-solid border-black
+    bg-white/90
+   backdrop-blur-sm
     `}>
       <div className='flex justify-end'>
         <span
@@ -216,11 +217,11 @@ function NotifScreenMobile(
         <FiX />
         </span>
       </div>
-      <div className='text-xl font-medium flex justify-evenly'>
+      <div className='text-xl font-medium flex justify-evenly px-2'>
         <div 
         className='
         w-1/2
-        border-r-2 border-b-2 border-solid border-black'
+        //border-r-2 //border-b-2 border-solid border-black'
         >
           <span 
           onClick={() => {
@@ -243,7 +244,7 @@ function NotifScreenMobile(
         <div 
         className='
         w-1/2
-        border-l-2 border-b-2 border-solid border-black'
+        //border-l-2 //border-b-2 border-solid border-black'
         >
           <span
           onClick={() => {
@@ -276,7 +277,9 @@ function NotifMobile(
   return (
     <div className={`
     z-30
-     bg-white overflow-auto p-2`}>
+  //bg-white/60
+  //backdrop-blur-sm 
+     overflow-auto p-2`}>
       <h3 className='text-2xl font-medium'>{type}</h3>
       <div className='mb-4'>
         {type==='Notifications'?
@@ -296,6 +299,9 @@ function NotifMobile(
         type==='Notifications'?
         (
             <>
+        <NotifItem />
+        <NotifItem />
+        <NotifItem />
         <NotifItem />
         <NotifItem />
         <NotifItem />
