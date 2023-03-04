@@ -12,8 +12,6 @@ export default function UserId() {
     const router = useRouter();
     const { userId}  = router.query
 
-    const [showMenu, setShowMenu] = useState<boolean>(false)
-
   return (
     <div 
     className='flex flex-col lg:flex-row justify-center items-start'
