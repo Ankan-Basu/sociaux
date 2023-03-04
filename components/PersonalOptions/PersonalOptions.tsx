@@ -5,13 +5,14 @@ import { FiEdit, FiSettings, FiLogOut, FiUser, FiX } from "react-icons/fi";
 export default function PersonalOptions(){
   return (
     <div 
-    className='fixed lg:static z-20 lg:z-0 
+    className='hidden sticky z-20 lg:z-0 
     top-0 left-0
+    lg:top-16
     bg-white
     w-screen h-screen
     lg:w-60 lg:h-auto
     p-4 lg:p-1 rounded-lg lg:shadow-lg 
-    flex flex-col gap-3'
+    lg:flex flex-col gap-3'
     >
         <div className='lg:hidden flex justify-end p-2 text-lg'>
             <FiX />

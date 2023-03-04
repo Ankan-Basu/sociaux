@@ -5,11 +5,17 @@ import { FiEdit2, FiEdit3 } from "react-icons/fi";
 export default function Profile(){
   return (
     
-    <div className='p-1 w-screen lg:w-60 flex lg:flex-col items-center lg:items-stretch gap-1 lg:gap-3'>
+    <div 
+    className='p-1 w-screen lg:w-60 
+    flex lg:flex-col items-center 
+    lg:items-stretch gap-1 lg:gap-3
+    lg:sticky lg:top-16
+    '
+    >
 
     <div 
     className='flex flex-col gap-3 lg:gap-0 relative items-center lg:items-baseline'>
-        <img src='ayaka.jpg' 
+        <img src='../ayaka.jpg' 
         className='h-36 w-36 lg:h-56 lg:w-56 rounded-full shadow-lg'/>
         <div 
         className='p-3 absolute bottom-12 right-0 lg:bottom-4 lg:right-2 bg-secondary2 text-primary rounded-full inline-block shadow-lg'
@@ -20,7 +26,7 @@ export default function Profile(){
         <FriendButton />
     </div>
     </div>
-    <div className='p-1 flex flex-1 lg:flex-none flex-col gap-1 rounded-lg shadow-lg'>
+    <div className='bg-white p-1 flex flex-1 lg:flex-none flex-col gap-1 rounded-lg shadow-lg'>
         <div className='p-1 rounded-lg flex flex-col'>
         <div><h2 className='text-lg font-semibold'>Kamisato Ayaka</h2></div>
         <div><h2 className='font-medium text-sm lg:text-base'>@aether_simp</h2></div>
