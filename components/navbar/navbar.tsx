@@ -2,14 +2,16 @@
 
 import React, { useState } from 'react'
 // import { FaBars, FaUserFriends, FaSearch, FaUserAlt, FaBell } from "react-icons/fa";
-import { FiSearch, FiBell, FiUsers, FiMenu } from "react-icons/fi";
+import { FiSearch, FiBell, FiUsers, FiMenu, FiX } from "react-icons/fi";
 
 
 export default function Navbar() {
     const [notifSelected, setNotifSelected] = useState<boolean>(false)
     const [friendReqSelected, setFriendReqSelected] = useState<boolean>(false)
+    const [mobileNotifSelected, setMobileNotifSelected] = useState<boolean>(false)
 
   return (
+    <div>
     <nav className='z-10 mb-2 shadow-lg backdrop-blur-md py-2 px-2 flex items-center gap-1 sticky top-0'>
       <span className='flex-1'>Navbar</span>
       <span className='flex-1'><SearchBox /></span>
@@ -26,7 +28,10 @@ export default function Navbar() {
             setNotifSelected(currState => !currState)
         }
         }
-        className={`${notifSelected?'bg-primary2 text-white':''} hidden lg:inline cursor-pointer rounded-full p-2`}>
+        className=
+        {`${notifSelected?'bg-primary2 text-white':''} 
+        hidden lg:inline cursor-pointer rounded-full p-2`}
+        >
         <FiBell />
         </span>
         <span 
@@ -46,16 +51,30 @@ export default function Navbar() {
 
 
       <span 
+        onClick={() => setMobileNotifSelected(currState => !currState)}
         className={`lg:hidden inline cursor-pointer rounded-full p-2`}>
         <FiMenu />
         </span>
 
         </span>
+        </nav>
 
         <Notif
         display={notifSelected||friendReqSelected} 
         type={friendReqSelected?'Friend Requests':'Notifications'}/>
-    </nav>
+    
+        <NotifScreenMobile 
+        display={notifSelected||friendReqSelected||mobileNotifSelected} 
+        type={friendReqSelected?'Friend Requests':'Notifications'}
+        notifState={notifSelected}
+        notifStateToggler={setNotifSelected}
+        friendReqState={friendReqSelected}
+        friendReqStateToggler={setFriendReqSelected}
+        selfDisplayState={mobileNotifSelected}
+        selfDisplayStateToggler={setMobileNotifSelected}
+        />
+        </div>
+    
   )
 }
 
@@ -78,7 +97,9 @@ function SearchBox() {
 function Notif({display, type}: {display: boolean, type: String}) {
   return (
     <div className={`
-    ${display?'block':'hidden'} bg-white absolute top-14 right-4 w-72 h-100 overflow-auto p-2 border-2 rounded-lg shadow-lg`}>
+    hidden 
+    z-30
+    ${display?'lg:block':'hidden'} bg-white absolute top-14 right-4 w-72 h-100 overflow-auto p-2 border-2 rounded-lg shadow-lg`}>
       <h3 className='text-2xl font-medium'>{type}</h3>
       <div className='mb-4'>
         {type==='Notifications'?
@@ -153,4 +174,148 @@ function FrenReq() {
             </div>
         </div>
     )
+}
+
+function NotifScreenMobile(
+  {
+    display, 
+    type,
+    notifState,
+    notifStateToggler,
+    friendReqState,
+    friendReqStateToggler,
+    selfDisplayState,
+    selfDisplayStateToggler
+  }: {
+    display: boolean, 
+    type: String
+    notifState: boolean,
+    notifStateToggler: Function,
+    friendReqState: boolean,
+    friendReqStateToggler: Function,
+    selfDisplayState: boolean,
+    selfDisplayStateToggler: Function
+  }) {
+  return (
+    <div className={`
+    ${display?'block':'hidden'}
+    lg:hidden
+    z-30 pt-2
+    fixed top-0 w-screen h-screen
+    bg-white border-2 border-solid border-black
+    `}>
+      <div className='flex justify-end'>
+        <span
+        onClick={() => {
+          selfDisplayStateToggler(false);
+          notifStateToggler(false);
+          friendReqStateToggler(false);
+        }} 
+        className='p-4 pt-2 active:text-primary'
+        >
+        <FiX />
+        </span>
+      </div>
+      <div className='text-xl font-medium flex justify-evenly'>
+        <div 
+        className='
+        w-1/2
+        border-r-2 border-b-2 border-solid border-black'
+        >
+          <span 
+          onClick={() => {
+            if (friendReqState) {
+              friendReqStateToggler(false);
+          }
+          notifStateToggler((currState: boolean) => !currState)
+            }}
+          className={`
+          active:bg-primary
+          ${type!=='Friend Requests'?'bg-primary2 text-white':''}
+          flex justify-center items-center 
+          w-full h-full py-1
+          rounded-lg cursor-pointer
+          `}
+          >
+          Notifications
+          </span>
+        </div>
+        <div 
+        className='
+        w-1/2
+        border-l-2 border-b-2 border-solid border-black'
+        >
+          <span
+          onClick={() => {
+            if (notifState) {
+                notifStateToggler(false);
+            }
+            friendReqStateToggler((currState: boolean) => !currState)
+        }
+        }
+          className={`
+          active:bg-primary
+          ${type==='Friend Requests'?'bg-primary2 text-white':''}
+          flex justify-center items-center 
+          w-full h-full py-1
+          rounded-lg cursor-pointer
+          `}>
+          Friend Requests
+          </span>
+          </ div>
+      </div>
+      <NotifMobile type={type} display={display}/>
+    </div>
+  )
+}
+
+function NotifMobile(
+  {display, type}: 
+  {display: boolean, type: String}
+) {
+  return (
+    <div className={`
+    z-30
+     bg-white overflow-auto p-2`}>
+      <h3 className='text-2xl font-medium'>{type}</h3>
+      <div className='mb-4'>
+        {type==='Notifications'?
+        <span className='cursor-pointer hover:text-primary active:text-primary2'>
+            Mark all as read</span>
+        :
+        <span className='flex justify-between'>
+        <span className='cursor-pointer hover:text-primary active:text-primary2'>
+            Accept All</span>
+        <span className='cursor-pointer hover:text-primary active:text-primary2'>
+            Reject All</span>    
+        </span>}
+
+      </div>
+
+      {
+        type==='Notifications'?
+        (
+            <>
+        <NotifItem />
+        <NotifItem />
+        <NotifItem />
+        <NotifItem />
+        <NotifItem />
+        <NotifItem />
+        <NotifItem />
+        </>
+        ):
+        (
+            <>
+            <FrenReq />
+            <FrenReq />
+            <FrenReq />
+            <FrenReq />
+            <FrenReq />
+            <FrenReq />
+            </>
+        )
+      }
+    </div>
+  )
 }
