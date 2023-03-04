@@ -1,10 +1,21 @@
 import React from 'react'
 // import {FaEdit, FaRegSun, FaWrench, FaUserAlt} from 'react-icons/fa';
-import { FiEdit, FiSettings, FiLogOut, FiUser } from "react-icons/fi";
+import { FiEdit, FiSettings, FiLogOut, FiUser, FiX } from "react-icons/fi";
 
 export default function PersonalOptions(){
   return (
-    <div className='p-1 rounded-lg shadow-lg flex flex-col gap-3'>
+    <div 
+    className='fixed lg:static z-20 lg:z-0 
+    top-0 left-0
+    bg-white
+    w-screen h-screen
+    lg:w-60 lg:h-auto
+    p-4 lg:p-1 rounded-lg lg:shadow-lg 
+    flex flex-col gap-3'
+    >
+        <div className='lg:hidden flex justify-end p-2 text-lg'>
+            <FiX />
+        </div>
         <div className='p-1 flex justify-center gap-1 items-center
         border-2 border-solid border-primary2 rounded-lg cursor-pointer bg-primary hover:bg-primary2 hover:text-white'>
             <FiEdit /><h4>Add Post</h4>

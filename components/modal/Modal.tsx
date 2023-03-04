@@ -6,7 +6,9 @@ import { FiTrash, FiArrowRight, FiCornerUpRight, FiX, FiImage, FiVideo } from "r
 
 export default function Modal() {
     return (
-        <div className='border-solid border-2 border-secondary w-100 p-2 pt-1 rounded-lg'>
+        <div 
+        className='border-solid border-2 border-secondary h-screen lg:h-auto lg:w-100 p-2 pt-1 rounded-lg'
+        >
             <div className='flex justify-end'>
                 <span className='text-primary'>
                 <FiX />
@@ -20,7 +22,9 @@ export default function Modal() {
             <label htmlFor="textarea" className='py-1'>Write post here:</label>
 
 
-                <textarea id="textarea" name="textarea" rows={4} cols={50} className='bg-secondary2 w-99 rounded-lg outline-none p-1 resize-none'>
+                <textarea id="textarea" name="textarea" rows={4} cols={50} 
+                className='bg-secondary2 w-full lg:w-99 rounded-lg outline-none p-1 resize-none'
+                >
                 </textarea>
             </div>
             <div className='flex justify-center gap-2 py-1'>
