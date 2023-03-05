@@ -6,6 +6,9 @@ import InputDataType from '../util/InputDataType';
 import inputValidator from '../util/inputValidator';
 import ValidatedOutput from '../util/ValidatedOutput';
 
+import { useSession, signIn, signOut } from "next-auth/react"
+import { useRouter } from 'next/router';
+
 function SignupComponent() {
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -23,7 +26,11 @@ function SignupComponent() {
   const[unameInvalid, setUnameInvalid] = useState<boolean>(false);
   const[passwordInvalid, setPasswordInvalid] = useState<boolean>(false);
 
-  const handleLoginSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+
+  const router = useRouter();
+
+  
+  const handleLoginSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
   
     const obj: InputDataType = {
@@ -65,7 +72,35 @@ function SignupComponent() {
       obj2.uname = uname;
     }
 
-    console.log(obj2);
+    // console.log(obj2);
+
+    const url = '/api/signup';
+    const resp = await fetch(url, {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(obj2)
+    });
+
+    const data = await resp.json();
+
+    console.log(data);
+
+    if (resp.status === 201) {
+      //do login and redirect
+
+      const status:any = await signIn('credentials', {
+        redirect: false,
+        email: obj2.email,
+        password: obj2.password,
+        callbackUrl:'/user/1'
+      })
+
+      if (status.ok) {
+        router.push('/user/1')
+      }
+    }
   }
 
   return (

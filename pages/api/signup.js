@@ -9,7 +9,7 @@ export default async function handler(req, res) {
             const obj = req.body;
             // console.log('OBJ:\n\n', obj)
             const userR = await UserModel.create(obj);
-            res.json(userR);
+            res.status(201).json(userR);
         } catch(err) {
             // console.log(err.message);
             let errorsFound = handleErrors(err);
