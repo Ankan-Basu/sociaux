@@ -1,9 +1,12 @@
+import LoginComponent from '@/components/auth/loginComponent'
 import React from 'react'
 
-function login() {
+function Login() {
   return (
-    <div>login</div>
+    <div>
+      <LoginComponent />
+    </div>
   )
 }
 
-export default login
+export default Login
