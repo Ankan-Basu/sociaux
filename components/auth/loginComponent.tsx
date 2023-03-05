@@ -6,6 +6,9 @@ import InputDataType from '../util/InputDataType';
 import inputValidator from '../util/inputValidator';
 import ValidatedOutput from '../util/ValidatedOutput';
 
+import { useSession, signIn, signOut } from "next-auth/react"
+import { useRouter } from 'next/router';
+
 function LoginComponent() {
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -14,7 +17,10 @@ function LoginComponent() {
   const[inpInvalid, setInpInvalid] = useState<boolean>(false);
   const[passwordInvalid, setPasswordInvalid] = useState<boolean>(false);
 
-  const handleLoginSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const router = useRouter();
+
+
+  const handleLoginSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
   
     const obj: InputDataType = {
@@ -43,6 +49,18 @@ function LoginComponent() {
     }
 
     console.log(obj2);
+
+    const status:any = await signIn('credentials', {
+      redirect: false,
+      email: obj2.email,
+      password: obj2.password,
+      callbackUrl:'/user/1'
+    })
+
+    console.log(status);
+    if (status.ok) {
+      router.push('/user/1')
+    }
   }
 
   return (
