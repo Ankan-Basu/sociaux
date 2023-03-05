@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import React, { ChangeEvent, useState } from 'react'
-import { FiAtSign, FiEyeOff, FiEye, FiLogIn } from "react-icons/fi";
+import { FiAtSign, FiUserCheck, FiEyeOff, FiEye, FiLogIn } from "react-icons/fi";
 import Post from '../posts/Post';
 import InputDataType from '../util/InputDataType';
 import inputValidator from '../util/inputValidator';
@@ -24,6 +24,7 @@ function LoginComponent() {
     }
 
     const resObj: ValidatedOutput = inputValidator(obj);
+    console.log(resObj);
 
     if (!resObj.uname && !resObj.email) {
       setInpInvalid(true);
@@ -46,7 +47,7 @@ function LoginComponent() {
 
   return (
     <div className='
-    w-5/6 m-auto p-2
+    w-5/6 max-w-md m-auto p-3 rounded-lg shadow-lg
     border-2 border-solid'>
       <h2
       className='
@@ -136,6 +137,12 @@ function LoginComponent() {
           Login
         </button>
       
+      <div
+      className='
+      text-primary active:text-primary2
+      lg:hover:text-primary2 lg:active:text-primary'>
+        Forgot Password?
+      </div>
       <div>
         Don't have an account? 
         <Link href='/signup'>

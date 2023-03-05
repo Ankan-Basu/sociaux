@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import React, { ChangeEvent, useState } from 'react'
-import { FiAtSign, FiEyeOff, FiEye, FiLogIn } from "react-icons/fi";
+import { FiAtSign, FiUserCheck, FiEyeOff, FiEye, FiLogIn } from "react-icons/fi";
 import Post from '../posts/Post';
 import InputDataType from '../util/InputDataType';
 import inputValidator from '../util/inputValidator';
@@ -34,7 +34,8 @@ function SignupComponent() {
 
     const resObj: ValidatedOutput = inputValidator(obj);
 
-   Object.values(resObj).every(item => item === true);
+    console.log(resObj);
+  //  Object.values(resObj).every(item => item === true);
 
     if (password !== cPassword) {
       setPasswordMisMatch(true);
@@ -69,7 +70,7 @@ function SignupComponent() {
 
   return (
     <div className='
-    w-5/6 m-auto p-2
+    w-5/6 max-w-md m-auto p-3 rounded-lg shadow-lg
     border-2 border-solid'>
       <h2
       className='
@@ -77,7 +78,7 @@ function SignupComponent() {
       flex gap-1
       '
       >
-        <FiLogIn />
+        <FiUserCheck />
         Sign Up: 
       </h2>
       <form
