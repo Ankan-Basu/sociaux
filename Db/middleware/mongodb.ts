@@ -1,18 +1,37 @@
-import mongoose from "mongoose";
-import { NextApiRequest, NextApiResponse } from "next";
-import { NextRequest } from "next/server";
+import { Mongoose } from 'mongoose';
+import mongoose from 'mongoose';
 
-const connectDB = (handler: Function) => {
-    async(req: NextApiRequest, res: NextApiResponse) => {
-        if (mongoose.connections[0].readyState) {
-            //use current db connection
-            return handler(req, res);
-        }
-    
-        //use new db connection
-        await mongoose.connect(process.env.MONGO_URL as string);
-        return handler(req, res);
-    }
+/* eslint-disable no-var */
+
+declare global {
+  var mongoose: {
+    promise: Promise<Mongoose> | null;
+    conn: Mongoose | null;
+  };
 }
 
-export default connectDB;
+
+const { MONGODB_URI } = process.env;
+
+if (!MONGODB_URI) throw new Error('MONGODB_URI not defined');
+// if (!MONGODB_DB) throw new Error('MONGODB_DB not defined');
+
+let cached = global.mongoose
+
+if (!cached) {
+  cached = global.mongoose = {conn: null, promise: null}
+}
+
+async function dbConnect() {
+  if (cached.conn) return cached.conn;
+
+  if (!cached.promise) {
+    console.log('connecting to db');
+    cached.promise = mongoose.connect(`${MONGODB_URI}`).then(mongoose => mongoose)
+  }
+
+  cached.conn = await cached.promise;
+  return cached.conn
+}
+
+export default dbConnect;
