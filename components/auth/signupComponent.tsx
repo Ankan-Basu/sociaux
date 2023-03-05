@@ -17,7 +17,10 @@ function SignupComponent() {
   const [password, setPassword] = useState<string>('');
   const [cPassword, setCPassword] = useState<string>('');
   
-  const[inpInvalid, setInpInvalid] = useState<boolean>(false);
+  const [passwordMisMatch, setPasswordMisMatch] = useState<boolean>(false);
+
+  const[emailInvalid, setEmailInvalid] = useState<boolean>(false);
+  const[unameInvalid, setUnameInvalid] = useState<boolean>(false);
   const[passwordInvalid, setPasswordInvalid] = useState<boolean>(false);
 
   const handleLoginSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -31,9 +34,35 @@ function SignupComponent() {
 
     const resObj: ValidatedOutput = inputValidator(obj);
 
-   Object.values(resObj).every()
-    const obj2 = {name, uname:'', email:'', password}
+   Object.values(resObj).every(item => item === true);
+
+    if (password !== cPassword) {
+      setPasswordMisMatch(true);
+      return;
+    }
+
+    const obj2 = {name, uname:'', email:'', password:''}
     
+    if (!resObj.password) {
+      setPasswordInvalid(true);
+      return;
+    } else {
+      obj2.password = password
+    }
+
+    if (!resObj.email) {
+      setEmailInvalid(true);
+      return;
+    } else {
+      obj2.email = email;
+    }
+
+    if (!resObj.uname) {
+      setUnameInvalid(true);
+      return;
+    } else {
+      obj2.uname = uname;
+    }
 
     console.log(obj2);
   }
