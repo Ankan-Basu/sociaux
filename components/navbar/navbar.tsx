@@ -206,6 +206,7 @@ function NotifScreenMobile(
     z-30 pt-2
     fixed top-0 w-screen h-screen
     bg-white/90
+    overflow-auto
    backdrop-blur-sm
     `}>
       <div className='flex justify-end'>
