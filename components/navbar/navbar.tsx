@@ -99,7 +99,10 @@ function Notif({display, type}: {display: boolean, type: String}) {
     <div className={`
     hidden 
     z-30
-    ${display?'lg:block':'hidden'} bg-white absolute top-14 right-4 w-72 h-100 overflow-auto p-2 border-2 rounded-lg shadow-lg`}>
+    ${display?'lg:block':'hidden'} bg-white
+     fixed top-14 right-4 w-72 h-100 
+     overflow-auto p-2 border-2 rounded-lg 
+     shadow-lg`}>
       <h3 className='text-2xl font-medium'>{type}</h3>
       <div className='mb-4'>
         {type==='Notifications'?
