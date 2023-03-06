@@ -2,12 +2,13 @@ import { useEffect } from "react";
 import FrenReq from "./friendReq";
 import NotifItem from "./notifItem";
 
-export default function Notif({notifs, display, type}: {notifs: Array<Object>, display: boolean, type: String}) {
+export default function Notif({notifs, friendReqs, display, type}: 
+  {notifs: Array<Object>, friendReqs: Array<Object>, display: boolean, type: String}) {
   // console.log(notifs); 
 
-  useEffect(() => {
-    console.log('notif.tsx.\n notifs,', notifs)
-  }, [notifs])
+  // useEffect(() => {
+  //   console.log('notif.tsx.\n notifs,', notifs)
+  // }, [notifs])
   
   return (
       <div className={`
@@ -34,33 +35,26 @@ export default function Notif({notifs, display, type}: {notifs: Array<Object>, d
   
         {
           type==='Notifications'?
-          (
-              <>
-
-              {
+          (              
                 notifs.map((notif, indx) => {
                   // console.log(notif);
                   return notif && <NotifItem key={indx} notif={notif} />
 
-                })
-              }
-          {/* <NotifItem />
-          <NotifItem />
-          <NotifItem />
-          <NotifItem />
-          <NotifItem />
-          <NotifItem /> */}
-          </>
+                })          
           ):
           (
-              <>
-              <FrenReq />
-              <FrenReq />
-              <FrenReq />
-              <FrenReq />
-              <FrenReq />
-              <FrenReq />
-              </>
+
+            friendReqs.map((friendReq, indx) => {
+              return friendReq && <FrenReq key={indx} friendReq={friendReq} />
+            })
+              // <>
+              // <FrenReq />
+              // <FrenReq />
+              // <FrenReq />
+              // <FrenReq />
+              // <FrenReq />
+              // <FrenReq />
+              // </>
           )
         }
       </div>

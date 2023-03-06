@@ -4,6 +4,7 @@ import NotifMobile from "./notifMobile";
 export default function NotifScreenMobile(
     {
         notifs, 
+        friendReqs,
       display, 
       type,
       notifState,
@@ -14,6 +15,7 @@ export default function NotifScreenMobile(
       selfDisplayStateToggler
     }: {
         notifs: Array<Object>, 
+        friendReqs: Array<Object>,
       display: boolean, 
       type: String
       notifState: boolean,
@@ -93,7 +95,7 @@ export default function NotifScreenMobile(
             </span>
             </ div>
         </div>
-        <NotifMobile type={type} display={display} notifs={notifs}/>
+        <NotifMobile type={type} display={display} notifs={notifs} friendReqs={friendReqs}/>
       </div>
     )
   }

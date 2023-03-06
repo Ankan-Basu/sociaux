@@ -16,10 +16,12 @@ export default function Navbar() {
     const [mobileNotifSelected, setMobileNotifSelected] = useState<boolean>(false)
 
     const [notifList, setNotifList] = useState<Array<Object>>();
+    const [friendReqList, setFriendReqList] = useState<Array<Object>>();
 
     useEffect(() => {
       console.log('Navbar mounted');
       getNotifList();
+      getFriendReqList();
     }, []);
 
     const getNotifList = async () => {
@@ -43,6 +45,29 @@ export default function Navbar() {
         } else {
           const notifsArr = data.notifs.reverse();
           setNotifList(notifsArr);
+          // console.log(notifsArr);
+        }
+      }
+    }
+
+    const getFriendReqList = async () => {
+      const url = '/api/friend-reqs/kamisato_ayaka';
+      // console.log('fetching data');
+
+      const resp = await fetch(url);
+      
+      // console.log(resp);
+      const data = await resp.json();
+      
+      // console.log(data);
+      
+      if (resp.status === 200) {
+        if (!data) {
+          setFriendReqList([]);
+          return;
+        } else {
+          const friendReqArr = data.reqs.reverse();
+          setFriendReqList(friendReqArr);
           // console.log(notifsArr);
         }
       }
@@ -99,11 +124,13 @@ export default function Navbar() {
 
         <Notif
         notifs={notifList || []}
+        friendReqs = {friendReqList || []}
         display={notifSelected||friendReqSelected} 
         type={friendReqSelected?'Friend Requests':'Notifications'}/>
     
         <NotifScreenMobile 
         notifs={notifList || []}
+        friendReqs = {friendReqList || []}
         display={notifSelected||friendReqSelected||mobileNotifSelected} 
         type={friendReqSelected?'Friend Requests':'Notifications'}
         notifState={notifSelected}
