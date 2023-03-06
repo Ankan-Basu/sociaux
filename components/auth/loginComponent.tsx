@@ -162,7 +162,7 @@ function LoginComponent() {
         Forgot Password?
       </div>
       <div>
-        Don't have an account? 
+        Don&apos;t have an account? 
         <Link href='/signup'>
         <span 
         className='
