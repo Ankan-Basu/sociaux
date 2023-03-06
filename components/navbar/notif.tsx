@@ -1,8 +1,15 @@
+import { useEffect } from "react";
 import FrenReq from "./friendReq";
 import NotifItem from "./notifItem";
 
-export default function Notif({display, type}: {display: boolean, type: String}) {
-    return (
+export default function Notif({notifs, display, type}: {notifs: Array<Object>, display: boolean, type: String}) {
+  // console.log(notifs); 
+
+  useEffect(() => {
+    console.log('notif.tsx.\n notifs,', notifs)
+  }, [notifs])
+  
+  return (
       <div className={`
       hidden 
       z-30
@@ -29,13 +36,20 @@ export default function Notif({display, type}: {display: boolean, type: String})
           type==='Notifications'?
           (
               <>
+
+              {
+                notifs.map((notif, indx) => {
+                  // console.log(notif);
+                  return notif && <NotifItem key={indx} notif={notif} />
+
+                })
+              }
+          {/* <NotifItem />
           <NotifItem />
           <NotifItem />
           <NotifItem />
           <NotifItem />
-          <NotifItem />
-          <NotifItem />
-          <NotifItem />
+          <NotifItem /> */}
           </>
           ):
           (

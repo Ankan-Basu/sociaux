@@ -3,6 +3,7 @@ import NotifMobile from "./notifMobile";
 
 export default function NotifScreenMobile(
     {
+        notifs, 
       display, 
       type,
       notifState,
@@ -12,6 +13,7 @@ export default function NotifScreenMobile(
       selfDisplayState,
       selfDisplayStateToggler
     }: {
+        notifs: Array<Object>, 
       display: boolean, 
       type: String
       notifState: boolean,
@@ -91,7 +93,7 @@ export default function NotifScreenMobile(
             </span>
             </ div>
         </div>
-        <NotifMobile type={type} display={display}/>
+        <NotifMobile type={type} display={display} notifs={notifs}/>
       </div>
     )
   }

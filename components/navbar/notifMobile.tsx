@@ -2,8 +2,8 @@ import FrenReq from "./friendReq";
 import NotifItem from "./notifItem";
 
 export default function NotifMobile(
-    {display, type}: 
-    {display: boolean, type: String}
+    {notifs, display, type}: 
+    {notifs: Array<Object>, display: boolean, type: String}
   ) {
     return (
       <div className={`
@@ -29,18 +29,14 @@ export default function NotifMobile(
         {
           type==='Notifications'?
           (
-              <>
-          <NotifItem />
-          <NotifItem />
-          <NotifItem />
-          <NotifItem />
-          <NotifItem />
-          <NotifItem />
-          <NotifItem />
-          <NotifItem />
-          <NotifItem />
-          <NotifItem />
-          </>
+            
+                notifs &&
+                notifs.map((notif) => {
+                    return (
+                        <NotifItem notif={notif}/>
+                    )
+                })
+          
           ):
           (
               <>
