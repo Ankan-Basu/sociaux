@@ -10,7 +10,7 @@ import PersonalOptionsMobile from '@/components/PersonalOptions/PersonalOptionsM
 export default function UserId() {
 
     const router = useRouter();
-    const { userId}  = router.query
+    const { uname}  = router.query
 
   return (
     <div 

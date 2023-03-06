@@ -1,9 +1,46 @@
-import React from 'react'
+import Link from 'next/link';
+import React, { useEffect, useState } from 'react'
 import {FaPen} from 'react-icons/fa';
 import { FiEdit2, FiEdit3 } from "react-icons/fi";
+import { useRouter } from 'next/router';
+
 
 export default function Profile(){
-  return (
+
+    const [fullName, setFullName] = useState<string>();
+    const [userName, setUserName] = useState<string>();
+  
+    const router = useRouter();
+
+    useEffect(() => {
+        // console.log('Mounted', router.query.uname)
+        if(typeof router.query.uname === 'string') {
+            let uname: string = router.query.uname;
+            fetchUserData(uname);
+
+
+
+
+
+
+
+        }
+
+    }, [router])  
+
+    const fetchUserData = async (uname: string) => {
+        const url = `/api/user/@${uname}`;
+
+        const resp = await fetch(url);
+
+        const data = await resp.json();
+
+        // console.log(data);
+        setFullName(data.name);
+        setUserName(data.uname);
+    }
+  
+    return (
     
     <div 
     className='p-1 w-screen lg:w-60 
@@ -13,6 +50,9 @@ export default function Profile(){
     '
     >
 
+{/* <Link href='/user/ayaka'>
+<button>Go</button>
+</Link> */}
     <div 
     className='flex flex-col gap-3 lg:gap-0 relative items-center lg:items-baseline'>
         <img src='../ayaka.jpg' 
@@ -28,8 +68,14 @@ export default function Profile(){
     </div>
     <div className='bg-white p-1 flex flex-1 lg:flex-none flex-col gap-1 rounded-lg shadow-lg'>
         <div className='p-1 rounded-lg flex flex-col'>
-        <div><h2 className='text-lg font-semibold'>Kamisato Ayaka</h2></div>
-        <div><h2 className='font-medium text-sm lg:text-base'>@aether_simp</h2></div>
+        <div><h2 className='text-lg font-semibold'>
+            {/* Kamisato Ayaka */}
+            {fullName || 'Loading...'}
+            </h2></div>
+        <div><h2 className='font-medium text-sm lg:text-base'>
+            {/* @aether_simp */}
+            {userName || 'Loading...'}
+            </h2></div>
         </div>
         <div className='mt-1 hidden lg:block'>
             <FriendButton />
