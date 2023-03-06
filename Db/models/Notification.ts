@@ -41,9 +41,14 @@ const notifItemSchema: Schema = new Schema<INotifItem> ({
 const notificationSchema: Schema = new Schema<INotification>({
     uname: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
-    notifs: [notifItemSchema] 
+    notifs: {
+        type: [notifItemSchema],
+        required: true,
+        default: []
+    } 
 });
 
 var NotificationModel = models.notification || model<INotification>('notification', notificationSchema);
