@@ -7,7 +7,7 @@ interface Props {
 }
 
 function CommentInput({ customCssClass }: Props) {
-    const [inp, setInp] = useState<string>();
+    const [inp, setInp] = useState<string>('');
 
     const router = useRouter();
     
@@ -38,9 +38,17 @@ function CommentInput({ customCssClass }: Props) {
     }
 
     return (
+        <div 
+        className={`
+        ${customCssClass + ' '}
+        bg-white
+        p-2 pb-1
+        w-full sm:w-100
+        `}
+        >
     <form 
     onSubmit={handleSubmit}
-    className={`${customCssClass + ' '} flex`}>
+    className={`flex border-2 border-solid`}>
         
         
         <input
@@ -52,6 +60,7 @@ function CommentInput({ customCssClass }: Props) {
         className='
         bg-secondary2
         p-2 rounded-lg
+        flex-1
         '>
         </input>
         <button
@@ -61,13 +70,14 @@ function CommentInput({ customCssClass }: Props) {
         active:bg-primary2 active:text-white
         lg:hover:bg-primary2 lg:active:bg-primary
         lg:hover:text-white lg:active:text-black
-        p-2 border-2 border-solid
+        p-3
         rounded-lg
         `}>
             <FiSend />
         </button>
 
         </form>
+        </div>
   )
 }
 

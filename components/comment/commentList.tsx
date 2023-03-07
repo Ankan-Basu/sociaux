@@ -1,8 +1,12 @@
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
-import Comment, { ICommentProps } from './Comment'
+import Comment, { ICommentProps } from './comment'
 
-function CommentList() {
+interface Props {
+    customCssClass?: string
+}
+
+function CommentList({ customCssClass }: Props) {
     const router = useRouter();
     const {postId} = router.query;
 
@@ -27,10 +31,12 @@ function CommentList() {
     
   return (
     <div
-    className='
-    p-2
+    className={`
+    ${customCssClass + ' '}
+    p-2 
     flex flex-col gap-4
-    '
+    border-2 border-solid border-blue-500
+    `}
     >
 
         {
