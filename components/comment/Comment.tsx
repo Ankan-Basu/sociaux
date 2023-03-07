@@ -5,7 +5,9 @@ import {FaEllipsisV, FaEllipsisH} from 'react-icons/fa';
 export default function Comment(){
   return (
     <>
-    <div className='flex w-98'>
+    <div className='flex 
+    w-80
+    lg:w-98'>
         <div className='w-16'>
         <div className='w-full'>
             <img src='ayaka.jpg' height='60rem' width='60rem' className='rounded-full'/>
