@@ -16,7 +16,7 @@ function PostPage() {
     flex flex-col justify-center items-center
     ">
     <div className="
-    border-2 border-solid border-red-500
+    /border-2 /border-solid /border-red-500
     w-full sm:w-100
     
     ">

@@ -23,6 +23,8 @@ function CommentInput({ customCssClass }: Props) {
 
         const url = `/api/comments/${postId}`;
 
+        setInp('');
+
         const resp = await fetch(url, {
             method: 'POST',
             headers: {

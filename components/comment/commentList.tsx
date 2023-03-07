@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Comment, { ICommentProps } from './comment'
+import { CommentContext } from './commentScreen';
 
 interface Props {
     customCssClass?: string
@@ -11,8 +12,10 @@ function CommentList({ customCssClass }: Props) {
     const {postId} = router.query;
 
     //change Object to ICommentProps later
-    const [commentList, setCommentList] = useState<Array<Object>>();
+    // const [commentList, setCommentList] = useState<Array<Object>>();
 
+    const {commentList, setCommentList} = useContext(CommentContext);
+   
     useEffect(() => {
         getComments();
     }, [postId]);
@@ -35,7 +38,7 @@ function CommentList({ customCssClass }: Props) {
     ${customCssClass + ' '}
     p-2 
     flex flex-col gap-4
-    border-2 border-solid border-blue-500
+    /border-2 /border-solid /border-blue-500
     `}
     >
 
