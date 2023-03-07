@@ -1,12 +1,18 @@
 import React from 'react'
 
 import { FiEdit3, FiTrash, FiX, FiThumbsUp, FiCornerUpRight, FiMessageSquare, FiSettings, FiLogOut, FiUser } from "react-icons/fi";
+const expanded = true;
 
 export default function Post() {
   return (
-    <div className='
-    w-80 mb-8 shadow-lg border-2 border-solid border-secondary 
-    lg:w-100 p-2 pt-1 rounded-lg'>
+    <div 
+    className={`
+    ${expanded?'w-full':''}
+    w-80 mb-8 shadow-lg border-2 
+    border-solid border-secondary 
+    lg:w-100 p-2 pt-1 rounded-lg
+    `}
+    >
             <div className='text-xs flex justify-between'>
                 
                 <div className='flex'><DropDown /></div>

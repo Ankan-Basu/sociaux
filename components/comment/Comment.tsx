@@ -1,8 +1,17 @@
 import React from 'react'
 import {FaEllipsisV, FaEllipsisH} from 'react-icons/fa';
 
+export interface ICommentProps {
+    uname: string;
+    message: string;
+    likes?: number;
+    replies?: boolean;
+    time?: Date; //change later
+}
 
-export default function Comment(){
+export default function Comment(
+    {uname, message, likes, replies, time} : ICommentProps
+){
   return (
     <>
     <div className='flex 
@@ -17,19 +26,25 @@ export default function Comment(){
             <div className='bg-secondary rounded-lg rounded-tl-none'>
                 <div className='flex justify-between p-1'>
                     <div className='flex gap-1 items-center'>
-                    <span><h4 className='m-0 p-0 font-medium'> Kamisato Ayaka </h4></span>
-                    <span><h4 className='text-sm font-light'>(@aether_simp)</h4></span>
+                    <span><h4 className='m-0 p-0 font-medium'>
+                         {/* Kamisato Ayaka  */}
+                         </h4></span>
+                    <span><h4 className='text-sm font-light'>
+                        {/* (@aether_simp) */}
+                        {uname}
+                        </h4></span>
                     </div>
                     <div>
                         <FaEllipsisH />
                     </div>
                 </div>
                 <div className='p-2 pt-0'>
-                Lorem ipsum dolor sit, amet consectetur 
+                {/* Lorem ipsum dolor sit, amet consectetur 
                 adipisicing elit. Maiores animi in libero 
                 ratione sed architecto sit, repudiandae eum porro, 
                 dignissimos voluptate nihil 
-                tempore eius illum! Totam unde deleniti eos voluptas!    
+                tempore eius illum! Totam unde deleniti eos voluptas!     */}
+                {message}
                 </div>                
             </div>
             <div className='px-2 text-sm flex justify-between'>

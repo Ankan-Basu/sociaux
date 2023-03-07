@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import Post from "@/components/posts/Post";
 import Comment from '@/components/comment/Comment';
 import CommentInput from "@/components/comment/commentInput";
+import CommentList from "@/components/comment/commentList";
 
 function PostPage() {
   const router = useRouter();
@@ -15,9 +16,10 @@ function PostPage() {
       </div>
       <div>Comments
 
-        <Comment />
+        {/* <Comment /> */}
       </div>
       postId {postId}
+      <CommentList />
       <CommentInput />
     </div>
   );
