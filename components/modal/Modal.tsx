@@ -16,14 +16,16 @@ interface PostBody {
 
 
 export default function Modal({
-    display, customCss, setShowModal}: 
+    display, customCss, setShowModal, mode='mobile'}: 
     {display: boolean, 
-    customCss: string, 
-    setShowModal: Function}) {
+    customCss?: string, 
+    setShowModal: Function,
+    mode?: string;
+}) {
 
     const [postMessage, setPostMessage] = useState<string>('');
 
-    console.log(display);
+    console.log(mode);
 
 
     const handleClose = () => {
@@ -63,17 +65,6 @@ export default function Modal({
 
     }
 
-    // useEffect(() => {
-    //     if (display) {
-    //         const body = document.getElementsByTagName('body')[0];
-    //         body.style.overflow = 'hidden'; 
-    //     }
-
-    //     return () => {
-    //         const body = document.getElementsByTagName('body')[0];
-    //         body.style.overflow = 'auto'; 
-    //     }
-    // }, [display])
 
     return (
         <div 
@@ -81,11 +72,12 @@ export default function Modal({
         ${!display?'hidden':''}
         ${customCss + ' '}
         fixed bg-white z-40
-        h-screen lg:h-auto lg:w-100 p-2 pt-1 rounded-lg`}
+        h-screen w-screen lg:h-auto lg:w-100 p-2 pt-1 rounded-lg`}
         >
-            <div className='
-            mt-4
-            flex justify-end'>
+            <div className={`
+            flex justify-end 
+            ${mode==='mobile'?'mt-4':'mt-1'} 
+            `}>
                 <span 
                 onClick={handleClose}
                 className='cursor-pointer text-primary'>

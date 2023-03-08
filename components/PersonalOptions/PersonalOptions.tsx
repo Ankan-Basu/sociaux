@@ -27,7 +27,9 @@ export default function PersonalOptions(){
         p-1 flex justify-center gap-1 items-center
         border-2 border-solid border-primary2 rounded-lg cursor-pointer bg-primary hover:bg-primary2 hover:text-white'>
             <FiEdit /><h4>Add Post</h4>
-            {/* <Modal display={true} /> */}
+            {/* <Modal display={true} 
+            customCss=''
+            setShowModal={()=>{}} /> */}
         </div>
         <div className='p-2 flex gap-1 items-center rounded-lg cursor-pointer hover:bg-primary'>
             <FiUser /><h4>My Profile</h4>
@@ -39,6 +41,20 @@ export default function PersonalOptions(){
         <div className='p-2 flex gap-1 items-center rounded-lg cursor-pointer hover:bg-primary'>
             <FiLogOut />
             <h4>Logout</h4>
+        </div>
+
+
+        <div className={`
+        bg-slate-800/80
+        fixed
+        w-screen h-screen top-0 left-0
+        ${!showModal?'hidden':'flex'} justify-center
+        items-center
+        `}>
+
+
+
+            <Modal mode='desktop' display={true} setShowModal={setShowModal} />
         </div>
     </div>
   )
