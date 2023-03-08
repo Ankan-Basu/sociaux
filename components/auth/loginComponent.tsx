@@ -48,13 +48,14 @@ function LoginComponent() {
       obj2.email = unameEmail;
     }
 
-    console.log(obj2);
+    // console.log(obj2);
 
     const status:any = await signIn('credentials', {
       redirect: false,
       email: obj2.email,
+      uname: '',
       password: obj2.password,
-      callbackUrl:'/user/1'
+      // callbackUrl:'/user/1'
     })
 
     console.log(status);

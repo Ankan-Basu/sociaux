@@ -17,19 +17,12 @@ export default function Profile(){
         if(typeof router.query.uname === 'string') {
             let uname: string = router.query.uname;
             fetchUserData(uname);
-
-
-
-
-
-
-
         }
 
     }, [router])  
 
     const fetchUserData = async (uname: string) => {
-        const url = `/api/user/@${uname}`;
+        const url = `/api/user/${uname}`;
 
         const resp = await fetch(url);
 
