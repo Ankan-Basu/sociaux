@@ -31,9 +31,9 @@ export default function NotifMobile(
           (
             
                 notifs &&
-                notifs.map((notif) => {
+                notifs.map((notif, indx) => {
                     return (
-                        <NotifItem notif={notif}/>
+                        <NotifItem key={indx} notif={notif}/>
                     )
                 })
           
@@ -41,9 +41,9 @@ export default function NotifMobile(
           (
 
             friendReqs && 
-            friendReqs.map((friendReq) => {
+            friendReqs.map((friendReq,indx) => {
                 return (
-                    <FrenReq friendReq={friendReq} />
+                    <FrenReq key={indx} friendReq={friendReq} />
                 )
             })
             //   <>

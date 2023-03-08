@@ -1,6 +1,6 @@
 // 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { createContext, useEffect, useState } from 'react'
 // import { FaBars, FaUserFriends, FaSearch, FaUserAlt, FaBell } from "react-icons/fa";
 import { FiSearch, FiBell, FiUsers, FiMenu, FiX } from "react-icons/fi";
 import Notif from './notif';
@@ -9,6 +9,7 @@ import SearchBox from './searchBox';
 
 import { useRouter } from 'next/router';
 
+export const NotifContext = createContext<any>(null);
 
 export default function Navbar() {
     const [notifSelected, setNotifSelected] = useState<boolean>(false)
@@ -122,15 +123,21 @@ export default function Navbar() {
         </span>
         </nav>
 
+
+        <NotifContext.Provider value={{
+          notifList, setNotifList,
+          friendReqList, setFriendReqList
+        }}>
+
         <Notif
-        notifs={notifList || []}
-        friendReqs = {friendReqList || []}
+        // notifs={notifList || []}
+        // friendReqs = {friendReqList || []}
         display={notifSelected||friendReqSelected} 
         type={friendReqSelected?'Friend Requests':'Notifications'}/>
     
         <NotifScreenMobile 
-        notifs={notifList || []}
-        friendReqs = {friendReqList || []}
+        // notifs={notifList || []}
+        // friendReqs = {friendReqList || []}
         display={notifSelected||friendReqSelected||mobileNotifSelected} 
         type={friendReqSelected?'Friend Requests':'Notifications'}
         notifState={notifSelected}
@@ -140,6 +147,7 @@ export default function Navbar() {
         selfDisplayState={mobileNotifSelected}
         selfDisplayStateToggler={setMobileNotifSelected}
         />
+</NotifContext.Provider>
         </>
     
   )

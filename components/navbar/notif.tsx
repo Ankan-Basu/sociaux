@@ -1,14 +1,22 @@
-import { useEffect } from "react";
+import { useEffect, useContext } from "react";
 import FrenReq from "./friendReq";
+import { NotifContext } from "./navbar";
 import NotifItem from "./notifItem";
 
-export default function Notif({notifs, friendReqs, display, type}: 
-  {notifs: Array<Object>, friendReqs: Array<Object>, display: boolean, type: String}) {
+interface INotifProps {
+  display: boolean;
+  type: string
+}
+
+export default function Notif(
+  {display, type}: INotifProps) {
   // console.log(notifs); 
 
   // useEffect(() => {
   //   console.log('notif.tsx.\n notifs,', notifs)
   // }, [notifs])
+
+  const {notifList, friendReqList} = useContext(NotifContext);
   
   return (
       <div className={`
@@ -36,7 +44,7 @@ export default function Notif({notifs, friendReqs, display, type}:
         {
           type==='Notifications'?
           (              
-                notifs.map((notif, indx) => {
+                notifList?.map((notif: any, indx: number) => {
                   // console.log(notif);
                   return notif && <NotifItem key={indx} notif={notif} />
 
@@ -44,7 +52,7 @@ export default function Notif({notifs, friendReqs, display, type}:
           ):
           (
 
-            friendReqs.map((friendReq, indx) => {
+            friendReqList?.map((friendReq: any, indx: number) => {
               return friendReq && <FrenReq key={indx} friendReq={friendReq} />
             })
               // <>
