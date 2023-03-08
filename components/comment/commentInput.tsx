@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { FiSend } from "react-icons/fi";
+import { CommentContext } from './commentScreen';
 
 interface Props {
     customCssClass?: string
@@ -10,6 +11,8 @@ function CommentInput({ customCssClass }: Props) {
     const [inp, setInp] = useState<string>('');
 
     const router = useRouter();
+
+    const {commentList, setCommentList} = useContext(CommentContext);
     
     
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -37,6 +40,20 @@ function CommentInput({ customCssClass }: Props) {
         const data = await resp.json();
 
         console.log(data);
+
+        setInp('');
+
+
+        //Again GET request
+        const urlGet = `/api/comments/${postId}`;
+
+        const resp2 = await fetch(urlGet);
+
+        const data2 = await resp2.json();
+
+        // console.log(data);
+
+        setCommentList(data2);
     }
 
     return (
