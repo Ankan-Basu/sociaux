@@ -42,7 +42,8 @@ export default function NotifMobile(
       z-30
     //bg-white/60
     //backdrop-blur-sm 
-       overflow-auto p-2`}>
+       overflow-auto p-2
+       pb-14`}>
         <h3 className='text-2xl font-medium'>{type}</h3>
         <div className='mb-4'>
           {type==='Notifications'?
