@@ -1,5 +1,5 @@
 import { RESPONSE_LIMIT_DEFAULT } from 'next/dist/server/api-utils';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
 // import { FaShare, FaLock, FaGlobe, FaEllipsisV, FaEllipsisH, FaTrash, FaRegTimesCircle, FaImage, FaVideo } from 'react-icons/fa';
@@ -15,10 +15,24 @@ interface PostBody {
 
 
 
-export default function Modal() {
+export default function Modal({
+    display, customCss, setShowModal}: 
+    {display: boolean, 
+    customCss: string, 
+    setShowModal: Function}) {
 
     const [postMessage, setPostMessage] = useState<string>('');
-    
+
+    console.log(display);
+
+
+    const handleClose = () => {
+        console.log('Close');
+
+        setShowModal(false)
+    }
+
+
 
     const uname = 'kamisato_ayaka'; //change later
     const privacy = 0;
@@ -37,6 +51,7 @@ export default function Modal() {
             },
             body: JSON.stringify(postBody)
         });
+        setPostMessage('');
 
         if (resp.status === 201) {
             const data = await resp.json();
@@ -48,12 +63,32 @@ export default function Modal() {
 
     }
 
+    // useEffect(() => {
+    //     if (display) {
+    //         const body = document.getElementsByTagName('body')[0];
+    //         body.style.overflow = 'hidden'; 
+    //     }
+
+    //     return () => {
+    //         const body = document.getElementsByTagName('body')[0];
+    //         body.style.overflow = 'auto'; 
+    //     }
+    // }, [display])
+
     return (
         <div 
-        className='border-solid border-2 border-secondary h-screen lg:h-auto lg:w-100 p-2 pt-1 rounded-lg'
+        className={`
+        ${!display?'hidden':''}
+        ${customCss + ' '}
+        fixed bg-white z-40
+        h-screen lg:h-auto lg:w-100 p-2 pt-1 rounded-lg`}
         >
-            <div className='flex justify-end'>
-                <span className='text-primary'>
+            <div className='
+            mt-4
+            flex justify-end'>
+                <span 
+                onClick={handleClose}
+                className='cursor-pointer text-primary'>
                 <FiX />
                 </span>
                 </div>

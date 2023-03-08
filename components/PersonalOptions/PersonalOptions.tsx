@@ -1,8 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 // import {FaEdit, FaRegSun, FaWrench, FaUserAlt} from 'react-icons/fa';
 import { FiEdit, FiSettings, FiLogOut, FiUser, FiX } from "react-icons/fi";
+import Modal from '../modal/Modal';
 
 export default function PersonalOptions(){
+
+    const [showModal, setShowModal] = useState<boolean>(false);
+
   return (
     <div 
     className='hidden sticky z-20 lg:z-0 
@@ -17,9 +21,13 @@ export default function PersonalOptions(){
         <div className='lg:hidden flex justify-end p-2 text-lg'>
             <FiX />
         </div>
-        <div className='p-1 flex justify-center gap-1 items-center
+        <div 
+        onClick={()=> setShowModal(currState => !currState)}
+        className='
+        p-1 flex justify-center gap-1 items-center
         border-2 border-solid border-primary2 rounded-lg cursor-pointer bg-primary hover:bg-primary2 hover:text-white'>
             <FiEdit /><h4>Add Post</h4>
+            {/* <Modal display={true} /> */}
         </div>
         <div className='p-2 flex gap-1 items-center rounded-lg cursor-pointer hover:bg-primary'>
             <FiUser /><h4>My Profile</h4>

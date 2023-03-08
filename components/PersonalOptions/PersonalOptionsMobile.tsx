@@ -1,14 +1,19 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { FiEdit, FiSettings, FiLogOut, FiUser, FiX } from "react-icons/fi";
+import Modal from '../modal/Modal';
 
 function PersonalOptionsMobile(
-    {toShow, toggleToShow} : 
+    {toShow, toggleToShow, setShowModal} : 
     {
         toShow: boolean, 
-        toggleToShow: Function
+        toggleToShow: Function,
+        setShowModal: Function
     }
 ) {
-
+    
+    console.log(toShow);
+    // console.log(showModal);
+    
     return (
         <div
         className={`
@@ -26,9 +31,15 @@ function PersonalOptionsMobile(
             >
                 <FiX />
             </div>
-            <div className='p-1 flex justify-center gap-1 items-center
+            <div 
+            onClick={() => {
+                setShowModal(true);
+                toggleToShow(false);
+            }}
+            className='p-1 flex justify-center gap-1 items-center
             border-2 border-solid border-primary2 rounded-lg cursor-pointer bg-primary hover:bg-primary2 hover:text-white'>
                 <FiEdit /><h4>Add Post</h4>
+
             </div>
             <div className='p-2 flex gap-1 items-center rounded-lg cursor-pointer hover:bg-primary'>
                 <FiUser /><h4>My Profile</h4>
