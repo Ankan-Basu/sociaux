@@ -1,10 +1,35 @@
+import Link from 'next/link';
 import React from 'react'
 
 import { FiEdit3, FiTrash, FiX, FiThumbsUp, FiCornerUpRight, FiMessageSquare, FiSettings, FiLogOut, FiUser } from "react-icons/fi";
-const expanded = true;
+// const expanded = true; //will come from props
 
-export default function Post() {
+interface IPostProps {
+    expanded: boolean;
+    uname: string;
+    message: string;
+    time: Date;
+    privacy: number;
+    comments?: Array<string>;
+    likes?: Array<string>;
+    _id: string;
+}
+
+export default function Post(
+    {
+        expanded,
+        uname, 
+        message, 
+        time, 
+        privacy, 
+        comments, 
+        likes, 
+        _id
+    }: IPostProps
+
+) {
   return (
+    <Link href={`/post/${_id}`}>
     <div 
     className={`
     ${expanded?'w-full':''}
@@ -32,22 +57,25 @@ export default function Post() {
             <div className='flex flex-col py-1 pt-0'>
                 <div>
                     <h3 className='font-medium text-lg'>
-                        Kamisato Ayaka
+                        {/* Kamisato Ayaka */}
+                        Name
                     </h3>
                 </div>
                 <div>
                     <h3 className='font-light text-sm'>
-                        @aether_simp
+                        {/* @aether_simp */}
+                        {uname || 'Loading ...'}
                     </h3>
                 </div> 
                 
               
             </div>
             <div className=''>
-            Post
+            {/* Post
             Lorem ipsum dolor sit amet consectetur adipisicing elit. 
             Repellendus doloremque sapiente asperiores molestiae. Quae repudiandae ab quia excepturi? 
-            Nemo molestiae culpa iste magnam officia temporibus quisquam omnis dignissimos odio impedit.
+            Nemo molestiae culpa iste magnam officia temporibus quisquam omnis dignissimos odio impedit. */}
+            {message || 'Loading ...'}
             </div>
             <div className='border-solid border-2 border-yellow-500 flex justify-center gap-2 py-1'>
 Optional Img/ Vid
@@ -57,14 +85,20 @@ Optional Img/ Vid
                 <FiThumbsUp /> 
                 
                 {/* Display Text only in big screen */}
-                <span className='hidden lg:inline'>Like</span>
+                <span className='hidden lg:inline'>
+                    Like
+                    {likes?.length}
+                    </span>
                 
                 </span>
                <span className='py-1 flex-1 flex justify-center items-center gap-1 border-solid border-2 border-primary rounded-lg'> 
                <FiMessageSquare /> 
                
                {/* Display Text only in big screen */}
-               <span className='hidden lg:inline'>Comment</span>
+               <span className='hidden lg:inline'>
+                Comment
+                {comments?.length}
+                </span>
                </span>
                <span className='py-1 flex-1 flex justify-center items-center gap-1 border-solid border-2 border-primary rounded-lg'> 
                <FiCornerUpRight /> 
@@ -75,6 +109,7 @@ Optional Img/ Vid
                 
             </div>
         </div>
+        </Link>
   )
 }
 

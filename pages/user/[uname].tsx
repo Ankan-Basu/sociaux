@@ -1,9 +1,7 @@
-import { useState } from 'react'
 import { useRouter } from 'next/router'
 import Profile from '@/components/profile/Profile';
 import PersonalOptions from '@/components/PersonalOptions/PersonalOptions';
 import PostFeed from '@/components/postFeed/postFeed';
-import Post from '@/components/posts/Post';
 import Plus from '@/components/Plus/Plus';
 import PersonalOptionsMobile from '@/components/PersonalOptions/PersonalOptionsMobile';
 
@@ -17,13 +15,7 @@ export default function UserId() {
     className='flex flex-col lg:flex-row justify-center items-start'
     >
       <Profile /> 
-      <PostFeed > 
-        <Post/>
-        <Post />
-        <Post />
-        <Post />
-        <Post />
-        </PostFeed>
+      <PostFeed ></PostFeed>
       <PersonalOptions />
       <Plus />
     </div>
