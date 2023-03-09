@@ -52,11 +52,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 }
 
-interface PostBody {
+export interface PostBody {
     uname: string;
     privacy: number;
     message: string;
     shares?: number;
+    likes?:[];
+    comments?:[];
+    time?: Date;
 }
 
 interface EditPostBody {
@@ -65,4 +68,7 @@ interface EditPostBody {
     privacy: number;
     message: string;
     shares?: number;
+    likes?:[];
+    comments?:[];
+    time?: Date;
 }

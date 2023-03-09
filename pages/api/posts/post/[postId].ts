@@ -7,9 +7,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const {postId} = req.query;
         await dbConnect();
 
+
+        //get post by postId
         if (req.method === 'GET') {
             try {
+                console.log('GET POST');
+                
+                //RETURNS NULL WHEN NOT FOUND
                 const dbResp = await PostModel.findById({_id: postId});
+                console.log(dbResp);
+
                 res.status(200).json(dbResp);
             } catch(err) {
                 res.status(404).json('Not found');
