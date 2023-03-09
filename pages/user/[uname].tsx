@@ -4,9 +4,14 @@ import PersonalOptions from '@/components/PersonalOptions/PersonalOptions';
 import PostFeed from '@/components/postFeed/postFeed';
 import Plus from '@/components/Plus/Plus';
 import PersonalOptionsMobile from '@/components/PersonalOptions/PersonalOptionsMobile';
+import { useSession } from 'next-auth/react';
 
 export default function UserId() {
 
+  const session = useSession();
+
+  console.log(session);
+  
     const router = useRouter();
     const { uname}  = router.query
 

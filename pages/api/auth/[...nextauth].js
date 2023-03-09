@@ -16,7 +16,7 @@ const authOptions = {
                 console.log('authorize')
                 dbConnect().catch(err => {error: 'Connection failed'});
 
-                console.log(credentials);
+                // console.log(credentials);
                 const result = await UserModel.findOne({email: credentials.email});
 
                 if(!result) {
@@ -33,12 +33,36 @@ const authOptions = {
                 credentials.uname = result.uname;
                 credentials.email = result.uname;
 
+                // console.log(result)
+
+                const user = result;
                 return result;
                 // return credentials;
             }
         })
     ],
-    secret: process.env.SECRET
+    callbacks: {
+        async signIn({ user, account, profile, email, credentials }) {
+            return true;
+        },
+        async jwt({ token, user }) {
+            
+            let uname = undefined
+            if (user) {
+                uname = {uname: user.uname};
+            }
+            return ({...token, ...uname});
+        },
+        // async session({ session, token, user}) {
+        //     session.accessToken = 'token.accessToken';
+        //     // session.user._id = 'token.id';
+        //     // token.uname = 'xD';
+    
+        //     console.log('user\n',token);
+        //     return session;
+        // }
+    },
+    secret: process.env.SECRET,
 }
 
 export default NextAuth(authOptions);
