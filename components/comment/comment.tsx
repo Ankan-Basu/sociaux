@@ -1,17 +1,92 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {FaEllipsisV, FaEllipsisH} from 'react-icons/fa';
 
 export interface ICommentProps {
     uname: string;
     message: string;
-    likes?: number;
+    likes?: Array<string>;
     replies?: boolean;
     time?: Date; //change later
+    _id: string;
 }
 
 export default function Comment(
-    {uname, message, likes, replies, time} : ICommentProps
+    {uname, message, likes, replies, time, _id} : ICommentProps
 ){
+
+    const [liked, setLiked] = useState<boolean>(false);
+
+    const reactorUname = 'hu_tao'; //change later
+    useEffect(() => {
+        console.log('comment', _id);
+        console.log(_id, 'liked', liked);
+        
+        
+        if(likes?.includes(reactorUname)) {
+            setLiked(true);
+        }
+
+        console.log(_id, 'liked', liked);
+    }, []);
+
+    const handleLike = async () => {
+        const reqBody = {
+            "uname": reactorUname,
+            "commentId": _id
+        }
+
+        const url = '/api/like/comment/';
+
+        const resp = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(reqBody)
+        });
+
+        if (resp.status === 201) {
+            setLiked(true);
+        }
+        const data = await resp.json();
+
+        console.log(data);
+
+    }
+
+    const handleUnLike = async () => {
+        const reqBody = {
+            "uname": reactorUname,
+            "commentId": _id
+        }
+
+        const url = '/api/like/comment/';
+
+        const resp = await fetch(url, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(reqBody)
+        });
+
+        if (resp.status === 201) {
+            setLiked(false);
+        }
+        const data = await resp.json();
+
+        console.log(data);
+
+    }
+
+    const toggleLike = () => {
+        // console.log(_id);
+        if (liked) {
+            handleUnLike();
+        } else {
+            handleLike();
+        }
+    }
   return (
     <>
     <div className='flex 
@@ -49,8 +124,14 @@ export default function Comment(
             </div>
             <div className='px-2 text-sm flex justify-between'>
                 <div>
-                <span className='mr-2'>Like</span>
-                <span>Comment</span>
+                <span 
+                onClick={toggleLike}
+                className={`
+                cursor-pointer mr-2
+                ${liked?'text-primary':'text-black'}
+                `}>Like</span>
+                
+                <span  className='cursor-pointer'>Reply</span>
                 </div>
                 <div>20 wks</div>
             </div>

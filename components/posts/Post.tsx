@@ -103,7 +103,7 @@ export default function Post(
 
 
   return (
-    // <Link href={`/post/${_id}`}>
+    <Link href={`/post/${_id}`}>
     <div 
     className={`
     ${expanded?'w-full':''}
@@ -190,7 +190,7 @@ Optional Img/ Vid
                 
             </div>
         </div>
-        // </Link>
+        </Link>
   )
 }
 

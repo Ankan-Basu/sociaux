@@ -47,7 +47,12 @@ function CommentList({ customCssClass }: Props) {
             //change this any
             commentList.map((comment: any) => {
                 return (
-                    <Comment key={comment._id} uname={comment.uname} message={comment.message} />
+                    <Comment 
+                    key={comment._id} 
+                    uname={comment.uname} 
+                    message={comment.message} 
+                    likes={comment.likes}
+                    _id={comment._id}/>
                 )
             })
         }
