@@ -1,8 +1,11 @@
 import Layout from '@/components/layout'
 import '@/styles/globals.css'
 import type { AppProps } from 'next/app'
-import { SessionProvider } from "next-auth/react"
+import { SessionProvider, useSession } from "next-auth/react"
+import { createContext, useState } from 'react'
 
+
+const AuthContext = createContext<any>(null);
 export default function App({
    Component, 
    pageProps: {session, ...pageProps} }: 

@@ -6,10 +6,24 @@ import InputDataType from '../util/InputDataType';
 import inputValidator from '../util/inputValidator';
 import ValidatedOutput from '../util/ValidatedOutput';
 
-import { useSession, signIn, signOut } from "next-auth/react"
+import { useSession, signIn, signOut, SignInResponse } from "next-auth/react"
 import { useRouter } from 'next/router';
 
 function LoginComponent() {
+
+  const session = useSession();
+  console.log(session);
+  const router = useRouter();
+
+  if (session.status === "loading") {
+    return <p>Loading...</p>
+  }
+
+  if (session.status === "authenticated") {
+    router.push('/feed');
+    return <p>You area already logged in</p>
+  }
+  
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [unameEmail, setUnameEmail] = useState<string>('');
@@ -17,7 +31,6 @@ function LoginComponent() {
   const[inpInvalid, setInpInvalid] = useState<boolean>(false);
   const[passwordInvalid, setPasswordInvalid] = useState<boolean>(false);
 
-  const router = useRouter();
 
 
   const handleLoginSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -50,18 +63,18 @@ function LoginComponent() {
 
     // console.log(obj2);
 
-    const status:any = await signIn('credentials', {
-      redirect: false,
+    const status: SignInResponse | undefined = await signIn('credentials', {
+      redirect: true,
       email: obj2.email,
       uname: '',
       password: obj2.password,
-      // callbackUrl:'/user/1'
+      callbackUrl:'/feed'
     })
 
     console.log(status);
-    if (status.ok) {
-      router.push('/user/1')
-    }
+    // if (status.ok) {
+    //   router.push('/user/1')
+    // }
   }
 
   return (

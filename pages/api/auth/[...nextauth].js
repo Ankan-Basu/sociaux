@@ -2,7 +2,6 @@ import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
 import dbConnect from '@/Db/middleware/mongodb';
 import UserModel from "@/Db/models/User";
-// const bcrypt = require('bcrypt');
 import bcrypt from 'bcrypt';
 
 const authOptions = {
@@ -53,14 +52,16 @@ const authOptions = {
             }
             return ({...token, ...uname});
         },
-        // async session({ session, token, user}) {
-        //     session.accessToken = 'token.accessToken';
-        //     // session.user._id = 'token.id';
-        //     // token.uname = 'xD';
+        async session({ session, token, user}) {
+            // session.accessToken = 'token.accessToken';
+            // // session.user._id = 'token.id';
+            // // token.uname = 'xD';
     
-        //     console.log('user\n',token);
-        //     return session;
-        // }
+            // console.log('user\n',token);
+
+            session.user = token;
+            return session;
+        }
     },
     secret: process.env.SECRET,
 }
