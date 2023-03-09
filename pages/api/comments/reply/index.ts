@@ -8,7 +8,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     try {
         dbConnect();
 
-
+        console.log('Comments reply api')
         //add reply
         if (req.method === 'POST') {
             const reqBody: IPostReqBody = req.body;
@@ -98,7 +98,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
                             const dbResp = await ReplyCommentModel.deleteOne({_id: reqBody.commentId});
 
-                            res.status(200).json(dbResp);
+                            res.status(200).json(dbResp1);
                         }
                        
                     } catch(err) {

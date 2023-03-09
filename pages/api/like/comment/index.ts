@@ -12,8 +12,9 @@ export default async function(req: NextApiRequest, res: NextApiResponse) {
             const reqBody: IReqBody = req.body;
 
             try {
+                console.log('body id: ', reqBody.commentId);
                 const comment: HydratedDocument<IComment> | null = await CommentModel.findOne({_id: reqBody.commentId});
-
+                console.log(comment);
                 if (!comment) {
                     //ie null
                     res.status(404).json('Not found');
@@ -34,6 +35,7 @@ export default async function(req: NextApiRequest, res: NextApiResponse) {
                  * exception will arise when mongoose won't be able to do typecasting
                  * ie user send wrong lwength or format of string
                  * */
+                console.log(err);
                 res.status(404).json('Not found');
             }
         }
