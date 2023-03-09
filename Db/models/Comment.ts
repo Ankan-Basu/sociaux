@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 
-interface IComment {
+export interface IComment {
     uname: string;
     postId: string,
     message: string;
