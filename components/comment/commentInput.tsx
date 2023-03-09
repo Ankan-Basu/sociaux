@@ -1,10 +1,11 @@
 import { useRouter } from 'next/router';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { FiSend } from "react-icons/fi";
-import { CommentContext } from './commentScreen';
+import { CommentContext, ReplyingContext } from './commentScreen';
 
 interface Props {
-    customCssClass?: string
+    customCssClass?: string;
+    replyingTo?: string;
 }
 
 function CommentInput({ customCssClass }: Props) {
@@ -14,6 +15,7 @@ function CommentInput({ customCssClass }: Props) {
 
     const {commentList, setCommentList} = useContext(CommentContext);
     
+    const {isReplying, replyingTo} = useContext(ReplyingContext);
     
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -21,13 +23,13 @@ function CommentInput({ customCssClass }: Props) {
         const {postId} = router.query;
         const uname = 'hu_tao'; //change later
         const message = inp;
-
+        
         const obj = {uname, postId, message};
-
+        
         const url = `/api/comments/${postId}`;
-
+        
         setInp('');
-
+        
         const resp = await fetch(url, {
             method: 'POST',
             headers: {
@@ -56,6 +58,12 @@ function CommentInput({ customCssClass }: Props) {
         setCommentList(data2);
     }
 
+
+    useEffect(() => {
+        console.log(replyingTo);
+        console.log(isReplying);
+    });
+
     return (
         <div 
         className={`
@@ -65,11 +73,22 @@ function CommentInput({ customCssClass }: Props) {
         w-full sm:w-100
         `}
         >
+
+            <div
+            className={`
+            ${isReplying?'block':'hidden'}
+            `}
+            >Replying to
+            {
+                ' ' + replyingTo?.uname
+            }
+            ...
+            </div>
     <form 
     onSubmit={handleSubmit}
     className={`flex border-2 border-solid`}>
         
-        
+    
         <input
         type='text'
         placeholder='Write your comment here'

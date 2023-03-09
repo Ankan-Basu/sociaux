@@ -1,5 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { createContext, useContext, useEffect, useState } from 'react'
 import {FaEllipsisV, FaEllipsisH} from 'react-icons/fa';
+import { ReplyingContext } from './commentScreen';
+import ReplyComment from './replyComment';
+import ReplyCommentList from './replyCommentList';
 
 export interface ICommentProps {
     uname: string;
@@ -10,11 +13,16 @@ export interface ICommentProps {
     _id: string;
 }
 
+
 export default function Comment(
     {uname, message, likes, replies, time, _id} : ICommentProps
 ){
 
     const [liked, setLiked] = useState<boolean>(false);
+    const [showReplies, setShowReplies] = useState<boolean>(false);
+
+    const {setIsReplying, setReplyingTo, replyingTo} = useContext(ReplyingContext);
+
 
     const reactorUname = 'hu_tao'; //change later
     useEffect(() => {
@@ -87,10 +95,34 @@ export default function Comment(
             handleLike();
         }
     }
+
+    const toggleReply = () => {
+        // setIsReplying((currState: boolean) => {
+        //     return !currState
+        // })
+
+        if (replyingTo) {
+            //disable if clicked from same parent component
+            if (replyingTo._id === _id) {
+                setReplyingTo(null);
+                setIsReplying(false);
+            }
+
+            //switch to other parent comment if clicked from there
+            else {
+                setReplyingTo({_id, uname});
+                setIsReplying(true);    
+            }
+        } else {
+            setReplyingTo({_id, uname});
+            setIsReplying(true);
+        }
+    }
+
   return (
     <>
     <div className='flex 
-    w-80
+    //w-80 w-full
     lg:w-98'>
         <div className='w-16'>
         <div className='w-full'>
@@ -131,11 +163,25 @@ export default function Comment(
                 ${liked?'text-primary':'text-black'}
                 `}>Like</span>
                 
-                <span  className='cursor-pointer'>Reply</span>
+                <span 
+                onClick={toggleReply}
+                className='cursor-pointer'>
+                    Reply</span>
                 </div>
                 <div>20 wks</div>
             </div>
-            
+            <div 
+            className='
+            ml-4 text-sm cursor-pointer
+            '
+            onClick={() => setShowReplies(currState => !currState)}
+            >
+                {
+                    !showReplies?'Show replies':'Hide replies'
+                }
+                
+                </div>
+            <ReplyCommentList display={showReplies} />
         </div>
     </div>
     </>

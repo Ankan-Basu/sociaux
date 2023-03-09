@@ -3,9 +3,20 @@ import CommentInput from './commentInput'
 import CommentList from './commentList'
 
 export const CommentContext = createContext<any>('null');
+export const ReplyingContext = createContext<any>(null);
+
+
+interface IReplyingTo {
+  _id: string; 
+  uname: string
+}
+
 function CommentScreen() {
 
-    const [commentList, setCommentList] = useState<Array<Object>>([]);
+  const [commentList, setCommentList] = useState<Array<Object>>([]);
+  const [isReplying, setIsReplying] = useState<boolean>(false);
+  const [replyingTo, setReplyingTo] = useState<IReplyingTo | null>(null);
+
   return (
     <div 
     className='
@@ -21,6 +32,9 @@ function CommentScreen() {
         </div>
 
         <CommentContext.Provider value={{commentList, setCommentList}} >
+        <ReplyingContext.Provider value={{
+          isReplying, setIsReplying, 
+          replyingTo, setReplyingTo}}>
         <CommentList
         customCssClass='pb-14'
         />
@@ -30,6 +44,7 @@ function CommentScreen() {
         // /border-2 /border-solid /border-black
         '
         />
+        </ReplyingContext.Provider>
         </CommentContext.Provider>
 
 

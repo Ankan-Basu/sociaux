@@ -38,7 +38,7 @@ function CommentList({ customCssClass }: Props) {
     ${customCssClass + ' '}
     p-2 
     flex flex-col gap-4
-    /border-2 /border-solid /border-blue-500
+    border-2 border-solid border-blue-500
     `}
     >
 
