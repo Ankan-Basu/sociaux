@@ -60,8 +60,8 @@ function CommentInput({ customCssClass }: Props) {
 
 
     useEffect(() => {
-        console.log(replyingTo);
-        console.log(isReplying);
+        // console.log(replyingTo);
+        // console.log(isReplying);
     });
 
     return (

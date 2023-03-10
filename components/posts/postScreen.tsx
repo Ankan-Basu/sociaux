@@ -1,20 +1,40 @@
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import { FiX } from 'react-icons/fi'
 import CommentScreen from '../comment/commentScreen'
+import { PostFeedContext } from '../postFeed/postFeed'
 import Post from './Post'
 
 interface IPostScreenProps {
-    postId: string;
+    display: boolean;
+    postId?: string;
 }
 
-function PostScreen() {
-  return (
+function PostScreen({
+    display
+}: IPostScreenProps) {
+
+    const {setShowExpanded, currPost, setCurrPost} = useContext(PostFeedContext);
+  
+  console.log('screen', currPost);
+  
+  useEffect(() => {
+    console.log('Post screen renders');
+    
+  }, [currPost])
+  
+  useEffect(() => {
+    console.log('Post screen mounts');
+    
+  }, [])
+  
+    return (
     <div
-    className='
+    className={`
+    ${display?'block':'hidden'}
     fixed z-50
     top-0 left-0 w-screen h-screen
     bg-gray-600/50 backdrop-blur-lg
-    '
+    `}
     >
         
         
@@ -30,7 +50,12 @@ function PostScreen() {
             flex justify-end
             mb-2 mr-2
             '>
-                <span className='
+                <span 
+                onClick={() => {
+                    setCurrPost(null);
+                    setShowExpanded(false)
+                }}
+                className='
                 active:text-primary2
                 lg:hover:text-primary lg:active:text-primary2
                 '>
@@ -40,14 +65,21 @@ function PostScreen() {
             </div>
 
             <div>
+
+                {
+                    currPost&&
             <Post 
             expanded={true}
-            uname='test'
-            message='test message'
-            time='12-12-2022'
-            privacy={1}
-            _id='1'  
+            uname={{...currPost}.uname}
+            message={currPost.message}
+            time={currPost.time}
+            privacy={currPost.privacy}
+            comments={currPost.comments} 
+            likes={currPost.likes}
+            _id={currPost._id}
+            isModalMode={true}
             />
+        }
             </div>
 
 

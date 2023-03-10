@@ -1,7 +1,8 @@
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 
 import { FiEdit3, FiTrash, FiX, FiThumbsUp, FiCornerUpRight, FiMessageSquare, FiSettings, FiLogOut, FiUser } from "react-icons/fi";
+import { PostFeedContext } from '../postFeed/postFeed';
 // const expanded = true; //will come from props
 
 interface IPostProps {
@@ -13,6 +14,7 @@ interface IPostProps {
     comments?: Array<string>;
     likes?: Array<string>;
     _id: string;
+    isModalMode?: boolean;
 }
 
 export default function Post(
@@ -24,7 +26,8 @@ export default function Post(
         privacy, 
         comments, 
         likes, 
-        _id
+        _id,
+        isModalMode=false
     }: IPostProps
 
 ) {
@@ -34,10 +37,18 @@ export default function Post(
     const reactorUname = 'hu_tao' //change later
     
     useEffect(() => {
+        console.log('post renders');
+        
         if (likes?.includes(reactorUname)) {
+            console.log('post renders includes');
+
             setLiked(true);
+        } else {
+            console.log('post renders includes NOT');
+
+            setLiked(false);
         }
-    }, [])
+    },[])
 
     const handleLike = async () => {
         // console.log(_id);
@@ -101,9 +112,28 @@ export default function Post(
         }
     }
 
+    const {showExpanded, setShowExpanded, setCurrPost} = useContext(PostFeedContext)
+
+    const handleExpanded = () => {
+        if (!showExpanded) {
+            setShowExpanded(true);
+            setCurrPost({
+                expanded,
+                uname, 
+                message, 
+                time, 
+                privacy, 
+                comments, 
+                likes, 
+                _id
+            })
+        } else {
+            console.log('peepeepoopoo');
+        }
+    }
 
   return (
-    <Link href={`/post/${_id}`}>
+    
     <div 
     className={`
     ${expanded?'w-full':''}
@@ -155,7 +185,11 @@ export default function Post(
             <div className='border-solid border-2 border-yellow-500 flex justify-center gap-2 py-1'>
 Optional Img/ Vid
             </div>
-            <div className='text-primary flex justify-center gap-2 pt-1'>
+            <div className={`
+            ${isModalMode?'hidden':'block'}
+            text-primary 
+            flex justify-center gap-2 pt-1
+            `}>
                <span 
                onClick={toggleLike}
                className={`
@@ -173,11 +207,14 @@ Optional Img/ Vid
                     </span>
                 
                 </span>
-               <span className='py-1 flex-1 flex justify-center items-center gap-1 border-solid border-2 border-primary rounded-lg'> 
+               <span 
+               onClick={handleExpanded}
+               className='py-1 flex-1 flex justify-center items-center gap-1 border-solid border-2 border-primary rounded-lg'> 
                <FiMessageSquare /> 
                
                {/* Display Text only in big screen */}
-               <span className='hidden lg:inline'>
+               <span 
+               className='hidden lg:inline'>
                 Comment
                 {comments?.length}
                 </span>
@@ -191,7 +228,7 @@ Optional Img/ Vid
                 
             </div>
         </div>
-        </Link>
+        
   )
 }
 
