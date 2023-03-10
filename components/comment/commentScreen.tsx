@@ -40,7 +40,7 @@ function CommentScreen() {
         />
         <CommentInput 
         customCssClass='
-        fixed bottom-0 w-full
+        fixed bottom-0
         // /border-2 /border-solid /border-black
         '
         />

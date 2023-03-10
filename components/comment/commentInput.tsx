@@ -65,12 +65,18 @@ function CommentInput({ customCssClass }: Props) {
     });
 
     return (
+        // <div className='
+        // flex w-full border-2 border-red-500
+        // '>
         <div 
         className={`
         ${customCssClass + ' '}
         bg-white
-        p-2 pb-1
-        w-full sm:w-100
+        pb-1
+        w-full sm:w-100 pt-2 p-2
+        flex flex-col m-auto
+        -left-1 -right-1
+        //border-2 //border-solid //border-black
         `}
         >
 
@@ -86,7 +92,7 @@ function CommentInput({ customCssClass }: Props) {
             </div>
     <form 
     onSubmit={handleSubmit}
-    className={`flex border-2 border-solid`}>
+    className={`flex`}>
         
     
         <input
@@ -116,6 +122,7 @@ function CommentInput({ customCssClass }: Props) {
 
         </form>
         </div>
+        // </div>
   )
 }
 

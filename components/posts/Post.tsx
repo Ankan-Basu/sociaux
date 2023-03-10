@@ -110,6 +110,7 @@ export default function Post(
     w-80 mb-8 shadow-lg border-2 
     border-solid border-secondary 
     lg:w-100 p-2 pt-1 rounded-lg
+    bg-white
     `}
     >
             <div className='text-xs flex justify-between'>

@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
 import Post from '../posts/Post';
+import PostScreen from '../posts/postScreen';
 
 function PostFeed() {
   
@@ -33,8 +34,9 @@ function PostFeed() {
     >
         Posts: 
 
+        <>
         {
-          posts.map((post: any) => {
+        posts.map((post: any) => {
             return (
               <Post
               key={post._id}
@@ -47,9 +49,11 @@ function PostFeed() {
               comments={post.comments}
               _id={post._id}
               />
-            )
-          })
+              )
+            })
         }
+        <PostScreen />
+        </>
     </div>
   )
 }
