@@ -1,16 +1,20 @@
-import { useState, createContext } from "react";
+import { createContext, ReactNode, useState } from 'react';
 
-export const Context = createContext<any>('null');
+export const CommentContext = createContext<any>('null');
 
-function CommentContext({children}: {children: React.ReactNode}) {
+
+interface ICommentContextProviderProps {
+  children: ReactNode;
+}
+function CommentContextProvider({children}: ICommentContextProviderProps) {
+
   const [commentList, setCommentList] = useState<Array<Object>>([]);
-  
-  return (
-    <Context.Provider value={{commentList, setCommentList}}>
-      {children}
 
-    </Context.Provider>
+  return (
+    <CommentContext.Provider value={{commentList, setCommentList}}>
+      {children}
+    </CommentContext.Provider>
   )
 }
 
-export default CommentContext
+export default CommentContextProvider

@@ -10,6 +10,8 @@ interface Props {
 function CommentList({ customCssClass }: Props) {
     const router = useRouter();
     const {postId} = router.query;
+    console.log('Comment list component', postId);
+    
 
     //change Object to ICommentProps later
     // const [commentList, setCommentList] = useState<Array<Object>>();

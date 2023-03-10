@@ -15,7 +15,11 @@ function PostPage() {
 
   useEffect(() => {
     getIndividualPost();
-  }, []);
+  }, [postId]);
+
+
+  console.log(postId);
+  
 
   const getIndividualPost = async () => {
     const url = `/api/posts/post/${postId}`;

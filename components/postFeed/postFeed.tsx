@@ -1,5 +1,6 @@
+// import PostFeedContextProvider, { PostFeedContext } from '@/contexts/postFeedContext';
 import { useRouter } from 'next/router';
-import React, { createContext, useEffect, useState } from 'react'
+import React, { createContext, useContext, useEffect, useState } from 'react'
 import Post from '../posts/Post';
 import PostScreen from '../posts/postScreen';
 
@@ -10,6 +11,8 @@ function PostFeed() {
   const [posts, setPosts] = useState<Array<Object>>([]);
   const [showExpanded, setShowExpanded] = useState<boolean>(false);
   const [currPost, setCurrPost] = useState(null);
+
+  // const {showExpanded} = useContext(PostFeedContext)
 
   const router = useRouter();
 
@@ -42,6 +45,7 @@ function PostFeed() {
         <PostFeedContext.Provider value={{
           showExpanded, setShowExpanded,
           currPost, setCurrPost}}>
+          {/* <PostFeedContextProvider> */}
         {
         posts.map((post: any) => {
             return (
@@ -60,6 +64,7 @@ function PostFeed() {
             })
         }
         <PostScreen display={showExpanded} />
+        {/* </PostFeedContextProvider> */}
         </PostFeedContext.Provider>
     </div>
   )

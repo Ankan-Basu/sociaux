@@ -17,6 +17,8 @@ function CommentScreen() {
   const [isReplying, setIsReplying] = useState<boolean>(false);
   const [replyingTo, setReplyingTo] = useState<IReplyingTo | null>(null);
 
+  console.log('comment screen here');
+  
   return (
     <div 
     className='
