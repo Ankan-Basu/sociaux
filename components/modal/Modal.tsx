@@ -1,5 +1,5 @@
 import { RESPONSE_LIMIT_DEFAULT } from 'next/dist/server/api-utils';
-import React, { useEffect, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
 // import { FaShare, FaLock, FaGlobe, FaEllipsisV, FaEllipsisH, FaTrash, FaRegTimesCircle, FaImage, FaVideo } from 'react-icons/fa';
@@ -13,15 +13,14 @@ interface PostBody {
     shares?: number;
 }
 
+interface IModalProps {
+    display: boolean;
+        customCss?: string; 
+        setShowModal: Function;
+        mode?: string;
+}
 
-
-export default function Modal({
-    display, customCss, setShowModal, mode='mobile'}: 
-    {display: boolean, 
-    customCss?: string, 
-    setShowModal: Function,
-    mode?: string;
-}) {
+const Modal: FC<IModalProps> = ({display, customCss, setShowModal, mode='mobile'}) => {
 
     const [postMessage, setPostMessage] = useState<string>('');
 
@@ -138,10 +137,17 @@ function DropDown() {
     )
 }
 
-function Button({children, type}: {children: React.ReactNode, type?: string}) {
+interface IButtonProps {
+    children: React.ReactNode; 
+    type?: string;
+}
+
+const Button: FC<IButtonProps> = ({children, type}) => {
     return (
         <button className={`p-1 rounded-md ${type==='normal'?'bg-primary':'bg-deactiv'} flex w-full justify-center items-center gap-2`}>
             {children}
         </button>
     )
 }
+
+export default Modal;

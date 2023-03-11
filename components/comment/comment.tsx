@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from 'react'
+import React, { createContext, FC, useContext, useEffect, useState } from 'react'
 import {FaEllipsisV, FaEllipsisH} from 'react-icons/fa';
 import { ReplyingContext } from './commentScreen';
 import ReplyComment from './replyComment';
@@ -14,9 +14,9 @@ export interface ICommentProps {
 }
 
 
-export default function Comment(
-    {uname, message, likes, replies, time, _id} : ICommentProps
-){
+const Comment: FC<ICommentProps> = (
+    {uname, message, likes, replies, time, _id}
+) => {
 
     const [liked, setLiked] = useState<boolean>(false);
     const [showReplies, setShowReplies] = useState<boolean>(false);
@@ -26,7 +26,7 @@ export default function Comment(
 
     const reactorUname = 'hu_tao'; //change later
     useEffect(() => {
-        // console.log('comment', _id);
+        console.log('comment', _id);
         // console.log(_id, 'liked', liked);
         
         
@@ -187,3 +187,5 @@ export default function Comment(
     </>
   )
 }
+
+export default Comment;

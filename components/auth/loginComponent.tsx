@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import React, { ChangeEvent, useState } from 'react'
+import { ChangeEvent, FC, useState } from 'react'
 import { FiAtSign, FiUserCheck, FiEyeOff, FiEye, FiLogIn } from "react-icons/fi";
 import Post from '../posts/Post';
 import InputDataType from '../util/InputDataType';
@@ -9,7 +9,7 @@ import ValidatedOutput from '../util/ValidatedOutput';
 import { useSession, signIn, signOut, SignInResponse } from "next-auth/react"
 import { useRouter } from 'next/router';
 
-function LoginComponent() {
+const LoginComponent: FC = () => {
 
   const session = useSession();
   console.log(session);

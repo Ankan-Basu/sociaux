@@ -1,8 +1,12 @@
-export default function FrenReq({friendReq}: {
+import { FC } from "react"
+
+interface IFrenReqProps {
     friendReq: {
         source: string
-    } | any
-} ) {
+    } | undefined
+}
+
+const FrenReq: FC<IFrenReqProps> = ({friendReq}) => {
     return (
         <div className='mb-4 shadow-lg rounded-lg p-1 flex gap-1'>
             <img src='ayaka.jpg' className='w-12 h-12 rounded-full' />
@@ -27,3 +31,5 @@ export default function FrenReq({friendReq}: {
         </div>
     )
 }
+
+export default FrenReq;

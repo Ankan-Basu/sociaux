@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { FC } from 'react'
 
-function DefaultHeader() {
+const DefaultHeader: FC = () => {
   return (
     <div 
     className='p-1 w-screen lg:w-60 
