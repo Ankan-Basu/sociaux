@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { FC, useContext, useEffect } from "react";
 import { FiX } from "react-icons/fi";
 import CommentScreen from "../comment/commentScreen";
 import { PostFeedContext } from "../postFeed/postFeed";
@@ -9,7 +9,7 @@ interface IPostScreenProps {
   postId?: string;
 }
 
-function PostScreen({ display }: IPostScreenProps) {
+const PostScreen: FC<IPostScreenProps> = ({ display }) => {
   const { setShowExpanded, currPost, setCurrPost } =
     useContext(PostFeedContext);
 
@@ -37,7 +37,7 @@ function PostScreen({ display }: IPostScreenProps) {
         bg-white h-screen 
         w-full sm:w-101
         m-auto sm:rounded-lg
-        shadow-lg pt-2 p-2
+        shadow-lg pt-2 p-2 overflow-auto
         "
       >
         <div

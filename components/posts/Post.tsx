@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { FC, useContext, useEffect, useState } from "react";
 
 import {
   FiEdit3,
@@ -27,7 +27,7 @@ interface IPostProps {
   isModalMode?: boolean;
 }
 
-export default function Post({
+const Post: FC<IPostProps> =({
   expanded,
   uname,
   message,
@@ -37,7 +37,7 @@ export default function Post({
   likes,
   _id,
   isModalMode = false,
-}: IPostProps) {
+}) => {
 
   const [liked, setLiked] = useState<boolean>(false);
 
@@ -244,7 +244,7 @@ export default function Post({
   );
 }
 
-function DropDown() {
+const DropDown: FC = () => {
   const choiceArr = {};
   return (
     <div>
@@ -256,3 +256,5 @@ function DropDown() {
     </div>
   );
 }
+
+export default Post;

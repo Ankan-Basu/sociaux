@@ -1,9 +1,8 @@
-import React, { useState } from 'react'
-// import {FaEdit, FaRegSun, FaWrench, FaUserAlt} from 'react-icons/fa';
+import React, { FC, useState } from 'react'
 import { FiEdit, FiSettings, FiLogOut, FiUser, FiX } from "react-icons/fi";
 import Modal from '../modal/Modal';
 
-export default function PersonalOptions(){
+const PersonalOptions: FC = () => {
 
     const [showModal, setShowModal] = useState<boolean>(false);
 
@@ -59,3 +58,5 @@ export default function PersonalOptions(){
     </div>
   )
 }
+
+export default PersonalOptions;

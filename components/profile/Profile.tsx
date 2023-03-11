@@ -1,11 +1,11 @@
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import {FaPen} from 'react-icons/fa';
 import { FiEdit2, FiEdit3 } from "react-icons/fi";
 import { useRouter } from 'next/router';
 
 
-export default function Profile(){
+const Profile: FC = () => {
 
     const [fullName, setFullName] = useState<string>();
     const [userName, setUserName] = useState<string>();
@@ -91,7 +91,7 @@ export default function Profile(){
   )
 }
 
-function FriendButton() {
+const FriendButton: FC = () => {
     return (
         <>
         <button className='p-1 lg:px-2 bg-primary rounded-lg border-2 border-solid border-primary2'>
@@ -100,3 +100,5 @@ function FriendButton() {
         </>
     )
 }
+
+export default Profile;

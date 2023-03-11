@@ -1,4 +1,4 @@
-import { useEffect, useContext } from "react";
+import { useEffect, useContext, FC } from "react";
 import FrenReq from "./friendReq";
 import { NotifContext } from "./navbar";
 import NotifItem from "./notifItem";
@@ -8,8 +8,7 @@ interface INotifProps {
   type: string
 }
 
-export default function Notif(
-  {display, type}: INotifProps) {
+const Notif: FC<INotifProps> = ({display, type}) => {
   // console.log(notifs); 
 
   // useEffect(() => {
@@ -100,3 +99,5 @@ export default function Notif(
       </div>
     )
   }
+
+  export default Notif;

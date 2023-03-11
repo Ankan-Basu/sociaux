@@ -1,6 +1,6 @@
 import { FiSearch } from "react-icons/fi";
 
-export default function SearchBox() {
+const SearchBox = () => {
     return (
       <div className=' bg-secondary2 rounded-full p-1'>
         <form className='flex items-center'>
@@ -13,3 +13,5 @@ export default function SearchBox() {
       </div>
     )
   }
+
+export default SearchBox;

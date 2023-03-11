@@ -1,12 +1,12 @@
 // import PostFeedContextProvider, { PostFeedContext } from '@/contexts/postFeedContext';
 import { useRouter } from 'next/router';
-import React, { createContext, useContext, useEffect, useState } from 'react'
+import React, { createContext, FC, useContext, useEffect, useState } from 'react'
 import Post from '../posts/Post';
 import PostScreen from '../posts/postScreen';
 
 export const PostFeedContext = createContext<any>(null);
 
-function PostFeed() {
+const PostFeed: FC = () => {
   
   const [posts, setPosts] = useState<Array<Object>>([]);
   const [showExpanded, setShowExpanded] = useState<boolean>(false);

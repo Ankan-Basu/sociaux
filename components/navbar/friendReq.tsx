@@ -3,7 +3,7 @@ import { FC } from "react"
 interface IFrenReqProps {
     friendReq: {
         source: string
-    } | undefined
+    } | any
 }
 
 const FrenReq: FC<IFrenReqProps> = ({friendReq}) => {

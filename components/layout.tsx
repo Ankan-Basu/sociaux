@@ -1,9 +1,11 @@
-import React from 'react';
+import { FC, ReactNode } from 'react';
 import Navbar from './navbar/navbar';
 
-export default function Layout(
-    { children }: { children: React.ReactNode}
-    ) {
+interface ILayoutProps {
+  children?: ReactNode;
+}
+
+const Layout: FC<ILayoutProps> = ({ children }) => {
     return (
       <>
         <Navbar />
@@ -12,3 +14,5 @@ export default function Layout(
       </>
     )
   }
+
+  export default Layout;

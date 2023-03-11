@@ -1,12 +1,16 @@
-import { useContext } from "react";
+import { FC, useContext } from "react";
 import FrenReq from "./friendReq";
 import { NotifContext } from "./navbar";
 import NotifItem from "./notifItem";
 
-export default function NotifMobile(
-    {notifs, friendReqs, display, type}: 
-    {notifs: Array<Object>, friendReqs: Array<Object>, display: boolean, type: String}
-  ) {
+interface INotifMobileProps {
+  notifs: Array<Object>; 
+  friendReqs: Array<Object>; 
+  display: boolean; 
+  type: string;
+}
+
+const NotifMobile: FC<INotifMobileProps> = ({notifs, friendReqs, display, type}) => {
 
     const {setNotifList} = useContext(NotifContext);
     const uname = 'kamisato_ayaka'; //change later
@@ -81,16 +85,10 @@ export default function NotifMobile(
                     <FrenReq key={indx} friendReq={friendReq} />
                 )
             })
-            //   <>
-            //   <FrenReq />
-            //   <FrenReq />
-            //   <FrenReq />
-            //   <FrenReq />
-            //   <FrenReq />
-            //   <FrenReq />
-            //   </>
           )
         }
       </div>
     )
   }
+
+  export default NotifMobile;

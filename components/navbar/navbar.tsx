@@ -1,6 +1,6 @@
 // 'use client'
 
-import React, { createContext, useEffect, useState } from 'react'
+import React, { createContext, FC, useEffect, useState } from 'react'
 // import { FaBars, FaUserFriends, FaSearch, FaUserAlt, FaBell } from "react-icons/fa";
 import { FiSearch, FiBell, FiUsers, FiMenu, FiX } from "react-icons/fi";
 import Notif from './notif';
@@ -11,7 +11,7 @@ import { useRouter } from 'next/router';
 
 export const NotifContext = createContext<any>(null);
 
-export default function Navbar() {
+const Navbar: FC = () => {
     const [notifSelected, setNotifSelected] = useState<boolean>(false)
     const [friendReqSelected, setFriendReqSelected] = useState<boolean>(false)
     const [mobileNotifSelected, setMobileNotifSelected] = useState<boolean>(false)
@@ -152,3 +152,5 @@ export default function Navbar() {
     
   )
 }
+
+export default Navbar;

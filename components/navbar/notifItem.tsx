@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { FC, useContext, useEffect } from "react";
 import { NotifContext } from "./navbar";
 
 interface INotifProps {
@@ -9,9 +9,7 @@ interface INotifProps {
     isSend: boolean,
     _id: string
 }
-export default function NotifItem(
-    {notif} : INotifProps | any
-) {
+const NotifItem: FC<INotifProps | any> = ({notif}) => {
 
     const {setNotifList} = useContext(NotifContext);
     
@@ -66,3 +64,5 @@ export default function NotifItem(
         </div>
     )
 }
+
+export default NotifItem;

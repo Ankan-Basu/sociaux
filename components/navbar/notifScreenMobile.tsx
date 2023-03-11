@@ -1,11 +1,11 @@
-import { useContext } from "react";
+import { FC, useContext } from "react";
 import { FiX } from "react-icons/fi";
 import { NotifContext } from "./navbar";
 import NotifMobile from "./notifMobile";
 
 interface INotifScreenMobileProps {
   display: boolean; 
-  type: String;
+  type: string;
   notifState: boolean;
   notifStateToggler: Function;
   friendReqState: boolean;
@@ -14,7 +14,7 @@ interface INotifScreenMobileProps {
   selfDisplayStateToggler: Function
 };
 
-export default function NotifScreenMobile(
+const NotifScreenMobile: FC<INotifScreenMobileProps> = (
     {
       display, 
       type,
@@ -24,7 +24,7 @@ export default function NotifScreenMobile(
       friendReqStateToggler,
       selfDisplayState,
       selfDisplayStateToggler
-    }: INotifScreenMobileProps) {
+    }) => {
 
 
       const {notifList, friendReqList} = useContext(NotifContext);
@@ -106,3 +106,5 @@ export default function NotifScreenMobile(
       </div>
     )
   }
+
+  export default NotifScreenMobile;

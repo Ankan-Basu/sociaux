@@ -1,18 +1,18 @@
-import React, { useState } from 'react'
+import React, { FC } from 'react'
 import { FiEdit, FiSettings, FiLogOut, FiUser, FiX } from "react-icons/fi";
 import Modal from '../modal/Modal';
 
-function PersonalOptionsMobile(
-    {toShow, toggleToShow, setShowModal} : 
-    {
-        toShow: boolean, 
-        toggleToShow: Function,
-        setShowModal: Function
-    }
-) {
+
+interface IPersonalOptionsMobileProps {
+    toShow: boolean, 
+    toggleToShow: Function,
+    setShowModal: Function
+};
+
+const PersonalOptionsMobile: FC<IPersonalOptionsMobileProps> = (
+    {toShow, toggleToShow, setShowModal}) => {
     
     console.log(toShow);
-    // console.log(showModal);
     
     return (
         <div

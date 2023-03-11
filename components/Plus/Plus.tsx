@@ -1,9 +1,9 @@
-import { useState } from 'react'
+import { FC, useState } from 'react'
 import { FiPlus } from 'react-icons/fi';
 import Modal from '../modal/Modal';
 import PersonalOptionsMobile from '../PersonalOptions/PersonalOptionsMobile';
 
-export default function Plus() {
+const Plus: FC = () => {
   const [menuOpen, setMenuOpen] = useState<boolean>(false)
   const [showModal, setShowModal] = useState<boolean>(false);
 
@@ -32,3 +32,5 @@ export default function Plus() {
     </div>
   )
 }
+
+export default Plus;
