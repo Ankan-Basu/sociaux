@@ -20,6 +20,7 @@ const CommentScreen: FC<ICommentScreenProps> = ({postId}) => {
   const [commentList, setCommentList] = useState<Array<Object>>([]);
   const [isReplying, setIsReplying] = useState<boolean>(false);
   const [replyingTo, setReplyingTo] = useState<IReplyingTo | null>(null);
+  const [replyList, setReplyList] = useState<Object>({val: 1});
 
   console.log('comment screen here', postId);
   
@@ -37,7 +38,8 @@ const CommentScreen: FC<ICommentScreenProps> = ({postId}) => {
         <CommentContext.Provider value={{commentList, setCommentList}} >
         <ReplyingContext.Provider value={{
           isReplying, setIsReplying, 
-          replyingTo, setReplyingTo}}>
+          replyingTo, setReplyingTo,
+          replyList, setReplyList}}>
         <CommentList
         postId={postId}
         customCssClass='pb-14'

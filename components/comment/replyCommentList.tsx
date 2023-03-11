@@ -1,4 +1,5 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, useContext, useEffect, useState } from 'react'
+import { ReplyingContext } from './commentScreen';
 import ReplyComment from './replyComment'
 
 interface IReplyCommentListProps {
@@ -11,7 +12,7 @@ const ReplyCommentList: FC<IReplyCommentListProps> = ({parenCommId, display=fals
   // console.log('Reply to', parenCommId);
 
   const [replies, setReplies] = useState<Array<Object>>([]);
-  
+  const {replyList} = useContext(ReplyingContext);
   useEffect(() => {
     console.log('reply comment list');
     // runs when 'display' prop changes
@@ -26,7 +27,7 @@ const ReplyCommentList: FC<IReplyCommentListProps> = ({parenCommId, display=fals
     return () => {
       setReplies([]);
     }
-  }, [display]);
+  }, [display, replyList]);
 
 
   const getReplyComments = async () => {
@@ -48,7 +49,7 @@ const ReplyCommentList: FC<IReplyCommentListProps> = ({parenCommId, display=fals
   return (
     <div className={`
     ${display?'block':'hidden'}
-    border-2 border-solid border-black
+    //border-2 border-solid border-black
     flex flex-col gap-3 mt-4
     w-full
     `}>

@@ -18,6 +18,9 @@ const Comment: FC<ICommentProps> = (
     {uname, message, likes, replies, time, _id}
 ) => {
 
+    console.log('Comment renders', _id);
+    
+
     const [liked, setLiked] = useState<boolean>(false);
     const [showReplies, setShowReplies] = useState<boolean>(false);
 
@@ -121,9 +124,10 @@ const Comment: FC<ICommentProps> = (
 
   return (
     <>
-    <div className='flex 
-    //w-80 w-full
-    lg:w-98'>
+    <div className={`flex 
+    //w-80 w-full p-1 rounded-lg
+    ${replyingTo?._id===_id? 'bg-yellow-100':''}
+    lg:w-98`}>
         <div className='w-16'>
         <div className='w-full'>
             <img src='ayaka.jpg' height='60rem' width='60rem' className='rounded-full'/>

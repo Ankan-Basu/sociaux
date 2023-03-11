@@ -1,5 +1,5 @@
 import { FC, FormEvent, useContext, useState } from "react";
-import { FiSend } from "react-icons/fi";
+import { FiSend, FiX } from "react-icons/fi";
 import { CommentContext, ReplyingContext } from "./commentScreen";
 
 
@@ -15,7 +15,7 @@ const CommentInput: FC<ICommentInputProps> = ({ postId, customCssClass }) => {
 
   const { commentList, setCommentList } = useContext(CommentContext);
 
-  const { isReplying, replyingTo } = useContext(ReplyingContext);
+  const { setIsReplying, isReplying, replyingTo, setReplyingTo, replyList, setReplyList } = useContext(ReplyingContext);
 
   console.log("Comment Input postId", postId);
 
@@ -99,6 +99,8 @@ interface IReplyBody {
     console.log(data);
 
     setInp("");
+    // setReplyingTo(null);
+    setReplyList({...replyList});
   }
 
 
@@ -125,11 +127,27 @@ interface IReplyBody {
       <div
         className={`
             ${isReplying ? "block" : "hidden"}
-            `}
+            
+            flex justify-between items-center
+            px-2`}
       >
+        <span>
         Replying to
         {" " + replyingTo?.uname}
         ...
+        </span>
+        <span 
+        onClick={()=>{
+          setReplyingTo(null);
+          setIsReplying(false);
+        }}
+        
+        className="
+        active:text-primary
+        lg:hover:text-primary lg:active:text-primary2
+        ">
+          <FiX />
+        </span>
       </div>
       <form onSubmit={handleClick} className={`flex`}>
         <input
