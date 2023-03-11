@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import ReplyComment from './replyComment'
 
 interface IReplyCommentListProps {
@@ -8,8 +8,43 @@ interface IReplyCommentListProps {
 
 const ReplyCommentList: FC<IReplyCommentListProps> = ({parenCommId, display=false}) => {
 
-  console.log('Reply to', parenCommId);
+  // console.log('Reply to', parenCommId);
+
+  const [replies, setReplies] = useState<Array<Object>>([]);
   
+  useEffect(() => {
+    console.log('reply comment list');
+    // runs when 'display' prop changes
+
+    if (display) {
+      //do api call
+      getReplyComments();
+    } else {
+      setReplies([]);
+    }
+
+    return () => {
+      setReplies([]);
+    }
+  }, [display]);
+
+
+  const getReplyComments = async () => {
+    const url = `/api/comments/reply/${parenCommId}`;
+
+    const resp = await fetch(url);
+
+    if (resp.status === 200) {
+      const data = await resp.json();
+      console.log(data);
+      setReplies(data);
+      
+    } else {
+      //handle
+      console.log('err fetching');
+      
+    }
+  }
   return (
     <div className={`
     ${display?'block':'hidden'}
@@ -18,8 +53,23 @@ const ReplyCommentList: FC<IReplyCommentListProps> = ({parenCommId, display=fals
     w-full
     `}>
 
-        <ReplyComment />
-        <ReplyComment />
+      {
+        replies && 
+
+        replies.map((reply) => {
+          return (
+            <ReplyComment 
+            key={reply._id}
+        _id={reply._id}
+        uname={reply.uname}
+        message={reply.message}
+        likes={reply.likes}
+        time={reply.time}
+        />
+          );
+        })
+        
+      }        
     </div>
   )
 }

@@ -26,15 +26,15 @@ export default function Comment(
 
     const reactorUname = 'hu_tao'; //change later
     useEffect(() => {
-        console.log('comment', _id);
-        console.log(_id, 'liked', liked);
+        // console.log('comment', _id);
+        // console.log(_id, 'liked', liked);
         
         
         if(likes?.includes(reactorUname)) {
             setLiked(true);
         }
 
-        console.log(_id, 'liked', liked);
+        // console.log(_id, 'liked', liked);
     }, []);
 
     const handleLike = async () => {
