@@ -1,13 +1,13 @@
 import {Schema, models, model} from "mongoose";
 
 interface FriendReqItem {
-    source: string,
-    time: Date
+    source: string;
+    time: Date;
 }
 
 interface FriendReqs {
-    uname: string,
-    reqs: [FriendReqItem]
+    uname: string;
+    reqs: [FriendReqItem];
 }
 
 const friendReqItemSchema: Schema = new Schema<FriendReqItem> ({
