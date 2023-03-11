@@ -1,15 +1,16 @@
 import { useRouter } from 'next/router';
-import React, { useContext, useEffect, useState } from 'react'
+import React, { FC, useContext, useEffect, useState } from 'react'
 import Comment, { ICommentProps } from './comment'
 import { CommentContext } from './commentScreen';
 
-interface Props {
-    customCssClass?: string
+interface ICommentListProps {
+    postId: string;
+    customCssClass?: string;
 }
 
-function CommentList({ customCssClass }: Props) {
+const CommentList: FC<ICommentListProps> = ({ postId, customCssClass }) => {
     const router = useRouter();
-    const {postId} = router.query;
+    // const {postId} = router.query;
     console.log('Comment list component', postId);
     
 
@@ -19,8 +20,10 @@ function CommentList({ customCssClass }: Props) {
     const {commentList, setCommentList} = useContext(CommentContext);
    
     useEffect(() => {
+        console.log('Comment list useEffect. postId:', postId);
+        
         getComments();
-    }, [postId]);
+    }, []);
 
     const getComments = async () => {
         const url = `/api/comments/${postId}`;
@@ -29,7 +32,7 @@ function CommentList({ customCssClass }: Props) {
 
         const data = await resp.json();
 
-        // console.log(data);
+        console.log(data);
 
         setCommentList(data);
     }

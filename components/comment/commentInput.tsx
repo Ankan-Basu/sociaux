@@ -1,26 +1,33 @@
-import { useRouter } from 'next/router';
-import React, { useContext, useEffect, useState } from 'react';
+import { FC, FormEvent, useContext, useState } from 'react';
 import { FiSend } from "react-icons/fi";
 import { CommentContext, ReplyingContext } from './commentScreen';
 
-interface Props {
+interface ICommentInputProps {
+    postId: string;
     customCssClass?: string;
     replyingTo?: string;
 }
 
-function CommentInput({ customCssClass }: Props) {
+const CommentInput: FC<ICommentInputProps> = ({postId, customCssClass} ) => {
     const [inp, setInp] = useState<string>('');
-
-    const router = useRouter();
 
     const {commentList, setCommentList} = useContext(CommentContext);
     
     const {isReplying, replyingTo} = useContext(ReplyingContext);
+
+    console.log('Comment Input postId', postId);
     
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+
+
+
+    // post comment
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         
-        const {postId} = router.query;
+        if (!postId) {
+            return;
+        }
+
         const uname = 'hu_tao'; //change later
         const message = inp;
         
@@ -59,15 +66,9 @@ function CommentInput({ customCssClass }: Props) {
     }
 
 
-    useEffect(() => {
-        // console.log(replyingTo);
-        // console.log(isReplying);
-    });
+    
 
     return (
-        // <div className='
-        // flex w-full border-2 border-red-500
-        // '>
         <div 
         className={`
         ${customCssClass + ' '}
@@ -122,7 +123,6 @@ function CommentInput({ customCssClass }: Props) {
 
         </form>
         </div>
-        // </div>
   )
 }
 

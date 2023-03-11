@@ -14,7 +14,9 @@ function PostPage() {
   const [serverErr, setServerErr] = useState<boolean>(false);
 
   useEffect(() => {
-    getIndividualPost();
+    if(postId) {
+      getIndividualPost();
+    }
   }, [postId]);
 
 
@@ -46,11 +48,14 @@ function PostPage() {
     w-screen
     flex flex-col justify-center items-center
     ">
+      {
+        post&&
     <div className="
     /border-2 /border-solid /border-red-500
     w-full sm:w-100
     
     ">
+    
       <div>
         <Post 
         key={post?._id}
@@ -69,12 +74,12 @@ function PostPage() {
 
         
       </div>
-      {/* postId {postId}
-      <CommentList />
-      <CommentInput /> */}
-      <CommentScreen />
+     
+      <CommentScreen postId={post?._id} />
     </div>
+  }
     </div>
+  
   );
 }
 
