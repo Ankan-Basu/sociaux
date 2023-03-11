@@ -1,7 +1,6 @@
 import Link from 'next/link'
 import { ChangeEvent, FC, useState } from 'react'
 import { FiAtSign, FiUserCheck, FiEyeOff, FiEye, FiLogIn } from "react-icons/fi";
-import Post from '../posts/Post';
 import InputDataType from '../util/InputDataType';
 import inputValidator from '../util/inputValidator';
 import ValidatedOutput from '../util/ValidatedOutput';
@@ -15,6 +14,13 @@ const LoginComponent: FC = () => {
   console.log(session);
   const router = useRouter();
 
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [unameEmail, setUnameEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const[inpInvalid, setInpInvalid] = useState<boolean>(false);
+  const[passwordInvalid, setPasswordInvalid] = useState<boolean>(false);
+
+
   if (session.status === "loading") {
     return <p>Loading...</p>
   }
@@ -25,12 +31,7 @@ const LoginComponent: FC = () => {
   }
   
 
-  const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [unameEmail, setUnameEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const[inpInvalid, setInpInvalid] = useState<boolean>(false);
-  const[passwordInvalid, setPasswordInvalid] = useState<boolean>(false);
-
+  
 
 
   const handleLoginSubmit = async (e: React.FormEvent<HTMLFormElement>) => {

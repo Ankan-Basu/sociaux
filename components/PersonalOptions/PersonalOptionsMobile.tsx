@@ -1,7 +1,6 @@
 import React, { FC } from 'react'
 import { FiEdit, FiSettings, FiLogOut, FiUser, FiX } from "react-icons/fi";
-import Modal from '../modal/Modal';
-
+import { signOut } from 'next-auth/react';
 
 interface IPersonalOptionsMobileProps {
     toShow: boolean, 
@@ -48,7 +47,13 @@ const PersonalOptionsMobile: FC<IPersonalOptionsMobileProps> = (
                 <FiSettings />
                 <h4>Settings</h4>
             </div>
-            <div className='p-2 flex gap-1 items-center rounded-lg cursor-pointer hover:bg-primary'>
+            <div 
+            onClick={() => {
+                signOut({
+                    callbackUrl: '/login'
+                })
+            }}
+            className='p-2 flex gap-1 items-center rounded-lg cursor-pointer hover:bg-primary'>
                 <FiLogOut />
                 <h4>Logout</h4>
             </div>
