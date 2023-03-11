@@ -1,13 +1,15 @@
-import React from 'react'
+import React, { FC } from 'react'
 import ReplyComment from './replyComment'
 
 interface IReplyCommentListProps {
+  parenCommId: string;
     display?: boolean;
 }
 
-function ReplyCommentList(
-    {display=false}: IReplyCommentListProps
-) {
+const ReplyCommentList: FC<IReplyCommentListProps> = ({parenCommId, display=false}) => {
+
+  console.log('Reply to', parenCommId);
+  
   return (
     <div className={`
     ${display?'block':'hidden'}

@@ -181,7 +181,7 @@ export default function Comment(
                 }
                 
                 </div>
-            <ReplyCommentList display={showReplies} />
+            <ReplyCommentList parenCommId={_id} display={showReplies} />
         </div>
     </div>
     </>
