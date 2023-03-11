@@ -1,4 +1,4 @@
-import React from 'react'
+import { FC } from 'react'
 import { useRouter } from 'next/router'
 import { FiEdit2, FiEdit3, FiX, FiTrash } from "react-icons/fi";
 
@@ -11,9 +11,8 @@ const details = {
 
 const privArr = ['public', 'friends', 'only me'];
 
-function Dashboard() {
+const Dashboard: FC = () => {
     const router = useRouter();
-    const { userId } = router.query;
   
     return (
     <div 
@@ -73,13 +72,7 @@ function Dashboard() {
         <span>
           <FiEdit3 />
         </span>
-        {/* <div className='
-        absolute bg-white
-        border-2 border-solid 
-        p-2 right-2
-        rounded-lg
-        '>
-          You cannot change your username</div> */}
+     
       </div>
       
       <div className='

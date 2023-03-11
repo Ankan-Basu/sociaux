@@ -1,12 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Post from "@/components/posts/Post";
-import Comment from '@/components/comment/comment';
-import CommentInput from "@/components/comment/commentInput";
-import CommentList from "@/components/comment/commentList";
 import CommentScreen from "@/components/comment/commentScreen";
 
-function PostPage() {
+const PostPage: FC = () => {
   const router = useRouter();
   const { postId } = router.query;
   const [post, setPost] = useState<any>();
