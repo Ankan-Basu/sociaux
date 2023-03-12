@@ -1,7 +1,14 @@
 import InputDataType from "./InputDataType";
 import ValidatedOutput from "./ValidatedOutput";
 
-function inputValidator({email, uname, password} : InputDataType): ValidatedOutput {
+
+const containsInvalidChars = (str: string): boolean => {
+    const invalidChars = /[`!@#$%^&*()+\=\[\]{};':"\\|,<>\/?~ ]/;
+    return invalidChars.test(str);
+}
+
+
+const inputValidator = ({email, uname, password} : InputDataType): ValidatedOutput => {
     let emailStatus = false, unameStatus = false, passwordStatus = false
 
     //email
@@ -29,20 +36,14 @@ function inputValidator({email, uname, password} : InputDataType): ValidatedOutp
     }
 
     //uname
-    if (uname.length <= 1) { //@a
+    if (uname.length < 1) { //a
         unameStatus = false;
     } else {
-        const posOfUnameAt = uname.indexOf('@');
-
-        if (posOfUnameAt === 0) {
-            //check for no ther @
-            if (uname.indexOf('@', posOfUnameAt+1) === -1) {
-                unameStatus = true;
-            } else {
-                unameStatus = false;
-            }
-        } else {
+        // no need to explicitly provide @ infront of uname
+        if (containsInvalidChars(uname)) {
             unameStatus = false;
+        } else {
+            unameStatus = true;
         }
     }
 
