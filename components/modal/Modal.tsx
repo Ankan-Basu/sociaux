@@ -1,3 +1,4 @@
+import { useSession } from 'next-auth/react';
 import { RESPONSE_LIMIT_DEFAULT } from 'next/dist/server/api-utils';
 import React, { FC, useEffect, useState } from 'react'
 import Dropdown from 'react-dropdown';
@@ -26,6 +27,8 @@ const Modal: FC<IModalProps> = ({display, customCss, setShowModal, mode='mobile'
 
     console.log(mode);
 
+    const session = useSession();
+
 
     const handleClose = () => {
         console.log('Close');
@@ -35,10 +38,18 @@ const Modal: FC<IModalProps> = ({display, customCss, setShowModal, mode='mobile'
 
 
 
-    const uname = 'kamisato_ayaka'; //change later
+
+    const uname = session.data?.user?.uname;
     const privacy = 0;
+
     const handlePost = async () => {
         console.log(postMessage);
+
+        if (!uname) {
+            console.log('error');
+            return;
+            
+        }
 
         const postBody: PostBody = 
         {uname, message: postMessage, privacy};
