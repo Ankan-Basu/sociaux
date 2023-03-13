@@ -11,11 +11,27 @@ datasource db {
 }
 
 model User {
-  uname     String   @id @map("_id")
-  name      String
-  email     String   @unique
-  password  String
-  img       String   @default("")
-  bio       String   @default("")
-  createdAt DateTime @default(now())
+  id           String       @id @default(auto()) @map("_id") @db.ObjectId
+  uname        String       @unique
+  name         String
+  email        String       @unique
+  password     String
+  img          String       @default("")
+  bio          String       @default("")
+  createdAt    DateTime     @default(now())
+  notification Notification?
+}
+
+// model notifItem {
+//   source User
+//   message String
+//   link String @default("")
+//   time DateTime @default(now())
+// }
+
+model Notification {
+  id     String   @id @default(auto()) @map("_id") @db.ObjectId
+  user   User     @relation(fields: [uname], references: [uname])
+  uname  String   @unique
+  notifs String[] @default([""])
 }
