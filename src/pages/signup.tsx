@@ -1,4 +1,4 @@
-import SignupComponent from '@/components/auth/signupComponent'
+import SignupComponent from '@/src/components/auth/signupComponent'
 import React from 'react'
 
 function signup() {

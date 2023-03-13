@@ -1,7 +1,7 @@
-import Profile from '@/components/profile/Profile';
-import PersonalOptions from '@/components/PersonalOptions/PersonalOptions';
-import PostFeed from '@/components/postFeed/postFeed';
-import Plus from '@/components/Plus/Plus';
+import Profile from '@/src/components/profile/Profile';
+import PersonalOptions from '@/src/components/PersonalOptions/PersonalOptions';
+import PostFeed from '@/src/components/postFeed/postFeed';
+import Plus from '@/src/components/Plus/Plus';
 import { useSession } from 'next-auth/react';
 import { FC } from 'react';
 

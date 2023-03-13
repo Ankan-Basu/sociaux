@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import Post from "@/components/posts/Post";
-import CommentScreen from "@/components/comment/commentScreen";
+import Post from "@/src/components/posts/Post";
+import CommentScreen from "@/src/components/comment/commentScreen";
 
 const PostPage: FC = () => {
   const router = useRouter();
