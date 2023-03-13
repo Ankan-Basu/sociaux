@@ -1,5 +1,5 @@
 import Layout from '@/src/components/layout'
-import '@/styles/globals.css'
+import '@/src/styles/globals.css'
 import type { AppProps } from 'next/app'
 import { SessionProvider, useSession } from "next-auth/react"
 import { createContext, useState } from 'react'
