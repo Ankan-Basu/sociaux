@@ -6,7 +6,7 @@ import UserModel, {IUser} from "~/server/db/models/User";
 import bcrypt from 'bcrypt';
 
 
-const authOptions = {
+export const authOptions: NextAuthOptions = {
     session: {
         strategy: 'jwt'
     },
@@ -34,12 +34,9 @@ const authOptions = {
                 credentials.uname = result.uname;
                 credentials.email = result.uname;
 
-                // console.log(result)
                 const user = result;
                 return result;
-                // return credentials;
             },
-            // @ts-ignore
             credentials: undefined
         })
     ],
@@ -56,12 +53,6 @@ const authOptions = {
             return ({...token, ...uname});
         },
         async session({ session, token, user}) {
-            // session.accessToken = 'token.accessToken';
-            // // session.user._id = 'token.id';
-            // // token.uname = 'xD';
-    
-            // console.log('user\n',token);
-
             session.user = token;
             return session;
         }
