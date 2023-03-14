@@ -1,4 +1,4 @@
-import {Schema, models, model} from "mongoose";
+import mongoose, {Schema, models, model} from "mongoose";
 
 interface INotifItem {
     source: string,
@@ -51,5 +51,5 @@ const notificationSchema: Schema = new Schema<INotification>({
     } 
 });
 
-var NotificationModel = models.notification || model<INotification>('notification', notificationSchema);
+var NotificationModel = (models.notification as mongoose.Model<INotification>) || model<INotification>('notification', notificationSchema);
 export default NotificationModel;
