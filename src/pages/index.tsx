@@ -17,6 +17,8 @@ const Home: NextPage = () => {
 
  useEffect(() => {
   // setState1('xD');
+  console.log(data);
+  
   if (state1) {
     refetch();
   }
