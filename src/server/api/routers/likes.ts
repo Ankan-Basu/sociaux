@@ -10,7 +10,7 @@ import CommentModel, { IComment } from "~/server/db/models/Comment";
 import PostModel, { IPost } from "~/server/db/models/Post";
 import dbConnect from "~/server/db/mongo";
 
-export const commentsRouter = createTRPCRouter({
+export const likesRouter = createTRPCRouter({
   likePost: publicProcedure
     .input(z.object({ uname: z.string(), postId: z.string() }))
     .mutation(async ({ input }) => {
