@@ -1,16 +1,16 @@
-import {Schema, models, model} from "mongoose";
+import mongoose, {Schema, models, model} from "mongoose";
 
-interface FriendReqItem {
+interface IFriendReqItem {
     source: string;
     time: Date;
 }
 
-interface FriendReqs {
+interface IFriendReqs {
     uname: string;
-    reqs: [FriendReqItem];
+    reqs: [IFriendReqItem];
 }
 
-const friendReqItemSchema: Schema = new Schema<FriendReqItem> ({
+const friendReqItemSchema: Schema = new Schema<IFriendReqItem> ({
     source: {
         type: String,
         required: true
@@ -22,7 +22,7 @@ const friendReqItemSchema: Schema = new Schema<FriendReqItem> ({
     }
 });
 
-const friendReqListSchema: Schema = new Schema<FriendReqs>({
+const friendReqListSchema: Schema = new Schema<IFriendReqs>({
     uname: {
         type: String,
         required: true,
@@ -35,6 +35,6 @@ const friendReqListSchema: Schema = new Schema<FriendReqs>({
     }
 });
 
-var FriendReqModel = models.friendReq || 
-    model<FriendReqs>('friendReq', friendReqListSchema);
+var FriendReqModel = (models.friendReq as mongoose.Model<IFriendReqs>) || 
+    model<IFriendReqs>('friendReq', friendReqListSchema);
 export default FriendReqModel;
