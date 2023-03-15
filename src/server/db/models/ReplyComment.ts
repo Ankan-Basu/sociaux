@@ -1,4 +1,4 @@
-import { Schema, model, models } from "mongoose";
+import mongoose, { Schema, model, models } from "mongoose";
 
 export interface IReplyComment {
     uname: string;
@@ -33,6 +33,6 @@ const replyCommentSchema: Schema = new Schema<IReplyComment>({
     }
 });
 
-const ReplyCommentModel = models.replyComment || model<IReplyComment>('replyComment', replyCommentSchema);
+const ReplyCommentModel = (models.replyComment as mongoose.Model<IReplyComment>) || model<IReplyComment>('replyComment', replyCommentSchema);
 
 export default ReplyCommentModel;
