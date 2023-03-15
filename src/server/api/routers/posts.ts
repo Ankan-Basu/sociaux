@@ -1,5 +1,6 @@
+import { TRPCError } from "@trpc/server";
 import { HydratedDocument } from "mongoose";
-import { string, z } from "zod";
+import { z } from "zod";
 import {
   createTRPCRouter,
   publicProcedure,
@@ -18,8 +19,10 @@ export const postsRouter = createTRPCRouter({
 
       return posts;
     }),
+    
+    
     getUserPosts: publicProcedure
-    .input(z.object({ uname: z.string() }))
+    .input(z.object({ uname: z.string()}))
     .query(async ({ input }) => {
       dbConnect();
       const posts: Array<HydratedDocument<IPost>> = await PostModel.find({uname: input.uname})
@@ -27,6 +30,8 @@ export const postsRouter = createTRPCRouter({
 
       return posts;
     }),
+    
+    
     getOnePost: publicProcedure
     .input(z.object({ postId: z.string() }))
     .query(async ({ input }) => {
@@ -35,9 +40,17 @@ export const postsRouter = createTRPCRouter({
       
       const post: Array<HydratedDocument<IPost>> | null = await PostModel.findOne({_id: input.postId})
       
+      if (!post) {
+        throw new TRPCError({
+            code: "NOT_FOUND",
+            message: "Not found"
+        })
+      }
+
       return post;
     }),
 
+    
     createPost: publicProcedure
     .input(z.object({
         uname: z.string(),
@@ -51,10 +64,54 @@ export const postsRouter = createTRPCRouter({
     .mutation(async ({ input }) => {
       dbConnect();
       console.log(input);
-      
+      const post = input;
 
-      
+      const dbResp = await PostModel.create(post);
 
-      return 'xD';
+      return dbResp;
+    }),
+
+
+    modifyPost: publicProcedure
+    .input(z.object({
+        postId: z.string(),
+        uname: z.string(),
+        privacy: z.number(),
+        message: z.string(),
+    }))
+    .mutation(async ({ input }) => {
+      dbConnect();
+      console.log(input);
+
+      const post = await PostModel.findOne({_id: input.postId});
+
+      if (!post) {
+        throw new TRPCError({
+            code: "NOT_FOUND",
+            message: "Not found"
+        })
+      }
+
+      post.message = input.message;
+      post.privacy = input.privacy;
+
+      const dbResp = await post.save();
+
+      return dbResp;
+    }),
+
+
+    deletePost: publicProcedure
+    .input(z.object({
+        postId: z.string(),
+        
+    }))
+    .mutation(async ({ input }) => {
+      dbConnect();
+      console.log(input);
+
+      const dbResp = await PostModel.deleteOne({_id: input.postId});
+
+      return dbResp;
     }),
 });

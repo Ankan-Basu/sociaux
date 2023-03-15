@@ -5,22 +5,23 @@ import { signIn, signOut, useSession } from "next-auth/react";
 
 import { api } from "~/utils/api";
 import { useEffect, useState } from "react";
+import { retryDelay } from "@trpc/client/dist/internals/retryDelay";
 
 const Home: NextPage = () => {
-  // const {data, isFetching, isError} = api.posts.createPost.useMutation({});
-  // console.log(data, isFetching, isError);
-  const [state1, setState1] = useState();
-  const mutator = api.posts.createPost.useMutation();
-  console.log(mutator);
+  const [state1, setState1] = useState(true);
+    const {data, isFetching, isError, refetch} = api.posts.getUserPosts.useQuery({uname: 'hu_tao'}, {queryKey: [state1]});
 
   
+  console.log(state1);
 
-useEffect(() => {
-  (async () => {
-    const resp = await mutator.mutate({message: 'xx', uname: 'hu_tao', privacy: 1});
-    console.log(resp);
-  })();
-}, [])
+
+ useEffect(() => {
+  // setState1('xD');
+  if (state1) {
+    refetch();
+  }
+}, [state1]) 
+
 
 
   return (
@@ -31,7 +32,11 @@ useEffect(() => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-       <div>Index</div>
+       <div>Index
+
+
+        <button onClick={() => {setState1(curr => !curr)}}>CLICK</button>
+       </div>
       </main>
     </>
   );
