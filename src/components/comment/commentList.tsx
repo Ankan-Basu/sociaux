@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import React, { FC, useContext, useEffect, useState } from 'react'
+import { api } from '~/utils/api';
 import Comment, { ICommentProps } from './comment'
 import { CommentContext } from './commentScreen';
 
@@ -10,7 +11,6 @@ interface ICommentListProps {
 
 const CommentList: FC<ICommentListProps> = ({ postId, customCssClass }) => {
     const router = useRouter();
-    // const {postId} = router.query;
     console.log('Comment list component', postId);
     
 
@@ -19,22 +19,26 @@ const CommentList: FC<ICommentListProps> = ({ postId, customCssClass }) => {
 
     const {commentList, setCommentList} = useContext(CommentContext);
    
-    useEffect(() => {
-        console.log('Comment list useEffect. postId:', postId);
-        
-        getComments();
-    }, []);
+    const {data, isLoading, isError, refetch} = api.comments.getComments.useQuery({postId: postId});
 
-    const getComments = async () => {
-        const url = `/api/comments/${postId}`;
-
-        const resp = await fetch(url);
-
-        const data = await resp.json();
-
-        console.log(data);
-
+    if (data) {
         setCommentList(data);
+    }
+    
+    if(isLoading) {
+        return (
+            <div>
+                Loading
+            </div>
+        );
+    }
+
+    else if (isError) {
+        return (
+            <div>
+                Error
+            </div>
+        )
     }
     
   return (
@@ -50,7 +54,7 @@ const CommentList: FC<ICommentListProps> = ({ postId, customCssClass }) => {
         {
             commentList &&
             //change this any
-            commentList.map((comment: any) => {
+            commentList?.map((comment: any) => {
                 return (
                     <Comment 
                     key={comment._id} 

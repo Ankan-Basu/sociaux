@@ -1,13 +1,19 @@
 // import PostFeedContextProvider, { PostFeedContext } from '@/contexts/postFeedContext';
-import { useRouter } from 'next/router';
-import React, { createContext, FC, useContext, useEffect, useState } from 'react'
-import Post from '../posts/Post';
-import PostScreen from '../posts/postScreen';
+import { useRouter } from "next/router";
+import React, {
+  createContext,
+  FC,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import { api } from "~/utils/api";
+import Post from "../posts/Post";
+import PostScreen from "../posts/postScreen";
 
 export const PostFeedContext = createContext<any>(null);
 
 const PostFeed: FC = () => {
-  
   const [posts, setPosts] = useState<Array<Object>>([]);
   const [showExpanded, setShowExpanded] = useState<boolean>(false);
   const [currPost, setCurrPost] = useState(null);
@@ -16,40 +22,41 @@ const PostFeed: FC = () => {
 
   const router = useRouter();
 
+  const { data, refetch } = api.posts.getUserPosts.useQuery(
+    { uname: `${router.query.uname}` },
+    {}
+  );
+
   useEffect(() => {
-    getPosts();
+    // data && setPosts(data);
+    // console.log(data);
+
+    if (router.query.uname) {
+      (async () => {
+        const x = await refetch();
+        console.log(x);
+        if (x.status === "success") {
+          setPosts(x.data);
+        }
+      })();
+    }
   }, [router]);
 
-
-  const getPosts = async () => {  
-    const {uname} = router.query;
-    console.log(uname);
-
-    const url = `/api/posts/${uname}`;
-
-    const resp = await fetch(url);
-
-    const data = await resp.json();
-
-    console.log(data);
-
-    setPosts(data);
-  }
-  
   return (
-    <div 
-    className='lg:w-101 m-auto rounded-lg p-2'
-    >
-        Posts: 
-
-        <PostFeedContext.Provider value={{
-          showExpanded, setShowExpanded,
-          currPost, setCurrPost}}>
-          {/* <PostFeedContextProvider> */}
-        {
-        posts.map((post: any) => {
-            return (
-              <Post
+    <div className="m-auto rounded-lg p-2 lg:w-101">
+      Posts:
+      <PostFeedContext.Provider
+        value={{
+          showExpanded,
+          setShowExpanded,
+          currPost,
+          setCurrPost,
+        }}
+      >
+        {/* <PostFeedContextProvider> */}
+        {posts.map((post: any) => {
+          return (
+            <Post
               key={post._id}
               expanded={false}
               uname={post.uname}
@@ -59,15 +66,14 @@ const PostFeed: FC = () => {
               likes={post.likes}
               comments={post.comments}
               _id={post._id}
-              />
-              )
-            })
-        }
+            />
+          );
+        })}
         <PostScreen display={showExpanded} />
         {/* </PostFeedContextProvider> */}
-        </PostFeedContext.Provider>
+      </PostFeedContext.Provider>
     </div>
-  )
-}
+  );
+};
 
-export default PostFeed
+export default PostFeed;

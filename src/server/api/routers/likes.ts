@@ -32,9 +32,13 @@ export const likesRouter = createTRPCRouter({
 
           return dbResp;
         } else {
-          return {
-            message: "Already Liked",
-          };
+          // return {
+          //   message: "Already Liked",
+          // };
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'Already Liked'
+          })
         }
       }
     }),

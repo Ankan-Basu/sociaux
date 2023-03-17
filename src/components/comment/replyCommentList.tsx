@@ -1,78 +1,93 @@
-import React, { FC, useContext, useEffect, useState } from 'react'
-import { ReplyingContext } from './commentScreen';
-import ReplyComment from './replyComment'
+import React, { FC, useContext, useEffect, useState } from "react";
+import { api } from "~/utils/api";
+import { ReplyingContext } from "./commentScreen";
+import ReplyComment from "./replyComment";
 
 interface IReplyCommentListProps {
   parenCommId: string;
-    display?: boolean;
+  display?: boolean;
 }
 
-const ReplyCommentList: FC<IReplyCommentListProps> = ({parenCommId, display=false}) => {
-
+const ReplyCommentList: FC<IReplyCommentListProps> = ({
+  parenCommId,
+  display = false,
+}) => {
   // console.log('Reply to', parenCommId);
 
   const [replies, setReplies] = useState<Array<Object>>([]);
-  const {replyList} = useContext(ReplyingContext);
+  const { replyList } = useContext(ReplyingContext);
+
+  let { data, refetch } = api.replyComments.getComments.useQuery({
+    parenCommId,
+  });
+
+  
+
   useEffect(() => {
     console.log('reply comment list');
     // runs when 'display' prop changes
-
     if (display) {
       //do api call
+      // data = await refetch();
       getReplyComments();
     } else {
-      setReplies([]);
+      // setReplies([]);
     }
 
-    return () => {
-      setReplies([]);
-    }
+    // prevent flickering
+    // return () => {
+    //   setReplies([]);
+    // }
   }, [display, replyList]);
 
-
   const getReplyComments = async () => {
-    const url = `/api/comments/reply/${parenCommId}`;
-
-    const resp = await fetch(url);
-
-    if (resp.status === 200) {
-      const data = await resp.json();
-      console.log(data);
-      setReplies(data);
-      
-    } else {
-      //handle
-      console.log('err fetching');
-      
+ 
+    let data2 = await refetch();
+    console.log('REPLY', data2);
+    
+    if (data2) {
+      setReplies(data2.data!);
     }
+  };
+
+  if (data?.length === 0) {
+    return (
+      <div
+      className={`
+    ${display ? "block" : "hidden"}
+     mt-4 flex
+    w-full flex-col gap-3
+    `}
+    >
+        <span className="
+        text-sm ml-4 -mt-2
+        ">No replies</span>
+      </div>
+    );
   }
   return (
-    <div className={`
-    ${display?'block':'hidden'}
-    //border-2 border-solid border-black
-    flex flex-col gap-3 mt-4
-    w-full
-    `}>
-
-      {
-        replies && 
-
-        replies.map((reply) => {
+    <div
+      className={`
+    ${display ? "block" : "hidden"}
+     mt-4 flex
+    w-full flex-col gap-3
+    `}
+    >
+      {replies &&
+        replies?.map((reply: any) => {
           return (
-            <ReplyComment 
-            key={reply._id}
-        _id={reply._id}
-        uname={reply.uname}
-        message={reply.message}
-        likes={reply.likes}
-        time={reply.time}
-        />
+            <ReplyComment
+              key={reply._id}
+              _id={reply._id}
+              uname={reply.uname}
+              message={reply.message}
+              likes={reply.likes}
+              time={reply.time}
+            />
           );
-        })
-        
-      }        
+        })}
     </div>
-  )
-}
+  );
+};
 
-export default ReplyCommentList
+export default ReplyCommentList;

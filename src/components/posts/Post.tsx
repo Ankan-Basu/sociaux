@@ -1,3 +1,5 @@
+import { TRPCError } from "@trpc/server";
+import { TRPCErrorResponse } from "@trpc/server/rpc";
 import React, { FC, useContext, useEffect, useState } from "react";
 
 import {
@@ -11,6 +13,7 @@ import {
   FiLogOut,
   FiUser,
 } from "react-icons/fi";
+import { api } from "~/utils/api";
 
 import { PostFeedContext } from "../postFeed/postFeed";
 
@@ -41,6 +44,9 @@ const Post: FC<IPostProps> =({
 
   const [liked, setLiked] = useState<boolean>(false);
 
+  const likeMutation = api.likes.likePost.useMutation();
+  const unlikeMutation = api.likes.unlikePost.useMutation();
+
   const reactorUname = "hu_tao"; //change later
 
   useEffect(() => {
@@ -58,55 +64,26 @@ const Post: FC<IPostProps> =({
   }, []);
 
   const handleLike = async () => {
-    // console.log(_id);
-
-    const reqBody = {
-      uname: reactorUname,
-      postId: _id,
-    };
-
-    const url = "/api/like/post";
-
-    const resp = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(reqBody),
-    });
-
-    if (resp.status === 201) {
-      setLiked(true);
-    }
-    const data = await resp.json();
-
-    console.log(data);
+    try {
+      const x = await likeMutation.mutateAsync({postId: _id, uname: reactorUname})
+      console.log(x);
+      
+        setLiked(true);
+    } catch (err: TRPCError) {
+      console.log(err.message);
+    } 
   };
 
   const handleUnlike = async () => {
-    // console.log(_id);
+    try {
 
-    const reqBody = {
-      uname: reactorUname,
-      postId: _id,
-    };
-
-    const url = "/api/like/post";
-
-    const resp = await fetch(url, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(reqBody),
-    });
-
-    if (resp.status === 200) {
-      setLiked(false);
+      const x = await unlikeMutation.mutateAsync({postId: _id, uname: reactorUname})
+      console.log(x);
+      
+        setLiked(false);
+    } catch (e: TRPCError) {
+      console.log(e);      
     }
-    const data = await resp.json();
-
-    console.log(data);
   };
 
   const toggleLike = () => {

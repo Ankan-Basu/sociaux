@@ -1,7 +1,7 @@
 import { FC, FormEvent, useContext, useState } from "react";
 import { FiSend, FiX } from "react-icons/fi";
+import { api } from "~/utils/api";
 import { CommentContext, ReplyingContext } from "./commentScreen";
-
 
 interface ICommentInputProps {
   postId: string;
@@ -9,16 +9,26 @@ interface ICommentInputProps {
   replyingTo?: string;
 }
 
-
 const CommentInput: FC<ICommentInputProps> = ({ postId, customCssClass }) => {
   const [inp, setInp] = useState<string>("");
 
   const { commentList, setCommentList } = useContext(CommentContext);
 
-  const { setIsReplying, isReplying, replyingTo, setReplyingTo, replyList, setReplyList } = useContext(ReplyingContext);
+  const {
+    setIsReplying,
+    isReplying,
+    replyingTo,
+    setReplyingTo,
+    replyList,
+    setReplyList,
+  } = useContext(ReplyingContext);
 
   console.log("Comment Input postId", postId);
 
+  let commentMutation = api.comments.postComment.useMutation();
+  let replyCommentMutation = api.replyComments.postReplyComment.useMutation();
+
+  const {data, isLoading, isError, refetch} = api.comments.getComments.useQuery({postId: postId});
 
 
   // post comment
@@ -32,120 +42,80 @@ const CommentInput: FC<ICommentInputProps> = ({ postId, customCssClass }) => {
     const uname = "hu_tao"; //change later
     const message = inp;
 
-    const obj = { uname, postId, message };
 
-    const url = `/api/comments/${postId}`;
-
-    setInp("");
-
-    const resp = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        // 'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: JSON.stringify(obj),
-    });
-
-    const data = await resp.json();
-
+    let data = await commentMutation.mutateAsync({message,postId,uname});
     console.log(data);
+    setInp('');
 
-    setInp("");
-
-    //Again GET request
-    const urlGet = `/api/comments/${postId}`;
-
-    const resp2 = await fetch(urlGet);
-
-    const data2 = await resp2.json();
-
-    // console.log(data);
-
+    let {data: data2} = await refetch();
     setCommentList(data2);
+    
   };
 
-
-interface IReplyBody {
+  interface IReplyBody {
     uname: string;
     parenCommId: string;
     message: string;
-}
+  }
 
-// reply to comment
+  // reply to comment
   const handleReply = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+
     const uname = "paimon"; //change later
     const message = inp;
 
-    const obj: IReplyBody = { uname, parenCommId: replyingTo._id, message };
-
-    const url = `/api/comments/reply/`;
-
-    setInp("");
-
-    const resp = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        // 'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: JSON.stringify(obj),
-    });
-
-    const data = await resp.json();
-
-    console.log(data);
-
-    setInp("");
+    
+    let x = await replyCommentMutation.mutateAsync({message, parenCommId: replyingTo._id, uname});
+    setInp('');
+    
     // setReplyingTo(null);
-    setReplyList({...replyList});
-  }
+    setReplyList({ ...replyList });
 
+
+  };
 
   const handleClick = (e: FormEvent<HTMLFormElement>) => {
-    if(isReplying) {
-        handleReply(e);
+    if (isReplying) {
+      handleReply(e);
     } else {
-        handleSubmit(e);
+      handleSubmit(e);
     }
-  }
-
+  };
 
   return (
     <div
       className={`
         ${customCssClass + " "}
-        bg-white pb-1
-        w-full sm:w-100 pt-2 p-2
-        flex flex-col m-auto
-        -left-1 -right-1
-        //border-2 //border-solid //border-black
+        //border-2 //border-solid
+        //border-black -left-1 -right-1 m-auto
+        flex w-full flex-col
+        bg-white p-2
+        pb-1 pt-2 sm:w-100
         `}
     >
       <div
         className={`
             ${isReplying ? "block" : "hidden"}
             
-            flex justify-between items-center
+            flex items-center justify-between
             px-2`}
       >
         <span>
-        Replying to
-        {" " + replyingTo?.uname}
-        ...
+          Replying to
+          {" " + replyingTo?.uname}
+          ...
         </span>
-        <span 
-        onClick={()=>{
-          setReplyingTo(null);
-          setIsReplying(false);
-        }}
-        
-        className="
+        <span
+          onClick={() => {
+            setReplyingTo(null);
+            setIsReplying(false);
+          }}
+          className="
         active:text-primary
         lg:hover:text-primary lg:active:text-primary2
-        ">
+        "
+        >
           <FiX />
         </span>
       </div>
@@ -158,20 +128,20 @@ interface IReplyBody {
             setInp(e.target.value);
           }}
           className="
-        bg-secondary2
-        p-2 rounded-lg
         flex-1
+        rounded-lg bg-secondary2
+        p-2
         "
         ></input>
         <button
           type="submit"
           className={`
-        bg-primary 
+        rounded-lg 
+        bg-primary p-3
         active:bg-primary2 active:text-white
-        lg:hover:bg-primary2 lg:active:bg-primary
-        lg:hover:text-white lg:active:text-black
-        p-3
-        rounded-lg
+        lg:hover:bg-primary2 lg:hover:text-white
+        lg:active:bg-primary
+        lg:active:text-black
         `}
         >
           <FiSend />
