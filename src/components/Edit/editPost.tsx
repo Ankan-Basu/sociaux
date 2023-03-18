@@ -11,13 +11,8 @@ import { api } from "~/utils/api";
 import { Button } from "../modal/Modal";
 import { PostEditContext } from "../postFeed/postFeed";
 
-interface IEditPostProps {
-  uname: string;
-  message: string;
-  privacy: number;
-  _id: string;
-}
-const EditPost: FC<IEditPostProps> = ({ uname, message, privacy, _id }) => {
+
+const EditPost: FC = ({}) => {
   let mode = ""; //change later
 
   const editPostMutation = api.posts.modifyPost.useMutation();
