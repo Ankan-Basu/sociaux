@@ -6,10 +6,11 @@ import { CommentContext } from './commentScreen';
 
 interface ICommentListProps {
     postId: string;
+    refresh: Object;
     customCssClass?: string;
 }
 
-const CommentList: FC<ICommentListProps> = ({ postId, customCssClass }) => {
+const CommentList: FC<ICommentListProps> = ({ postId, refresh, customCssClass }) => {
     const router = useRouter();
     console.log('Comment list component', postId);
     

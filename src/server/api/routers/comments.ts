@@ -48,6 +48,45 @@ export const commentsRouter = createTRPCRouter({
       }
     }),
 
+    editComment: publicProcedure
+    .input(
+      z.object({ uname: z.string(), commentId: z.string(), message: z.string() })
+    )
+    .mutation(async ({ input }) => {
+      dbConnect();
+
+      try {
+        const comment: HydratedDocument<IComment> | null = await CommentModel.findOne(
+          {_id: input.commentId}
+        );
+        if (comment) {
+          // return dbResp;
+          comment.message = input.message;
+
+          try {
+            const dbResp = await comment.save();
+            return dbResp;
+            
+          } catch (err) {
+            throw new TRPCError({
+              code: "INTERNAL_SERVER_ERROR",
+              message: "Internal Server Error",
+            });
+          }
+        } else {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Not found",
+          });
+        }
+      } catch (err) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Not found",
+        });
+      }
+    }),
+
   deleteComment: publicProcedure
     .input(z.object({ commentId: z.string() }))
     .mutation(async ({ input }) => {

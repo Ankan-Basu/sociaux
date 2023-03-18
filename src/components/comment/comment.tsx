@@ -1,6 +1,7 @@
 import React, { createContext, FC, useContext, useEffect, useState } from 'react'
 import {FaEllipsisV, FaEllipsisH} from 'react-icons/fa';
-import { ReplyingContext } from './commentScreen';
+import { boolean } from 'zod';
+import { EditCommentContext, ReplyingContext } from './commentScreen';
 import ReplyComment from './replyComment';
 import ReplyCommentList from './replyCommentList';
 
@@ -26,6 +27,8 @@ const Comment: FC<ICommentProps> = (
 
     const {setIsReplying, setReplyingTo, replyingTo} = useContext(ReplyingContext);
 
+    const {setShowCommentEditModal, showCommentEditModal, currEditComment, setCurrEditComment,
+        isReplyComment, setIsReplyComment} = useContext(EditCommentContext);
 
     const reactorUname = 'hu_tao'; //change later
     useEffect(() => {
@@ -122,6 +125,15 @@ const Comment: FC<ICommentProps> = (
         }
     }
 
+    const handleEdit = () => {
+        console.log(_id);
+        setShowCommentEditModal((currState: boolean) => !currState);
+        setCurrEditComment({
+            _id, uname, message
+        });
+        setIsReplyComment(false);
+    }
+
   return (
     <>
     <div className={`flex 
@@ -145,8 +157,18 @@ const Comment: FC<ICommentProps> = (
                         {uname}
                         </h4></span>
                     </div>
-                    <div>
+                    <div className='flex gap-2'>
+                        <span
+                        onClick={handleEdit}
+                        >
+                        Edit
+                        </span>
+                        <span>
+                            Delete
+                        </span>
+                        <span>
                         <FaEllipsisH />
+                        </span>
                     </div>
                 </div>
                 <div className='p-2 pt-0'>

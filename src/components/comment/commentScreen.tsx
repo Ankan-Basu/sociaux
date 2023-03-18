@@ -1,9 +1,11 @@
 import React, { createContext, FC, useState } from 'react'
+import EditComment from '../Edit/editComment';
 import CommentInput from './commentInput'
 import CommentList from './commentList'
 
 export const CommentContext = createContext<any>('null');
 export const ReplyingContext = createContext<any>(null);
+export const EditCommentContext = createContext<any>(null);
 
 
 interface IReplyingTo {
@@ -21,6 +23,13 @@ const CommentScreen: FC<ICommentScreenProps> = ({postId}) => {
   const [isReplying, setIsReplying] = useState<boolean>(false);
   const [replyingTo, setReplyingTo] = useState<IReplyingTo | null>(null);
   const [replyList, setReplyList] = useState<Object>({val: 1});
+
+  const [showCommentEditModal, setShowCommentEditModal] = useState<boolean>(false);
+  const [isReplyComment, setIsReplyComment] = useState<boolean>(false);
+
+  const [currEditComment, setCurrEditComment] = useState(null);
+
+  const [refreshComments, setRefreshComments] = useState({val: 1})
 
   console.log('comment screen here', postId);
   
@@ -40,8 +49,17 @@ const CommentScreen: FC<ICommentScreenProps> = ({postId}) => {
           isReplying, setIsReplying, 
           replyingTo, setReplyingTo,
           replyList, setReplyList}}>
+            <EditCommentContext.Provider
+            value={{
+              showCommentEditModal,
+          setShowCommentEditModal,
+              currEditComment, setCurrEditComment,
+            isReplyComment, setIsReplyComment, setRefreshComments
+            }}
+            >
         <CommentList
         postId={postId}
+        refresh={refreshComments}
         customCssClass='pb-14'
         />
         <CommentInput 
@@ -51,6 +69,8 @@ const CommentScreen: FC<ICommentScreenProps> = ({postId}) => {
         // /border-2 /border-solid /border-black
         '
         />
+        <EditComment />
+        </EditCommentContext.Provider>
         </ReplyingContext.Provider>
         </CommentContext.Provider>
 
