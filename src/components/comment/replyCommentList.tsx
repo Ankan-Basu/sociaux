@@ -15,7 +15,7 @@ const ReplyCommentList: FC<IReplyCommentListProps> = ({
   // console.log('Reply to', parenCommId);
 
   const [replies, setReplies] = useState<Array<Object>>([]);
-  const { replyList } = useContext(ReplyingContext);
+  const { refreshReplies } = useContext(ReplyingContext);
 
   let { data, refetch } = api.replyComments.getComments.useQuery({
     parenCommId,
@@ -38,7 +38,7 @@ const ReplyCommentList: FC<IReplyCommentListProps> = ({
     // return () => {
     //   setReplies([]);
     // }
-  }, [display, replyList]);
+  }, [display, refreshReplies]);
 
   const getReplyComments = async () => {
  

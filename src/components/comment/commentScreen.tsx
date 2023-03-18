@@ -22,7 +22,7 @@ const CommentScreen: FC<ICommentScreenProps> = ({postId}) => {
   const [commentList, setCommentList] = useState<Array<Object>>([]);
   const [isReplying, setIsReplying] = useState<boolean>(false);
   const [replyingTo, setReplyingTo] = useState<IReplyingTo | null>(null);
-  const [replyList, setReplyList] = useState<Object>({val: 1});
+  const [refreshReplies, setRefreshReplies] = useState<Object>({val: 1});
 
   const [showCommentEditModal, setShowCommentEditModal] = useState<boolean>(false);
   const [isReplyComment, setIsReplyComment] = useState<boolean>(false);
@@ -48,15 +48,19 @@ const CommentScreen: FC<ICommentScreenProps> = ({postId}) => {
         <ReplyingContext.Provider value={{
           isReplying, setIsReplying, 
           replyingTo, setReplyingTo,
-          replyList, setReplyList}}>
+          refreshReplies, setRefreshComments, setRefreshReplies}}>
+            
+            
             <EditCommentContext.Provider
             value={{
               showCommentEditModal,
           setShowCommentEditModal,
               currEditComment, setCurrEditComment,
-            isReplyComment, setIsReplyComment, setRefreshComments
+            isReplyComment, setIsReplyComment, refreshReplies, setRefreshReplies, setRefreshComments
             }}
             >
+
+
         <CommentList
         postId={postId}
         refresh={refreshComments}

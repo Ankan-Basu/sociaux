@@ -10,19 +10,33 @@ import {
 import { api } from "~/utils/api";
 import { EditCommentContext } from "../comment/commentScreen";
 import { Button } from "../modal/Modal";
-import { PostEditContext } from "../postFeed/postFeed";
-
 
 const EditComment: FC = () => {
   let mode = ""; //change later
 
   const editCommentMutation = api.comments.editComment.useMutation();
 
-  const {showCommentEditModal, setShowCommentEditModal, currEditComment, setCurrEditComment, setRefreshComments, refreshComments, isReplyComment, setIsReplyComment} = useContext(EditCommentContext);
+  const editReplyCommentMutation =
+    api.replyComments.editReplyComment.useMutation();
 
-  const [commentMessage, setCommentMessage] = useState(currEditComment?.message);
+  const {
+    showCommentEditModal,
+    setShowCommentEditModal,
+    currEditComment,
+    setCurrEditComment,
+    setRefreshComments,
+    refreshComments,
+    isReplyComment,
+    setIsReplyComment,
+    refreshReplies,
+    setRefreshReplies,
+  } = useContext(EditCommentContext);
 
+  const [commentMessage, setCommentMessage] = useState(
+    currEditComment?.message
+  );
 
+  
   useEffect(() => {
     // console.log("use Effect", currEditPost);
 
@@ -39,6 +53,8 @@ const EditComment: FC = () => {
     // setPostMessage("");
     // setCurrEditPost(null);
     setShowCommentEditModal(false);
+    setCurrEditComment(null);
+    setCommentMessage("");
   };
 
   const handlePost = async () => {
@@ -48,29 +64,40 @@ const EditComment: FC = () => {
     }
 
     try {
-        if (isReplyComment) {
+      if (isReplyComment) {
+        const x = await editReplyCommentMutation.mutateAsync({
+          message: commentMessage,
+          uname: currEditComment.uname,
+          replyCommId: currEditComment._id,
+        });
+        console.log(x);
+        setRefreshReplies((currState: Object) => {
+          return { ...currState };
+        });
+      } else {
+        console.log(currEditComment.uname);
 
-        } else {
-            console.log(currEditComment.uname);
-            
-            const x = await editCommentMutation.mutateAsync({commentId: currEditComment._id, uname: currEditComment.uname, message: commentMessage})
-            // console.log(x);
+        const x = await editCommentMutation.mutateAsync({
+          commentId: currEditComment._id,
+          uname: currEditComment.uname,
+          message: commentMessage,
+        });
+        // console.log(x);
 
-            setRefreshComments({...refreshComments});
-        }
+        setRefreshComments({ ...refreshComments });
+      }
 
-        // or better get uname from useSession
-        handleClose();
+      // or better get uname from useSession
+      handleClose();
     } catch (err) {
-        console.log(err);
-        
+      console.log(err);
     }
   };
 
   return (
     <div
       className={`
-      ${showCommentEditModal?'flex': 'hidden'}
+      ${showCommentEditModal ? "flex" : "hidden"}
       fixed top-0 left-0
     z-60
     h-screen w-screen items-center justify-center
@@ -90,7 +117,10 @@ const EditComment: FC = () => {
             ${mode === "mobile" ? "mt-4" : "mt-1"} 
             `}
         >
-          <span onClick={handleClose} className="cursor-pointer text-primary mb-2">
+          <span
+            onClick={handleClose}
+            className="mb-2 cursor-pointer text-primary"
+          >
             <FiX />
           </span>
         </div>

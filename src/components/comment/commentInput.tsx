@@ -19,8 +19,7 @@ const CommentInput: FC<ICommentInputProps> = ({ postId, customCssClass }) => {
     isReplying,
     replyingTo,
     setReplyingTo,
-    replyList,
-    setReplyList,
+    refreshReplies, setRefreshReplies
   } = useContext(ReplyingContext);
 
   console.log("Comment Input postId", postId);
@@ -70,7 +69,7 @@ const CommentInput: FC<ICommentInputProps> = ({ postId, customCssClass }) => {
     setInp('');
     
     // setReplyingTo(null);
-    setReplyList({ ...replyList });
+    setRefreshReplies({ ...refreshReplies });
 
 
   };

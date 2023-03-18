@@ -1,6 +1,7 @@
-import React, { FC } from "react";
+import React, { FC, useContext } from "react";
 import { FaEllipsisH } from "react-icons/fa";
 import Comment from "./comment";
+import { EditCommentContext } from "./commentScreen";
 
 interface IReplyCommentProps {
     _id: string;
@@ -11,7 +12,22 @@ interface IReplyCommentProps {
 }
 
 const ReplyComment: FC<IReplyCommentProps> = ({_id, uname, message, likes, time}) => {
-  return (
+  const {showCommentEditModal,
+    setShowCommentEditModal,
+        currEditComment, setCurrEditComment,
+      isReplyComment, setIsReplyComment, setRefreshComments} = useContext(EditCommentContext);
+    
+    
+    const handleEdit = () => {
+        console.log(_id);
+        setShowCommentEditModal(true);
+        setCurrEditComment({
+            _id, uname, message
+        });
+        setIsReplyComment(true);    
+    }
+  
+    return (
     <div className='flex 
     //w-80 w-full
     lg:w-98'>
@@ -32,8 +48,13 @@ const ReplyComment: FC<IReplyCommentProps> = ({_id, uname, message, likes, time}
                         {uname}
                         </h4></span>
                     </div>
-                    <div>
+                    <div className="flex gap-1">
+                        <span onClick={handleEdit}>
+                            Edit</span>
+                        <span>Delete</span>
+                        <span>
                         <FaEllipsisH />
+                        </span>
                     </div>
                 </div>
                 <div className='p-2 pt-0'>
