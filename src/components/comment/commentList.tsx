@@ -25,6 +25,10 @@ const CommentList: FC<ICommentListProps> = ({ postId, refresh, customCssClass })
     if (data) {
         setCommentList(data);
     }
+
+    useEffect(() => {
+        refetch();
+    }, [refresh])
     
     if(isLoading) {
         return (
