@@ -3,6 +3,7 @@ import { RESPONSE_LIMIT_DEFAULT } from 'next/dist/server/api-utils';
 import React, { FC, useEffect, useState } from 'react'
 // import { FaShare, FaLock, FaGlobe, FaEllipsisV, FaEllipsisH, FaTrash, FaRegTimesCircle, FaImage, FaVideo } from 'react-icons/fa';
 import { FiTrash, FiArrowRight, FiCornerUpRight, FiX, FiImage, FiVideo } from "react-icons/fi";
+import { api } from '~/utils/api';
 
 
 interface PostBody {
@@ -23,9 +24,11 @@ const Modal: FC<IModalProps> = ({display, customCss, setShowModal, mode='mobile'
 
     const [postMessage, setPostMessage] = useState<string>('');
 
-    console.log(mode);
+    // console.log(mode);
 
     const session = useSession();
+
+    const postMutation = api.posts.createPost.useMutation();
 
 
     const handleClose = () => {
@@ -49,26 +52,36 @@ const Modal: FC<IModalProps> = ({display, customCss, setShowModal, mode='mobile'
             
         }
 
-        const postBody: PostBody = 
-        {uname, message: postMessage, privacy};
+        // const postBody: PostBody = 
+        // {uname, message: postMessage, privacy};
 
-        const url = '/api/posts';
+        // const url = '/api/posts';
 
-        const resp = await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(postBody)
-        });
-        setPostMessage('');
+        // const resp = await fetch(url, {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify(postBody)
+        // });
+        // setPostMessage('');
 
-        if (resp.status === 201) {
-            const data = await resp.json();
+        // if (resp.status === 201) {
+        //     const data = await resp.json();
 
-            console.log(data);
-        } else {
-            //TODO
+        //     console.log(data);
+        // } else {
+        //     //TODO
+        // }
+
+        try {
+            const x = await postMutation.mutateAsync({uname, message: postMessage, privacy})
+            console.log(x);
+            setPostMessage('')
+            
+        } catch(err) {
+            console.log(err);
+            
         }
 
     }
