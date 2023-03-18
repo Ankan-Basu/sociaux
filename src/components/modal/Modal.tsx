@@ -159,12 +159,12 @@ function DropDown() {
     )
 }
 
-interface IButtonProps {
+export interface IButtonProps {
     children: React.ReactNode; 
     type?: string;
 }
 
-const Button: FC<IButtonProps> = ({children, type}) => {
+export const Button: FC<IButtonProps> = ({children, type}) => {
     return (
         <button className={`p-1 rounded-md ${type==='normal'?'bg-primary':'bg-deactiv'} flex w-full justify-center items-center gap-2`}>
             {children}

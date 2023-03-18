@@ -15,7 +15,7 @@ import {
 } from "react-icons/fi";
 import { api } from "~/utils/api";
 
-import { PostFeedContext } from "../postFeed/postFeed";
+import { PostEditContext, PostFeedContext } from "../postFeed/postFeed";
 
 
 interface IPostProps {
@@ -46,6 +46,11 @@ const Post: FC<IPostProps> =({
 
   const likeMutation = api.likes.likePost.useMutation();
   const unlikeMutation = api.likes.unlikePost.useMutation();
+
+  const {showEditModal,
+    setShowEditModal,
+    currEditPost,
+    setCurrEditPost} = useContext(PostEditContext);
 
   const reactorUname = "hu_tao"; //change later
 
@@ -95,11 +100,14 @@ const Post: FC<IPostProps> =({
   };
 
   let handleExpanded = undefined;
+  // let handleEdit = undefined;
 
   try {
     // when opened in modal has access to context
     const { showExpanded, setShowExpanded, setCurrPost } =
       useContext(PostFeedContext);
+
+      
 
       //shows the comments
     handleExpanded = () => {
@@ -123,6 +131,21 @@ const Post: FC<IPostProps> =({
     //when opened in page. no need to get context
   }
 
+  const handleEdit = () => {
+    setShowEditModal(true);
+    console.log(message);
+    
+    setCurrEditPost({
+      uname,
+      message,
+      //time,
+      privacy,
+      //comments,
+      //likes,
+       _id,
+    })
+  }
+
   return (
     <div
       className={`
@@ -138,7 +161,9 @@ const Post: FC<IPostProps> =({
           <DropDown />
         </div>
 
-        <div className="flex gap-2 text-primary">
+        <div 
+        onClick={handleEdit}
+        className="flex gap-2 text-primary">
           <span>
             <FiEdit3 />
           </span>

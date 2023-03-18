@@ -27,6 +27,11 @@ module.exports = {
         'secondary2': '#ffe3b3',
         'deactiv': '#e2e8f0'
       },
+      zIndex: {
+        60: '60',
+        70: '70',
+        80: '80'
+      }
     },
     
   },

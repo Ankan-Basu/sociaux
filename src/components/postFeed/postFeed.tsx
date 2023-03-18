@@ -8,15 +8,23 @@ import React, {
   useState,
 } from "react";
 import { api } from "~/utils/api";
+import EditPost from "../Edit/editPost";
 import Post from "../posts/Post";
 import PostScreen from "../posts/postScreen";
 
 export const PostFeedContext = createContext<any>(null);
 
+export const PostEditContext = createContext<any>(null);
+
 const PostFeed: FC = () => {
   const [posts, setPosts] = useState<Array<Object>>([]);
   const [showExpanded, setShowExpanded] = useState<boolean>(false);
   const [currPost, setCurrPost] = useState(null);
+
+  const [showEditModal, setShowEditModal] = useState<boolean>(false);
+  const [currEditPost, setCurrEditPost] = useState(null);
+
+  const [reload, setReload] = useState({reolad: 1});
 
   // const {showExpanded} = useContext(PostFeedContext)
 
@@ -40,7 +48,7 @@ const PostFeed: FC = () => {
         }
       })();
     }
-  }, [router]);
+  }, [router, reload]);
 
   return (
     <div className="m-auto rounded-lg p-2 lg:w-101">
@@ -53,6 +61,16 @@ const PostFeed: FC = () => {
           setCurrPost,
         }}
       >
+
+        <PostEditContext.Provider
+        value={{
+          showEditModal,
+          setShowEditModal,
+          currEditPost,
+          setCurrEditPost,
+          setReload
+        }}
+        >
         {/* <PostFeedContextProvider> */}
         {posts.map((post: any) => {
           return (
@@ -70,7 +88,9 @@ const PostFeed: FC = () => {
           );
         })}
         <PostScreen display={showExpanded} />
+        <EditPost />
         {/* </PostFeedContextProvider> */}
+        </PostEditContext.Provider>
       </PostFeedContext.Provider>
     </div>
   );
