@@ -6,6 +6,7 @@ import { postsRouter } from "./routers/posts";
 import { commentsRouter } from "./routers/comments";
 import { replyCommentsRouter } from "./routers/replyComments";
 import { likesRouter } from "./routers/likes";
+import { signupRouter } from "./routers/signup";
 
 /**
  * This is the primary router for your server.
@@ -14,6 +15,7 @@ import { likesRouter } from "./routers/likes";
  */
 export const appRouter = createTRPCRouter({
   example: exampleRouter,
+  signup: signupRouter,
   users: usersRouter,
   notifs: notifsRouter,
   posts: postsRouter,

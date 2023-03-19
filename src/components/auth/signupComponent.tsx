@@ -14,6 +14,7 @@ import ValidatedOutput from "../util/ValidatedOutput";
 
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useRouter } from "next/router";
+import { api } from "~/utils/api";
 
 const SignupComponent: FC = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -32,6 +33,8 @@ const SignupComponent: FC = () => {
   const [passwordInvalid, setPasswordInvalid] = useState<boolean>(false);
 
   const router = useRouter();
+
+  const signupMutation = api.signup.signup.useMutation();
 
   const handleLoginSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -76,19 +79,28 @@ const SignupComponent: FC = () => {
 
     // console.log(obj2);
 
-    const url = "/api/signup";
-    const resp = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(obj2),
+    // const url = "/api/signup";
+    // const resp = await fetch(url, {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(obj2),
+    // });
+
+    // const data = await resp.json();
+
+    // console.log(data);
+
+    const resp = await signupMutation.mutateAsync({
+      email: obj2.email,
+      name: obj2.name,
+      uname: obj2.uname,
+      password: obj2.password
     });
 
-    const data = await resp.json();
-
-    console.log(data);
-
+    console.log(resp);
+    
     if (resp.status === 201) {
       //do login and redirect
 
