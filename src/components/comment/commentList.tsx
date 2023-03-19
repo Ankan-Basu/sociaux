@@ -1,8 +1,8 @@
 import { useRouter } from 'next/router';
 import React, { FC, useContext, useEffect, useState } from 'react'
+import { CommentContext } from '~/contexts/commentContext';
 import { api } from '~/utils/api';
 import Comment, { ICommentProps } from './comment'
-import { CommentContext } from './commentScreen';
 
 interface ICommentListProps {
     postId: string;

@@ -1,9 +1,9 @@
 import React, { createContext, FC, useState } from 'react'
+import CommentContextProvider from '~/contexts/commentContext';
 import EditComment from '../edit/editComment';
 import CommentInput from './commentInput'
 import CommentList from './commentList'
 
-export const CommentContext = createContext<any>('null');
 export const ReplyingContext = createContext<any>(null);
 export const EditCommentContext = createContext<any>(null);
 
@@ -19,7 +19,6 @@ interface ICommentScreenProps {
 
 const CommentScreen: FC<ICommentScreenProps> = ({postId}) => {
 
-  const [commentList, setCommentList] = useState<Array<Object>>([]);
   const [isReplying, setIsReplying] = useState<boolean>(false);
   const [replyingTo, setReplyingTo] = useState<IReplyingTo | null>(null);
   const [refreshReplies, setRefreshReplies] = useState<Object>({val: 1});
@@ -44,7 +43,7 @@ const CommentScreen: FC<ICommentScreenProps> = ({postId}) => {
         </h3>
         </div>
 
-        <CommentContext.Provider value={{commentList, setCommentList}} >
+        <CommentContextProvider>
         <ReplyingContext.Provider value={{
           isReplying, setIsReplying, 
           replyingTo, setReplyingTo,
@@ -76,7 +75,7 @@ const CommentScreen: FC<ICommentScreenProps> = ({postId}) => {
         <EditComment />
         </EditCommentContext.Provider>
         </ReplyingContext.Provider>
-        </CommentContext.Provider>
+        </CommentContextProvider>
 
 
     </div>
