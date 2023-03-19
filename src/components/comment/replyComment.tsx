@@ -1,21 +1,27 @@
 import React, { FC, useContext } from "react";
 import { FaEllipsisH } from "react-icons/fa";
+import { api } from "~/utils/api";
 import Comment from "./comment";
 import { EditCommentContext } from "./commentScreen";
 
 interface IReplyCommentProps {
     _id: string;
+    parenCommId: string;
     uname: string;
     message: string;
     likes: Array<string>;
     time?: Date;
 }
 
-const ReplyComment: FC<IReplyCommentProps> = ({_id, uname, message, likes, time}) => {
+const ReplyComment: FC<IReplyCommentProps> = ({_id, parenCommId, uname, message, likes, time}) => {
   const {showCommentEditModal,
     setShowCommentEditModal,
         currEditComment, setCurrEditComment,
-      isReplyComment, setIsReplyComment, setRefreshComments} = useContext(EditCommentContext);
+      isReplyComment, setIsReplyComment, setRefreshComments,
+      refreshReplies,
+      setRefreshReplies} = useContext(EditCommentContext);
+
+      const deleteReplyMutation = api.replyComments.deleteReplyComment.useMutation();
     
     
     const handleEdit = () => {
@@ -25,6 +31,16 @@ const ReplyComment: FC<IReplyCommentProps> = ({_id, uname, message, likes, time}
             _id, uname, message
         });
         setIsReplyComment(true);    
+    }
+
+    const handleDelete = async () => {
+        try {
+            await deleteReplyMutation.mutateAsync({parenCommId, replyCommId: _id});
+            setRefreshReplies({...refreshReplies});
+        } catch(err) {
+            console.log(err);
+            
+        }
     }
   
     return (
@@ -51,7 +67,9 @@ const ReplyComment: FC<IReplyCommentProps> = ({_id, uname, message, likes, time}
                     <div className="flex gap-1">
                         <span onClick={handleEdit}>
                             Edit</span>
-                        <span>Delete</span>
+                        <span
+                        onClick={handleDelete}
+                        >Delete</span>
                         <span>
                         <FaEllipsisH />
                         </span>

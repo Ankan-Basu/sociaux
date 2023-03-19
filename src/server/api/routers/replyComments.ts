@@ -110,7 +110,7 @@ export const replyCommentsRouter = createTRPCRouter({
   deleteReplyComment: publicProcedure
     .input(
       z.object({
-        uname: z.string(),
+        // uname: z.string(),
         parenCommId: z.string(),
         replyCommId: z.string(),
       })

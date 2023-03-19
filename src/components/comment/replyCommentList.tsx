@@ -78,6 +78,7 @@ const ReplyCommentList: FC<IReplyCommentListProps> = ({
           return (
             <ReplyComment
               key={reply._id}
+              parenCommId={parenCommId}
               _id={reply._id}
               uname={reply.uname}
               message={reply.message}
