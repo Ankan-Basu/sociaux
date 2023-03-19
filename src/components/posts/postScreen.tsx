@@ -1,7 +1,7 @@
 import React, { FC, useContext, useEffect } from "react";
 import { FiX } from "react-icons/fi";
+import { PostFeedContext } from "~/contexts/postFeedContext";
 import CommentScreen from "../comment/commentScreen";
-import { PostFeedContext } from "../postFeed/postFeed";
 import Post from "./Post";
 
 interface IPostScreenProps {

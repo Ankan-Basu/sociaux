@@ -1,6 +1,5 @@
 import { TRPCError } from "@trpc/server";
-import { TRPCErrorResponse } from "@trpc/server/rpc";
-import React, { FC, useContext, useEffect, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 
 import {
   FiEdit3,
@@ -14,9 +13,9 @@ import {
   FiUser,
 } from "react-icons/fi";
 import { PostEditContext } from "~/contexts/postEditContext";
+import { PostFeedContext } from "~/contexts/postFeedContext";
 import { api } from "~/utils/api";
 
-import { PostFeedContext } from "../postFeed/postFeed";
 
 
 interface IPostProps {
