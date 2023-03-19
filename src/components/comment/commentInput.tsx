@@ -38,13 +38,17 @@ const CommentInput: FC<ICommentInputProps> = ({ postId, customCssClass }) => {
       return;
     }
 
+    if (!inp) {
+      return;
+    }
+
     const uname = "hu_tao"; //change later
     const message = inp;
-
+    
+    setInp('');
 
     let data = await commentMutation.mutateAsync({message,postId,uname});
     console.log(data);
-    setInp('');
 
     let {data: data2} = await refetch();
     setCommentList(data2);
@@ -61,12 +65,16 @@ const CommentInput: FC<ICommentInputProps> = ({ postId, customCssClass }) => {
   const handleReply = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    if (!inp) {
+      return;
+    }
+
     const uname = "paimon"; //change later
     const message = inp;
 
+    setInp('');
     
     let x = await replyCommentMutation.mutateAsync({message, parenCommId: replyingTo._id, uname});
-    setInp('');
     
     // setReplyingTo(null);
     setRefreshReplies({ ...refreshReplies });
