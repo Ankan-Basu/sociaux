@@ -1,6 +1,7 @@
 import React, { createContext, FC, useContext, useEffect, useState } from 'react'
 import {FaEllipsisV, FaEllipsisH} from 'react-icons/fa';
 import { boolean } from 'zod';
+import { api } from '~/utils/api';
 import { EditCommentContext, ReplyingContext } from './commentScreen';
 import ReplyComment from './replyComment';
 import ReplyCommentList from './replyCommentList';
@@ -21,6 +22,7 @@ const Comment: FC<ICommentProps> = (
 
     console.log('Comment renders', _id);
     
+    const deleteCommentMutation = api.comments.deleteComment.useMutation();
 
     const [liked, setLiked] = useState<boolean>(false);
     const [showReplies, setShowReplies] = useState<boolean>(false);
@@ -28,7 +30,8 @@ const Comment: FC<ICommentProps> = (
     const {setIsReplying, setReplyingTo, replyingTo} = useContext(ReplyingContext);
 
     const {setShowCommentEditModal, showCommentEditModal, currEditComment, setCurrEditComment,
-        isReplyComment, setIsReplyComment} = useContext(EditCommentContext);
+        isReplyComment, setIsReplyComment, setRefreshComments,
+        refreshComments} = useContext(EditCommentContext);
 
     const reactorUname = 'hu_tao'; //change later
     useEffect(() => {
@@ -134,6 +137,16 @@ const Comment: FC<ICommentProps> = (
         setIsReplyComment(false);
     }
 
+    const handleDelete = async () => {
+        try {
+            await deleteCommentMutation.mutateAsync({commentId: _id});
+            setRefreshComments({...refreshComments});
+        } catch(err) {
+            console.log(err);
+            
+        }
+    }
+
   return (
     <>
     <div className={`flex 
@@ -163,7 +176,9 @@ const Comment: FC<ICommentProps> = (
                         >
                         Edit
                         </span>
-                        <span>
+                        <span
+                        onClick={handleDelete}
+                        >
                             Delete
                         </span>
                         <span>
