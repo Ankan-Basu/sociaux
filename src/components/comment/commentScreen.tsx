@@ -1,5 +1,5 @@
 import React, { createContext, FC, useState } from 'react'
-import EditComment from '../Edit/editComment';
+import EditComment from '../edit/editComment';
 import CommentInput from './commentInput'
 import CommentList from './commentList'
 

@@ -8,7 +8,7 @@ import React, {
   useState,
 } from "react";
 import { api } from "~/utils/api";
-import EditPost from "../Edit/editPost";
+import EditPost from "../edit/editPost";
 import Post from "../posts/Post";
 import PostScreen from "../posts/postScreen";
 

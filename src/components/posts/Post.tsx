@@ -46,11 +46,14 @@ const Post: FC<IPostProps> =({
 
   const likeMutation = api.likes.likePost.useMutation();
   const unlikeMutation = api.likes.unlikePost.useMutation();
+  const deleteMutation = api.posts.deletePost.useMutation();
 
   const {showEditModal,
     setShowEditModal,
     currEditPost,
-    setCurrEditPost} = useContext(PostEditContext);
+    setCurrEditPost,
+    reload, setReload
+  } = useContext(PostEditContext);
 
   const reactorUname = "hu_tao"; //change later
 
@@ -146,6 +149,16 @@ const Post: FC<IPostProps> =({
     })
   }
 
+  const handleDelete = async () => {
+    try {
+      await deleteMutation.mutateAsync({postId: _id});
+      setReload({...reload});
+    } catch(err) {
+      console.log(err);
+      
+    }
+  }
+
   return (
     <div
       className={`
@@ -162,12 +175,15 @@ const Post: FC<IPostProps> =({
         </div>
 
         <div 
-        onClick={handleEdit}
         className="flex gap-2 text-primary">
-          <span>
+          <span
+          onClick={handleEdit}
+          >
             <FiEdit3 />
           </span>
-          <span>
+          <span
+          onClick={handleDelete}
+          >
             <FiTrash />
           </span>
           <span>
