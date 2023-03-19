@@ -1,6 +1,6 @@
 import React, { FC, useContext, useEffect, useState } from "react";
+import { ReplyingContext } from "~/contexts/replyingContext";
 import { api } from "~/utils/api";
-import { ReplyingContext } from "./commentScreen";
 import ReplyComment from "./replyComment";
 
 interface IReplyCommentListProps {

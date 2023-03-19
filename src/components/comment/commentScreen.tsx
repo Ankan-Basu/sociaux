@@ -1,17 +1,14 @@
-import React, { createContext, FC, useState } from 'react'
+import { createContext, FC, useState } from 'react'
 import CommentContextProvider from '~/contexts/commentContext';
+import ReplyingContextProvider from '~/contexts/replyingContext';
 import EditComment from '../edit/editComment';
 import CommentInput from './commentInput'
 import CommentList from './commentList'
 
-export const ReplyingContext = createContext<any>(null);
 export const EditCommentContext = createContext<any>(null);
 
 
-interface IReplyingTo {
-  _id: string; 
-  uname: string
-}
+
 
 interface ICommentScreenProps {
   postId: string;
@@ -19,8 +16,7 @@ interface ICommentScreenProps {
 
 const CommentScreen: FC<ICommentScreenProps> = ({postId}) => {
 
-  const [isReplying, setIsReplying] = useState<boolean>(false);
-  const [replyingTo, setReplyingTo] = useState<IReplyingTo | null>(null);
+  
   const [refreshReplies, setRefreshReplies] = useState<Object>({val: 1});
 
   const [showCommentEditModal, setShowCommentEditModal] = useState<boolean>(false);
@@ -44,11 +40,7 @@ const CommentScreen: FC<ICommentScreenProps> = ({postId}) => {
         </div>
 
         <CommentContextProvider>
-        <ReplyingContext.Provider value={{
-          isReplying, setIsReplying, 
-          replyingTo, setReplyingTo,
-          refreshReplies, setRefreshComments, setRefreshReplies}}>
-            
+            <ReplyingContextProvider additionVals={{refreshReplies, setRefreshComments, setRefreshReplies}}>
             
             <EditCommentContext.Provider
             value={{
@@ -74,7 +66,7 @@ const CommentScreen: FC<ICommentScreenProps> = ({postId}) => {
         />
         <EditComment />
         </EditCommentContext.Provider>
-        </ReplyingContext.Provider>
+        </ReplyingContextProvider>
         </CommentContextProvider>
 
 

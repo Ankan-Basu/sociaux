@@ -1,8 +1,8 @@
 import { FC, FormEvent, useContext, useState } from "react";
 import { FiSend, FiX } from "react-icons/fi";
 import { CommentContext } from "~/contexts/commentContext";
+import { ReplyingContext } from "~/contexts/replyingContext";
 import { api } from "~/utils/api";
-import { ReplyingContext } from "./commentScreen";
 
 interface ICommentInputProps {
   postId: string;
