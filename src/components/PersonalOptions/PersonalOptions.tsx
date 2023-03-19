@@ -1,12 +1,24 @@
-import { signOut } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React, { FC, useState } from 'react'
-import { FiEdit, FiSettings, FiLogOut, FiUser, FiX } from "react-icons/fi";
+import { FiEdit, FiSettings, FiLogOut, FiUser, FiX, FiLogIn } from "react-icons/fi";
 import Modal from '../modal/Modal';
 
 const PersonalOptions: FC = () => {
 
     const [showModal, setShowModal] = useState<boolean>(false);
 
+    const {data, status} = useSession();
+    console.log(data, status);
+
+    
+
+    // if (status === 'unauthenticated') {
+    //     return (
+    //         <div>PeePeePooPooo</div>
+    //     );
+    // }
   return (
     <div 
     className='hidden sticky z-20 lg:z-0 
@@ -21,11 +33,20 @@ const PersonalOptions: FC = () => {
         <div className='lg:hidden flex justify-end p-2 text-lg'>
             <FiX />
         </div>
+        <div className={`
+        ${status==='loading'?'flex': 'hidden'} flex-col gap-3 p-2
+        `}>
+            Loading ...
+        </div>
+        <div 
+        className={`
+        ${status==='authenticated'?'flex':'hidden'} flex-col gap-3
+        `}>
         <div 
         onClick={()=> setShowModal(currState => !currState)}
-        className='
+        className={`
         p-1 flex justify-center gap-1 items-center
-        border-2 border-solid border-primary2 rounded-lg cursor-pointer bg-primary hover:bg-primary2 hover:text-white'>
+        border-2 border-solid border-primary2 rounded-lg cursor-pointer bg-primary hover:bg-primary2 hover:text-white`}>
             <FiEdit /><h4>Add Post</h4>
             {/* <Modal display={true} 
             customCss=''
@@ -48,6 +69,20 @@ const PersonalOptions: FC = () => {
             <FiLogOut />
             <h4>Logout</h4>
         </div>
+        </div>
+
+<Link href='/login'>
+        <div 
+        className={`
+        p-2 
+        ${status==='unauthenticated'?'flex':'hidden'} gap-1 items-center 
+        rounded-lg cursor-pointer hover:bg-primary
+        `}>
+            <FiLogIn />
+            <h4>Login</h4>
+        </div>
+        </Link>
+
 
 
         <div className={`
