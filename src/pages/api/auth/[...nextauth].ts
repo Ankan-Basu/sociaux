@@ -50,7 +50,12 @@ export const authOptions: NextAuthOptions = {
             if (user) {
                 uname = {uname: user.uname};
             }
-            return ({...token, ...uname});
+            console.log('token', token);
+            console.log('uname', uname);
+            
+            
+            // return ({...token, ...uname});
+            return ({uname: token.uname, name: token.name, ...uname});
         },
         async session({ session, token, user}) {
             session.user = token;
