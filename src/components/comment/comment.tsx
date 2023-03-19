@@ -1,8 +1,8 @@
 import React, { createContext, FC, useContext, useEffect, useState } from 'react'
 import {FaEllipsisV, FaEllipsisH} from 'react-icons/fa';
+import { EditCommentContext } from '~/contexts/editCommentContext';
 import { ReplyingContext } from '~/contexts/replyingContext';
 import { api } from '~/utils/api';
-import { EditCommentContext } from './commentScreen';
 import ReplyCommentList from './replyCommentList';
 
 export interface ICommentProps {

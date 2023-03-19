@@ -7,8 +7,8 @@ import {
   FiVideo,
   FiX,
 } from "react-icons/fi";
+import { EditCommentContext } from "~/contexts/editCommentContext";
 import { api } from "~/utils/api";
-import { EditCommentContext } from "../comment/commentScreen";
 import { Button } from "../modal/Modal";
 
 const EditComment: FC = () => {

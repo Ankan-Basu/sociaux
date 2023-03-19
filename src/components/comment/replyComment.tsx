@@ -1,8 +1,8 @@
 import React, { FC, useContext } from "react";
 import { FaEllipsisH } from "react-icons/fa";
+import { EditCommentContext } from "~/contexts/editCommentContext";
 import { api } from "~/utils/api";
 import Comment from "./comment";
-import { EditCommentContext } from "./commentScreen";
 
 interface IReplyCommentProps {
     _id: string;
