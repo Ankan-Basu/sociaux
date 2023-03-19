@@ -13,9 +13,10 @@ import {
   FiLogOut,
   FiUser,
 } from "react-icons/fi";
+import { PostEditContext } from "~/contexts/postEditContext";
 import { api } from "~/utils/api";
 
-import { PostEditContext, PostFeedContext } from "../postFeed/postFeed";
+import { PostFeedContext } from "../postFeed/postFeed";
 
 
 interface IPostProps {

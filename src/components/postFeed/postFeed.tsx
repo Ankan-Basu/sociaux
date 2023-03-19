@@ -1,4 +1,3 @@
-// import PostFeedContextProvider, { PostFeedContext } from '@/contexts/postFeedContext';
 import { useRouter } from "next/router";
 import React, {
   createContext,
@@ -7,6 +6,7 @@ import React, {
   useEffect,
   useState,
 } from "react";
+import PostEditContextProvider from "~/contexts/postEditContext";
 import { api } from "~/utils/api";
 import EditPost from "../edit/editPost";
 import Post from "../posts/Post";
@@ -14,15 +14,12 @@ import PostScreen from "../posts/postScreen";
 
 export const PostFeedContext = createContext<any>(null);
 
-export const PostEditContext = createContext<any>(null);
 
 const PostFeed: FC = () => {
   const [posts, setPosts] = useState<Array<Object>>([]);
   const [showExpanded, setShowExpanded] = useState<boolean>(false);
   const [currPost, setCurrPost] = useState(null);
 
-  const [showEditModal, setShowEditModal] = useState<boolean>(false);
-  const [currEditPost, setCurrEditPost] = useState(null);
 
   const [reload, setReload] = useState({reolad: 1});
 
@@ -62,16 +59,7 @@ const PostFeed: FC = () => {
         }}
       >
 
-        <PostEditContext.Provider
-        value={{
-          showEditModal,
-          setShowEditModal,
-          currEditPost,
-          setCurrEditPost,
-          setReload
-        }}
-        >
-        {/* <PostFeedContextProvider> */}
+        <PostEditContextProvider additionVals={{setReload}}>
         {posts.map((post: any) => {
           return (
             <Post
@@ -89,8 +77,8 @@ const PostFeed: FC = () => {
         })}
         <PostScreen display={showExpanded} />
         <EditPost />
-        {/* </PostFeedContextProvider> */}
-        </PostEditContext.Provider>
+
+        </PostEditContextProvider>
       </PostFeedContext.Provider>
     </div>
   );

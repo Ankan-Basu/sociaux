@@ -7,9 +7,9 @@ import {
   FiVideo,
   FiX,
 } from "react-icons/fi";
+import { PostEditContext } from "~/contexts/postEditContext";
 import { api } from "~/utils/api";
 import { Button } from "../modal/Modal";
-import { PostEditContext } from "../postFeed/postFeed";
 
 
 const EditPost: FC = ({}) => {
@@ -18,7 +18,7 @@ const EditPost: FC = ({}) => {
   const editPostMutation = api.posts.modifyPost.useMutation();
 
   const { showEditModal, setShowEditModal, currEditPost, setCurrEditPost, reload, setReload } =
-    useContext(PostEditContext);
+    useContext(PostEditContext)
 
   const [postMessage, setPostMessage] = useState(currEditPost?.message);
 
