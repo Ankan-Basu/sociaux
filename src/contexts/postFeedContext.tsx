@@ -1,13 +1,9 @@
 import { createContext, FC, useState } from "react";
+import ContextProviderProps from "./contextProps";
 
 export const PostFeedContext = createContext<any>(null);
 
-interface IPostFeedContextProps {
-  children: React.ReactNode;
-  additionVals?: Object;
-}
-
-const PostFeedContextProvider: FC<IPostFeedContextProps> = ({
+const PostFeedContextProvider: FC<ContextProviderProps> = ({
   children,
   additionVals = undefined,
 }) => {
@@ -17,7 +13,7 @@ const PostFeedContextProvider: FC<IPostFeedContextProps> = ({
       value={{
         currPost,
         setCurrPost,
-        ...additionVals
+        ...additionVals,
       }}
     >
       {children}
