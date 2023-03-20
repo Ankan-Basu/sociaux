@@ -1,4 +1,5 @@
 import { TRPCError } from "@trpc/server";
+import { useSession } from "next-auth/react";
 import { FC, useContext, useEffect, useState } from "react";
 
 import {
@@ -55,41 +56,57 @@ const Post: FC<IPostProps> =({
     reload, setReload
   } = useContext(PostEditContext);
 
-  const reactorUname = "hu_tao"; //change later
+  const session = useSession();
+
+  const reactorUname = session.data?.user.uname;
 
   useEffect(() => {
-    console.log("post renders");
+    // console.log("post renders");
+
+    if (!reactorUname) {
+      return;
+    }
 
     if (likes?.includes(reactorUname)) {
-      console.log("post renders includes");
+      // console.log("post renders includes");
 
       setLiked(true);
     } else {
-      console.log("post renders includes NOT");
+      // console.log("post renders includes NOT");
 
       setLiked(false);
     }
-  }, []);
+  }, [reactorUname]);
+
 
   const handleLike = async () => {
+    if (session.status!=='authenticated' || !reactorUname) {
+      console.log('UnAuthenticated');     
+      return;
+    }
+
     try {
       const x = await likeMutation.mutateAsync({postId: _id, uname: reactorUname})
       console.log(x);
       
         setLiked(true);
-    } catch (err: TRPCError) {
+    } catch (err: any) {
       console.log(err.message);
     } 
   };
 
   const handleUnlike = async () => {
-    try {
+    if (session.status!=='authenticated' || !reactorUname) {
+      console.log('UnAuthenticated');     
+      return;
+    }
 
+    try {
       const x = await unlikeMutation.mutateAsync({postId: _id, uname: reactorUname})
       console.log(x);
       
         setLiked(false);
-    } catch (e: TRPCError) {
+    } catch (e: any) {
       console.log(e);      
     }
   };
