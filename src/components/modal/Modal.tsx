@@ -52,28 +52,6 @@ const Modal: FC<IModalProps> = ({display, customCss, setShowModal, mode='mobile'
             
         }
 
-        // const postBody: PostBody = 
-        // {uname, message: postMessage, privacy};
-
-        // const url = '/api/posts';
-
-        // const resp = await fetch(url, {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify(postBody)
-        // });
-        // setPostMessage('');
-
-        // if (resp.status === 201) {
-        //     const data = await resp.json();
-
-        //     console.log(data);
-        // } else {
-        //     //TODO
-        // }
-
         try {
             const x = await postMutation.mutateAsync({uname, message: postMessage, privacy})
             console.log(x);

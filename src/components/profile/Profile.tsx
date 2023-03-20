@@ -14,20 +14,20 @@ const Profile: FC = () => {
   const uname = router.query.uname;
   const { data, isLoading, isError, refetch } = api.users.getUser.useQuery({
     uname: `${router.query.uname}`,
-  });  //change later @
+  });
 
 
-  // useEffect(() => {
-  //   if (router.query.uname) {
-  //   //   console.log(router.query.uname);
-  //     (async () => {
-  //       const x = await refetch();
-  //       // console.log("USE EFFECT\n", x);
-  //       setFullName(x.data?.name);
-  //       setUserName(x.data?.uname);
-  //     })();
-  //   }
-  // }, [router]);
+  useEffect(() => {
+    if (router.query.uname) {
+    //   console.log(router.query.uname);
+      (async () => {
+        const x = await refetch();
+        // console.log("USE EFFECT\n", x);
+        setFullName(x.data?.name);
+        setUserName(x.data?.uname);
+      })();
+    }
+  }, [router]);
 
   return (
     <div
