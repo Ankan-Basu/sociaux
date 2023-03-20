@@ -1,3 +1,4 @@
+import { useSession } from "next-auth/react";
 import { FC, FormEvent, useContext, useState } from "react";
 import { FiSend, FiX } from "react-icons/fi";
 import { CommentContext } from "~/contexts/commentContext";
@@ -30,10 +31,16 @@ const CommentInput: FC<ICommentInputProps> = ({ postId, customCssClass }) => {
 
   const {data, isLoading, isError, refetch} = api.comments.getComments.useQuery({postId: postId});
 
+  const session = useSession();
 
   // post comment
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (session.status !== 'authenticated') {
+      console.log('UNAUTHORISED');
+      return;
+    }
 
     if (!postId) {
       return;
@@ -43,8 +50,13 @@ const CommentInput: FC<ICommentInputProps> = ({ postId, customCssClass }) => {
       return;
     }
 
-    const uname = "hu_tao"; //change later
+    const uname = session.data.user.uname;
     const message = inp;
+
+    if (!uname) {
+      console.log('UNauthorised');
+      return;
+    }
     
     setInp('');
 
@@ -66,12 +78,21 @@ const CommentInput: FC<ICommentInputProps> = ({ postId, customCssClass }) => {
   const handleReply = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    if (session.status !== 'authenticated') {
+      console.log('UNAUThorised');
+      return;
+    }
     if (!inp) {
       return;
     }
 
-    const uname = "paimon"; //change later
+    const uname = session.data.user.uname;
     const message = inp;
+
+    if (!uname) {
+      console.log('Unauthorised');
+      return;
+    }
 
     setInp('');
     
