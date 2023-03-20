@@ -8,6 +8,7 @@ import {
 } from "~/server/api/trpc";
 import CommentModel, { IComment } from "~/server/db/models/Comment";
 import PostModel, { IPost } from "~/server/db/models/Post";
+import ReplyCommentModel, { IReplyComment } from "~/server/db/models/ReplyComment";
 import dbConnect from "~/server/db/mongo";
 
 export const likesRouter = createTRPCRouter({
@@ -156,4 +157,88 @@ export const likesRouter = createTRPCRouter({
         });
       }
     }),
+
+    likeReplyComment: publicProcedure
+    .input(z.object({ uname: z.string(), replyCommentId: z.string() }))
+    .mutation(async ({ input }) => {
+      dbConnect();
+      try {
+        const replyComment: HydratedDocument<IReplyComment> | null =
+          await ReplyCommentModel.findOne({ _id: input.replyCommentId });
+        // console.log(comment);
+        if (!replyComment) {
+          //ie null
+          throw new TRPCError({
+            code: "NOT_FOUND",
+            message: "Comment not found",
+          });
+        } else {
+          if (replyComment.likes.includes(input.uname)) {
+            return {
+              message: "Already Liked",
+            };
+          } else {
+            replyComment.likes.push(input.uname);
+
+            const dbResp = await replyComment.save();
+
+            return dbResp;
+          }
+        }
+      } catch (err) {
+        /**
+         *  we compare string (comment ID) with objwct ID
+         * exception will arise when mongoose won't be able to do typecasting
+         * ie user send wrong lwength or format of string
+         * */
+        console.log(err);
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Comment not found",
+        });
+      }
+    }),
+
+    unlikeReplyComment: publicProcedure
+    .input(z.object({ uname: z.string(), replyCommentId: z.string() }))
+    .mutation(async ({ input }) => {
+      dbConnect();
+      try {
+        const replyComment: HydratedDocument<IReplyComment> | null =
+          await ReplyCommentModel.findOne({ _id: input.replyCommentId });
+
+        if (!replyComment) {
+          //ie null
+          throw new TRPCError({
+            code: "NOT_FOUND",
+            message: "Comment not found",
+          });
+        } else {
+          if (!replyComment.likes.includes(input.uname)) {
+            return { message: "Not Liked yet" };
+          } else {
+            const likesArr = replyComment.likes.filter((likeUname) => {
+              return likeUname !== input.uname;
+            });
+
+            replyComment.likes = likesArr;
+
+            const dbResp = await replyComment.save();
+
+            return dbResp;
+          }
+        }
+      } catch (err) {
+        /**
+         *  we compare string (comment ID) with objwct ID
+         * exception will arise when mongoose won't be able to do typecasting
+         * ie user send wrong lwength or format of string
+         * */
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Comment not found",
+        });
+      }
+    }),
+
 });

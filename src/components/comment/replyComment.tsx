@@ -1,4 +1,5 @@
-import React, { FC, useContext } from "react";
+import { useSession } from "next-auth/react";
+import { FC, useContext, useEffect, useState } from "react";
 import { FaEllipsisH } from "react-icons/fa";
 import { EditCommentContext } from "~/contexts/editCommentContext";
 import { api } from "~/utils/api";
@@ -14,15 +15,33 @@ interface IReplyCommentProps {
 }
 
 const ReplyComment: FC<IReplyCommentProps> = ({_id, parenCommId, uname, message, likes, time}) => {
-  const {showCommentEditModal,
+  const {
     setShowCommentEditModal,
-        currEditComment, setCurrEditComment,
-      isReplyComment, setIsReplyComment, setRefreshComments,
+        setCurrEditComment,
+      setIsReplyComment,
       refreshReplies,
       setRefreshReplies} = useContext(EditCommentContext);
 
       const deleteReplyMutation = api.replyComments.deleteReplyComment.useMutation();
+      const likeReplyMutation = api.likes.likeReplyComment.useMutation();
+      const unlikeReplyMutation = api.likes.unlikeReplyComment.useMutation();
+
+      const [liked, setLiked] = useState<boolean>(false);
     
+      const session = useSession();
+
+      const reactorUname = session.data?.user.uname;
+
+
+      useEffect(() => {        
+        if (!reactorUname) {
+            return;
+        } else if(likes?.includes(reactorUname)) {
+            setLiked(true);
+        }
+    }, [reactorUname]);
+
+
     
     const handleEdit = () => {
         console.log(_id);
@@ -42,7 +61,46 @@ const ReplyComment: FC<IReplyCommentProps> = ({_id, parenCommId, uname, message,
             
         }
     }
+
+
+    const handleUnlike = async (reactorUname: string) => {
+        try {
+            const x = await unlikeReplyMutation.mutateAsync({replyCommentId: _id, uname: reactorUname});
+            setLiked(false);
+        } catch(err) {
+            console.log(err);
+        }
+    }
+
+    const handleLike = async (reactorUname: string) => {
+        try {
+            const x = await likeReplyMutation.mutateAsync({replyCommentId: _id, uname: reactorUname});
+            setLiked(true);
+        } catch(err) {
+            console.log(err);
+        }
+    }
   
+    const toggleLike = () => {
+        if (session.status !== 'authenticated') {
+            console.log('unAuthorised');
+            return;
+        }
+
+        // const reactorName = session.data.user.uname;
+        if (!reactorUname) {
+            console.log('unAuthoRised');
+            return;
+        }
+
+        if (liked) {
+            handleUnlike(reactorUname);
+        } else {
+            handleLike(reactorUname);
+        }
+
+    }
+
     return (
     <div className='flex 
     //w-80 w-full
@@ -87,9 +145,10 @@ const ReplyComment: FC<IReplyCommentProps> = ({_id, parenCommId, uname, message,
             <div className='px-2 text-sm flex justify-between'>
                 <div>
                 <span 
+                onClick={toggleLike}
                 className={`
                 cursor-pointer mr-2
-                
+                ${liked?'text-primary':'text-black'}
                 `}>Like</span>
                 
                 

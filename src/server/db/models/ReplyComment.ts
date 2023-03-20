@@ -4,7 +4,7 @@ export interface IReplyComment {
     uname: string;
     parenCommId: string;
     message: string;
-    likes?: Array<string>;
+    likes: Array<string>;
     time?: Date;
 }
 
