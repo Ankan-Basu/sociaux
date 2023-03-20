@@ -1,3 +1,4 @@
+import { useSession } from 'next-auth/react';
 import React, { createContext, FC, useContext, useEffect, useState } from 'react'
 import {FaEllipsisV, FaEllipsisH} from 'react-icons/fa';
 import { EditCommentContext } from '~/contexts/editCommentContext';
@@ -19,79 +20,62 @@ const Comment: FC<ICommentProps> = (
     {uname, message, likes, replies, time, _id}
 ) => {
 
-    console.log('Comment renders', _id);
+    // console.log('Comment renders', _id);
     
     const deleteCommentMutation = api.comments.deleteComment.useMutation();
+    const likeCommentMutation = api.likes.likeComment.useMutation();
+    const unlikeCommentMutation = api.likes.unlikeComment.useMutation();
 
     const [liked, setLiked] = useState<boolean>(false);
     const [showReplies, setShowReplies] = useState<boolean>(false);
 
     const {setIsReplying, setReplyingTo, replyingTo} = useContext(ReplyingContext);
 
-    const {setShowCommentEditModal, showCommentEditModal, currEditComment, setCurrEditComment,
-        isReplyComment, setIsReplyComment, setRefreshComments,
-        refreshComments} = useContext(EditCommentContext);
+    const {setShowCommentEditModal, setCurrEditComment, setIsReplyComment, setRefreshComments, refreshComments} = useContext(EditCommentContext);
 
-    const reactorUname = 'hu_tao'; //change later
+    const session = useSession();
+
+    const reactorUname = session.data?.user.uname;
+    
     useEffect(() => {
         console.log('comment', _id);
         // console.log(_id, 'liked', liked);
         
-        
-        if(likes?.includes(reactorUname)) {
+        if (!reactorUname) {
+            return;
+        } else if(likes?.includes(reactorUname)) {
             setLiked(true);
         }
 
         // console.log(_id, 'liked', liked);
-    }, []);
+    }, [reactorUname]);
 
+
+    // TODO: refresh comment
     const handleLike = async () => {
-        const reqBody = {
-            "uname": reactorUname,
-            "commentId": _id
+        if (!reactorUname) {
+            return;
         }
-
-        const url = '/api/like/comment/';
-
-        const resp = await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(reqBody)
-        });
-
-        if (resp.status === 201) {
+        
+        try {
+            const x = await likeCommentMutation.mutateAsync({commentId: _id, uname: reactorUname});
             setLiked(true);
+        } catch(err) {
+            console.log(err);
         }
-        const data = await resp.json();
-
-        console.log(data);
-
     }
 
     const handleUnLike = async () => {
-        const reqBody = {
-            "uname": reactorUname,
-            "commentId": _id
+        if (!reactorUname) {
+            return;
         }
 
-        const url = '/api/like/comment/';
-
-        const resp = await fetch(url, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(reqBody)
-        });
-
-        if (resp.status === 201) {
+        try {
+            const x = await unlikeCommentMutation.mutateAsync({commentId: _id, uname: reactorUname});
             setLiked(false);
+        } catch(err) {
+            console.log(err);
         }
-        const data = await resp.json();
-
-        console.log(data);
 
     }
 
