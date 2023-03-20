@@ -9,7 +9,7 @@ import ReplyCommentList from './replyCommentList';
 export interface ICommentProps {
     uname: string;
     message: string;
-    likes?: Array<string>;
+    likes: Array<string>;
     replies?: boolean;
     time?: Date; //change later
     _id: string;
@@ -17,7 +17,7 @@ export interface ICommentProps {
 
 
 const Comment: FC<ICommentProps> = (
-    {uname, message, likes, replies, time, _id}
+    {uname, message, likes=[], replies, time, _id}
 ) => {
 
     // console.log('Comment renders', _id);
@@ -60,6 +60,7 @@ const Comment: FC<ICommentProps> = (
         try {
             const x = await likeCommentMutation.mutateAsync({commentId: _id, uname: reactorUname});
             setLiked(true);
+            likes.push(reactorUname);
         } catch(err) {
             console.log(err);
         }
@@ -73,6 +74,13 @@ const Comment: FC<ICommentProps> = (
         try {
             const x = await unlikeCommentMutation.mutateAsync({commentId: _id, uname: reactorUname});
             setLiked(false);
+
+                for (let i=0; i<likes?.length; i++) {
+                    if (likes[i] === reactorUname) {
+                        delete likes[i];
+                    }
+                }
+            
         } catch(err) {
             console.log(err);
         }
