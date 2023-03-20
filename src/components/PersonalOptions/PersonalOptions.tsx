@@ -33,15 +33,41 @@ const PersonalOptions: FC = () => {
         <div className='lg:hidden flex justify-end p-2 text-lg'>
             <FiX />
         </div>
+
+        {/* <div className={`
+        ${status==='unauthenticated'?'flex': 'hidden'} flex-col gap-3 p-2
+        `}>
+            UNAUTHORISED
+        </div> */}
+
+
         <div className={`
         ${status==='loading'?'flex': 'hidden'} flex-col gap-3 p-2
         `}>
             Loading ...
         </div>
+
+        
+
         <div 
         className={`
+        pt-2
         ${status==='authenticated'?'flex':'hidden'} flex-col gap-3
         `}>
+
+        <div className='
+            text-xl font-medium flex gap-1
+            pl-2
+            '>
+            Hi, 
+            
+            <div
+            className='text-xl'
+            >{data?.user.name} ...
+            </div>
+            </div>
+
+
         <div 
         onClick={()=> setShowModal(currState => !currState)}
         className={`
