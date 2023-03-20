@@ -6,6 +6,7 @@ import Post from '~/components/posts/Post'
 import Profile from '~/components/profile/Profile'
 import { useSession } from 'next-auth/react'
 import React, { FC } from 'react'
+import Link from 'next/link'
 
 const Feed: FC = () => {
 
@@ -38,10 +39,9 @@ const Feed: FC = () => {
         <Post />
         </PostFeed> */}
 
-//check later
+        {/* {session.data?.user?.uname} */}
 
-        //@ts-ignore
-        {session.data?.user?.uname}
+        <Link href={`/user/abc`}>User Page</Link>
       <PersonalOptions />
       <Plus />
     </div>

@@ -11,7 +11,7 @@ import { useRouter } from 'next/router';
 const LoginComponent: FC = () => {
 
   const session = useSession();
-  console.log(session);
+  // console.log(session);
   const router = useRouter();
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -65,7 +65,7 @@ const LoginComponent: FC = () => {
     // console.log(obj2);
 
     const status: SignInResponse | undefined = await signIn('credentials', {
-      redirect: true,
+      redirect: false,
       email: obj2.email,
       uname: '',
       password: obj2.password,
@@ -73,9 +73,9 @@ const LoginComponent: FC = () => {
     })
 
     console.log(status);
-    // if (status.ok) {
-    //   router.push('/user/1')
-    // }
+    if (status?.ok) {
+      router.push('/user/1')
+    }
   }
 
   return (

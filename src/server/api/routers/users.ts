@@ -13,9 +13,9 @@ import dbConnect from "~/server/db/mongo";
 export const usersRouter = createTRPCRouter({
   getUser: publicProcedure
     .input(z.object({ uname: z.string() }))
-    .query(async ({ input }) => {
+    .query(async ({ ctx, input }) => {
         dbConnect();
-        console.log(input);
+        console.log('Context', ctx);
         
       const res: IUser | null = await UserModel.findOne({uname: input.uname});
       

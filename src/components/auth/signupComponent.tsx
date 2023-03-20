@@ -108,7 +108,7 @@ const SignupComponent: FC = () => {
         redirect: false,
         email: obj2.email,
         password: obj2.password,
-        callbackUrl: "/feed",
+        // callbackUrl: "/feed",
       });
 
       if (status.ok) {

@@ -16,7 +16,8 @@ const UserId: FC = () => {
     className='flex flex-col lg:flex-row justify-center items-start'
     >
       <Profile /> 
-      <PostFeed ></PostFeed>
+      {/* <PostFeed ></PostFeed> */}
+      xD
       <PersonalOptions />
       <Plus />
     </div>

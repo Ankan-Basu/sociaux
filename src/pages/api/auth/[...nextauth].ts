@@ -31,28 +31,25 @@ export const authOptions: NextAuthOptions = {
                     throw new Error('Wrong password');
                 }
 
-                credentials.uname = result.uname;
-                credentials.email = result.uname;
+                // credentials.uname = result.uname;
+                // credentials.email = result.uname;
 
-                const user = result;
+                // const user = result;
                 return result;
             },
-            credentials: undefined
+            // credentials: undefined
         })
     ],
     callbacks: {
-        async signIn({ user, account, profile, email, credentials }) {
-            return true;
-        },
+        // async signIn({ user, account, profile, email, credentials }) {
+        //     return true;
+        // },
         async jwt({ token, user }) {
             
             let uname = undefined
             if (user) {
                 uname = {uname: user.uname};
             }
-            console.log('token', token);
-            console.log('uname', uname);
-            
             
             // return ({...token, ...uname});
             return ({uname: token.uname, name: token.name, ...uname});

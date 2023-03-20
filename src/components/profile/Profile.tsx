@@ -13,21 +13,21 @@ const Profile: FC = () => {
 
   const uname = router.query.uname;
   const { data, isLoading, isError, refetch } = api.users.getUser.useQuery({
-    uname: `@${router.query.uname}`,
+    uname: `${router.query.uname}`,
   });  //change later @
 
 
-  useEffect(() => {
-    if (router.query.uname) {
-    //   console.log(router.query.uname);
-      (async () => {
-        const x = await refetch();
-        // console.log("USE EFFECT\n", x);
-        setFullName(x.data?.name);
-        setUserName(x.data?.uname);
-      })();
-    }
-  }, [router]);
+  // useEffect(() => {
+  //   if (router.query.uname) {
+  //   //   console.log(router.query.uname);
+  //     (async () => {
+  //       const x = await refetch();
+  //       // console.log("USE EFFECT\n", x);
+  //       setFullName(x.data?.name);
+  //       setUserName(x.data?.uname);
+  //     })();
+  //   }
+  // }, [router]);
 
   return (
     <div
@@ -42,7 +42,7 @@ const Profile: FC = () => {
 </Link> */}
       <div className="relative flex flex-col items-center gap-3 lg:items-baseline lg:gap-0">
         <img
-          src="../ayaka.jpg"
+          // src="../ayaka.jpg"
           className="h-36 w-36 rounded-full shadow-lg lg:h-56 lg:w-56"
         />
         <div className="absolute bottom-12 right-0 inline-block rounded-full bg-secondary2 p-3 text-primary shadow-lg lg:bottom-4 lg:right-2">
