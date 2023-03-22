@@ -6,23 +6,24 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import { api } from "~/utils/api";
 import { useEffect, useState } from "react";
 import { retryDelay } from "@trpc/client/dist/internals/retryDelay";
+import TestImg from "~/components/image/test";
 
 const Home: NextPage = () => {
-  const [state1, setState1] = useState(true);
-    const {data, isFetching, isError, refetch} = api.posts.getUserPosts.useQuery({uname: 'hu_tao'}, {queryKey: [state1]});
+//   const [state1, setState1] = useState(true);
+//     // const {data, isFetching, isError, refetch} = api.posts.getUserPosts.useQuery({uname: 'hu_tao'}, {queryKey: [state1]});
 
   
-  console.log(state1);
+//   console.log(state1);
 
 
- useEffect(() => {
-  // setState1('xD');
-  console.log(data);
+//  useEffect(() => {
+//   // setState1('xD');
+//   console.log(data);
   
-  if (state1) {
-    refetch();
-  }
-}, [state1]) 
+//   if (state1) {
+//     refetch();
+//   }
+// }, [state1]) 
 
 
 
@@ -37,7 +38,9 @@ const Home: NextPage = () => {
        <div>Index
 
 
-        <button onClick={() => {setState1(curr => !curr)}}>CLICK</button>
+        {/* <button onClick={() => {setState1(curr => !curr)}}>CLICK</button> */}
+       
+       <TestImg />
        </div>
       </main>
     </>
