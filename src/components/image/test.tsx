@@ -23,6 +23,26 @@ const TestImg = () => {
         }
         reader.readAsDataURL(file);
 
+      //   reader.onload = (event: ProgressEvent<FileReader>) => {
+      //     const img = new Image();
+      //     img.src = event.target.result;
+      //     img.onload = () => {
+      //             const elem = document.createElement('canvas');
+      //             elem.width = width;
+      //             elem.height = height;
+      //             const ctx = elem.getContext('2d');
+      //             // img.width and img.height will contain the original dimensions
+      //             ctx.drawImage(img, 0, 0, width, height);
+      //             ctx.canvas.toBlob((blob) => {
+      //                 const file = new File([blob], fileName, {
+      //                     type: 'image/jpeg',
+      //                     lastModified: Date.now()
+      //                 });
+      //             }, 'image/jpeg', 1);
+      //         },
+      //         reader.onerror = error => console.log(error);
+      // };
+
         reader.onload = () => {
           // console.log(reader.result);
           if (!reader.result) {
@@ -35,6 +55,8 @@ const TestImg = () => {
         reader.onerror = (err) => {
           console.log(err);
         }
+
+        // file.toDataURL('image/webp', 0.5)
     }
 
 
@@ -89,8 +111,6 @@ const TestImg = () => {
 
 <button type='submit'>Upload</button>
         </form>
-      {/* <Image src={'https://res.cloudinary.com/dc9pahe4k/image/upload/v1679500271/cld-sample-4.jpg'}
-      height={500} width={500} alt='image' /> */}
 
         img2
         <img src={img2} alt='img2' />

@@ -29,8 +29,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         // let imgFile = atob(imgData);
         // console.log(imgFile);
         
-
         res.status(200).json(imgData)
+        
+     
+
 
     } catch(err) {
         console.log(err);
