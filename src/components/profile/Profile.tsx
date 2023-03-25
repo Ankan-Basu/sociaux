@@ -9,6 +9,7 @@ import FileUploadModal from "./fileUploadModal";
 const Profile: FC = () => {
   const [fullName, setFullName] = useState<string>();
   const [userName, setUserName] = useState<string>();
+  const [img, setImg] = useState<string>();
 
   const [showUploadModal, setShowUploadModal] = useState<boolean>(false);
 
@@ -19,15 +20,24 @@ const Profile: FC = () => {
     uname: `${router.query.uname}`,
   });
 
+  const imgQuery = api.users.getProfileImage.useQuery({uname: `${router.query.uname}`})
+
 
   useEffect(() => {
     if (router.query.uname) {
     //   console.log(router.query.uname);
       (async () => {
-        const x = await refetch();
-        // console.log("USE EFFECT\n", x);
-        setFullName(x.data?.name);
-        setUserName(x.data?.uname);
+        refetch().then((resp) => {
+
+          // console.log("USE EFFECT\n", x);
+          setFullName(resp.data?.name);
+          setUserName(resp.data?.uname);
+        });
+
+        imgQuery.refetch().then((resp) => {
+          // console.log('IMAGE', resp);
+          setImg(resp.data.img);
+        })
       })();
     }
   }, [router]);
@@ -45,7 +55,7 @@ const Profile: FC = () => {
 </Link> */}
       <div className="relative flex flex-col items-center gap-3 lg:items-baseline lg:gap-0">
         <img
-          // src="../ayaka.jpg"
+          src={img}
           className="h-36 w-36 rounded-full shadow-lg lg:h-56 lg:w-56"
         />
         <div className="absolute bottom-12 right-0 inline-block rounded-full bg-secondary2 p-3 text-primary shadow-lg lg:bottom-4 lg:right-2"

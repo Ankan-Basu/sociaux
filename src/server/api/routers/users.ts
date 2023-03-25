@@ -37,6 +37,22 @@ export const usersRouter = createTRPCRouter({
       };
     }),
 
+    getProfileImage: publicProcedure
+    .input(z.object({uname: z.string()}))
+    .query(async ({ input }) => {
+
+      dbConnect();
+        // console.log('Img upload', input);
+        const dbResp = await ProfileImageModel.findOne({uname: input.uname});
+
+        if (!dbResp) {
+          return {img:''};
+        }
+        
+      return {img: dbResp.img};
+    }),
+
+
   getSecretMessage: protectedProcedure.query(() => {
     return "you can now see this secret message!";
   }),
