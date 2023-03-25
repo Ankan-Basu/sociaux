@@ -1,13 +1,16 @@
 import Link from "next/link";
 import React, { FC, useEffect, useState } from "react";
 import { FaPen } from "react-icons/fa";
-import { FiEdit2, FiEdit3 } from "react-icons/fi";
+import { FiEdit2, FiEdit3, FiX } from "react-icons/fi";
 import { useRouter } from "next/router";
 import { api } from "~/utils/api";
+import FileUploadModal from "./fileUploadModal";
 
 const Profile: FC = () => {
   const [fullName, setFullName] = useState<string>();
   const [userName, setUserName] = useState<string>();
+
+  const [showUploadModal, setShowUploadModal] = useState<boolean>(false);
 
   const router = useRouter();
 
@@ -45,9 +48,12 @@ const Profile: FC = () => {
           // src="../ayaka.jpg"
           className="h-36 w-36 rounded-full shadow-lg lg:h-56 lg:w-56"
         />
-        <div className="absolute bottom-12 right-0 inline-block rounded-full bg-secondary2 p-3 text-primary shadow-lg lg:bottom-4 lg:right-2">
+        <div className="absolute bottom-12 right-0 inline-block rounded-full bg-secondary2 p-3 text-primary shadow-lg lg:bottom-4 lg:right-2"
+        onClick={() => {setShowUploadModal(true)}}
+        >
           <FiEdit3 />
         </div>
+        {/* <div>Upload</div> */}
         <div className="block lg:hidden">
           <FriendButton />
         </div>
@@ -82,7 +88,11 @@ const Profile: FC = () => {
           <div className="h-24 overflow-hidden whitespace-pre-wrap rounded-lg bg-secondary2 p-1 text-sm lg:h-28 lg:text-base"></div>
         </div>
       </div>
-    </div>
+      {uname?
+      <FileUploadModal display={showUploadModal} setDisplay={setShowUploadModal} uname={userName}/>
+        : <></>
+    }
+      </div>
   );
 };
 
