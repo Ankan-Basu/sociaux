@@ -1,12 +1,14 @@
 import mongoose, { Schema } from "mongoose";
+import { boolean } from "zod";
 
 export interface IPost {
     uname: string;
-    time: Date;
+    time?: Date;
     privacy: number;
     message: string;
-    likes: Array<string>;
-    comments: Array<string>;
+    imageId?:string;
+    likes?: Array<string>;
+    comments?: Array<string>;
     shares?: number;
 }
 
@@ -29,6 +31,11 @@ const postSchema: Schema = new Schema<IPost> ({
     message: {
         type: String,
         required: true
+    },
+    imageId: {
+        type: String,
+        required: true,
+        default: '',
     },
     likes: {
         type: [String],

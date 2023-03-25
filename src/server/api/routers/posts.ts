@@ -7,6 +7,7 @@ import {
   protectedProcedure,
 } from "~/server/api/trpc";
 import PostModel, { IPost } from "~/server/db/models/Post";
+import PostImageModel from "~/server/db/models/PostImage";
 
 import dbConnect from "~/server/db/mongo";
 
@@ -56,17 +57,38 @@ export const postsRouter = createTRPCRouter({
         uname: z.string(),
         privacy: z.number(),
         message: z.string(),
-        // shares?: z.number(),
-        // likes?: z.array(string()),
-        // comments?: z.array(string()),
-        // time?: z.date()
+        img: z.string(),
     }))
     .mutation(async ({ input }) => {
       dbConnect();
       console.log(input);
       const post = input;
 
-      const dbResp = await PostModel.create(post);
+      const img = input.img;
+      let imgResp = null;
+      
+      if (img) {
+        imgResp = await PostImageModel.create({img: img});
+      }
+
+     if (img && !imgResp) {
+      //something wrong;
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'Image not saved'
+      });
+     }
+
+     //create post obj
+     const imgId = imgResp?imgResp._id.toString() : '';
+     const postObj: IPost = {
+      uname: input.uname,
+      privacy: input.privacy,
+      message: input.message,
+      imageId: imgId
+     };
+
+      const dbResp = await PostModel.create(postObj);
 
       return dbResp;
     }),
