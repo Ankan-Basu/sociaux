@@ -1,4 +1,6 @@
+import { router } from "@trpc/server";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import React, { FC, useEffect, useState } from "react";
 import { api } from "~/utils/api";
 
@@ -6,16 +8,17 @@ interface IFileUploadModalProps {
   display: boolean;
   setDisplay: React.Dispatch<React.SetStateAction<boolean>>
   uname: string
+  setProfileImg: React.Dispatch<React.SetStateAction<string | undefined>>
 }
-const FileUploadModal: FC<IFileUploadModalProps> = ({display, setDisplay, uname}) => {
+const FileUploadModal: FC<IFileUploadModalProps> = ({display, setDisplay, uname, setProfileImg}) => {
 
-  const session = useSession();
-  console.log(session);
-  
+  const session = useSession();  
 
   const [img, setImg] = useState<string>();
 
   const profileImgMutation = api.users.uploadProfileImage.useMutation();
+
+  const router = useRouter(); 
 
 
   const handleImg = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -62,7 +65,17 @@ const handleProfilImgUpload = async (e: React.FormEvent<HTMLFormElement>) => {
     return;
   }
 
-  const x = await profileImgMutation.mutateAsync({uname: session.data?.user.uname, image: img})
+  try {
+
+    const x = await profileImgMutation.mutateAsync({uname: session.data?.user.uname, image: img});
+    setDisplay(false);
+    const newImg = x.dbResp?.img;
+    setProfileImg(newImg)
+    // console.log(newImg)
+    router.push(`/user/${session.data.user.uname}`);
+  } catch(err) {
+    console.log(err)
+  }
 
 }
   

@@ -99,7 +99,7 @@ const Profile: FC = () => {
         </div>
       </div>
       {uname?
-      <FileUploadModal display={showUploadModal} setDisplay={setShowUploadModal} uname={userName}/>
+      <FileUploadModal display={showUploadModal} setDisplay={setShowUploadModal} uname={userName} setProfileImg={setImg}/>
         : <></>
     }
       </div>

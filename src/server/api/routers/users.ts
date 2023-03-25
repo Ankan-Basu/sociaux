@@ -30,7 +30,7 @@ export const usersRouter = createTRPCRouter({
 
       dbConnect();
         // console.log('Img upload', input);
-        const dbResp = await ProfileImageModel.create({uname: input.uname, img: input.image});
+        const dbResp = await ProfileImageModel.findOneAndUpdate({uname: input.uname}, {uname: input.uname, img: input.image}, {upsert: true});
         
       return {
         dbResp
