@@ -26,8 +26,12 @@ const Comment: FC<ICommentProps> = (
     const likeCommentMutation = api.likes.likeComment.useMutation();
     const unlikeCommentMutation = api.likes.unlikeComment.useMutation();
 
+    const profileImgQuery = api.users.getProfileImage.useQuery({uname: uname});
+
     const [liked, setLiked] = useState<boolean>(false);
     const [showReplies, setShowReplies] = useState<boolean>(false);
+
+    const [img, setImg] = useState<string>();
 
     const {setIsReplying, setReplyingTo, replyingTo} = useContext(ReplyingContext);
 
@@ -146,7 +150,7 @@ const Comment: FC<ICommentProps> = (
     lg:w-98`}>
         <div className='w-16'>
         <div className='w-full'>
-            <img src='ayaka.jpg' height='60rem' width='60rem' className='rounded-full'/>
+            <img src={profileImgQuery.data?.img} height='60rem' width='60rem' className='rounded-full'/>
         </div>
         </div>
         <div className='flex-1'>

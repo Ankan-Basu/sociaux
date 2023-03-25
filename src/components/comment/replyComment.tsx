@@ -26,6 +26,8 @@ const ReplyComment: FC<IReplyCommentProps> = ({_id, parenCommId, uname, message,
       const likeReplyMutation = api.likes.likeReplyComment.useMutation();
       const unlikeReplyMutation = api.likes.unlikeReplyComment.useMutation();
 
+      const profileImgQuery = api.users.getProfileImage.useQuery({uname: uname});
+
       const [liked, setLiked] = useState<boolean>(false);
     
       const session = useSession();
@@ -107,7 +109,7 @@ const ReplyComment: FC<IReplyCommentProps> = ({_id, parenCommId, uname, message,
     lg:w-98'>
         <div className='w-16'>
         <div className='w-full'>
-            <img src='ayaka.jpg' height='60rem' width='60rem' className='rounded-full'/>
+            <img src={profileImgQuery.data?.img} height='60rem' width='60rem' className='rounded-full'/>
         </div>
         </div>
         <div className='flex-1'>
