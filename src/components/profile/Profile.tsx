@@ -5,6 +5,7 @@ import { FiEdit2, FiEdit3, FiX } from "react-icons/fi";
 import { useRouter } from "next/router";
 import { api } from "~/utils/api";
 import FileUploadModal from "./fileUploadModal";
+import { useSession } from "next-auth/react";
 
 const Profile: FC = () => {
   const [fullName, setFullName] = useState<string>();
@@ -107,9 +108,49 @@ const Profile: FC = () => {
 };
 
 const FriendButton: FC = () => {
+  const session = useSession();
+  const router = useRouter();
+
+  const frienReqMutation = api.friends.sendFriendReq.useMutation();
+
+  const sendFriendReq = async () => {
+    console.log('Freind req');
+
+    if (session.status !== 'authenticated') {
+      console.log('LOGIN PLZ');
+      return;
+    }
+
+    if (!router.query.uname) {
+      console.log('WHo req to send?');
+      return;
+    }
+
+    const requesterUname = session.data.user.uname;
+    const targetUname = router.query.uname as string;
+
+    if (!requesterUname || !targetUname) {
+      console.log('UnauThorIseD');
+      return;
+    }
+
+    try {
+      const x = frienReqMutation.mutateAsync({requesterUname, targetUname});
+      console.log(x);
+      
+
+    } catch(err) {
+      console.log(err);
+    }
+    
+  }
+
   return (
     <>
-      <button className="rounded-lg border-2 border-solid border-primary2 bg-primary p-1 lg:px-2">
+      <button
+      onClick={sendFriendReq} 
+      className="rounded-lg border-2 border-solid border-primary2 bg-primary p-1 lg:px-2"
+      >
         <span className="text-sm lg:text-base">Add Friend</span>
       </button>
     </>
