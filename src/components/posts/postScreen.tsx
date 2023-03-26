@@ -36,7 +36,8 @@ const PostScreen: FC<IPostScreenProps> = ({ display }) => {
     >
       <div
         className="
-        bg-white h-screen 
+        bg-white/70
+        lg:bg-white h-screen 
         w-full sm:w-101
         m-auto sm:rounded-lg
         shadow-lg pt-2 p-2 overflow-auto
