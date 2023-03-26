@@ -21,6 +21,8 @@ const PostScreen: FC<IPostScreenProps> = ({ display }) => {
 
   useEffect(() => {
     console.log("Post screen mounts");
+    // console.log('imgid', currPost.imageId);
+    
   }, []);
 
   return (
@@ -68,6 +70,7 @@ const PostScreen: FC<IPostScreenProps> = ({ display }) => {
               message={currPost.message}
               time={currPost.time}
               privacy={currPost.privacy}
+              imageId={currPost.imageId}
               comments={currPost.comments}
               likes={currPost.likes}
               _id={currPost._id}

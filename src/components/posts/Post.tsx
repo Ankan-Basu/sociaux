@@ -25,6 +25,7 @@ interface IPostProps {
   message: string;
   time: Date;
   privacy: number;
+  imageId: string;
   comments?: Array<string>;
   likes?: Array<string>;
   _id: string;
@@ -37,6 +38,7 @@ const Post: FC<IPostProps> =({
   message,
   time,
   privacy,
+  imageId,
   comments,
   likes,
   _id,
@@ -48,6 +50,8 @@ const Post: FC<IPostProps> =({
   const likeMutation = api.likes.likePost.useMutation();
   const unlikeMutation = api.likes.unlikePost.useMutation();
   const deleteMutation = api.posts.deletePost.useMutation();
+
+  const imgQuery = api.posts.getPostImage.useQuery({imageId: `${imageId}`});
 
   const {showEditModal,
     setShowEditModal,
@@ -77,6 +81,13 @@ const Post: FC<IPostProps> =({
       setLiked(false);
     }
   }, [reactorUname]);
+
+
+
+  useEffect(() => {
+    console.log(`Post Id: ${_id}\nMessage: ${message}\nImage Id: ${imageId}`);
+    
+  }, [])
 
 
   const handleLike = async () => {
@@ -138,6 +149,7 @@ const Post: FC<IPostProps> =({
           uname,
           message,
           time,
+          imageId,
           privacy,
           comments,
           likes,
@@ -230,7 +242,12 @@ const Post: FC<IPostProps> =({
         {message || "Loading ..."}
       </div>
       <div className="border-solid border-2 border-yellow-500 flex justify-center gap-2 py-1">
-        Optional Img/ Vid
+       {
+        imageId?
+        <img src={imgQuery.data?.img} />
+      :
+      <></> 
+      }       
       </div>
 
       <div

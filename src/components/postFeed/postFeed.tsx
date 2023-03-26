@@ -47,6 +47,7 @@ const PostFeed: FC = () => {
                 uname={post.uname}
                 message={post.message}
                 privacy={post.privacy}
+                imageId={post.imageId}
                 time={post.time}
                 likes={post.likes}
                 comments={post.comments}

@@ -128,6 +128,42 @@ export const postsRouter = createTRPCRouter({
     }),
 
 
+    getPostImage: publicProcedure
+    .input(z.object({
+        imageId: z.string(),
+        
+    }))
+    .query(async ({ input }) => {
+      try {
+        console.log('imgId', input.imageId);
+        
+        if (!input.imageId) {
+          return {img: ''}
+        }
+
+        if (input.imageId === 'undefined') {
+          return {img: ''}
+        }
+
+        dbConnect();
+        
+        try {
+          const dbResp = await PostImageModel.findOne({_id: input.imageId});
+          return dbResp;
+        } catch(err) {
+          //wrong img id
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'Invalid Img Id'
+          })
+        }        
+      } catch(err) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR'
+        });
+      }
+    }),
+
     deletePost: publicProcedure
     .input(z.object({
         postId: z.string(),
