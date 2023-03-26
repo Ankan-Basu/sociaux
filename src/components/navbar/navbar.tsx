@@ -8,10 +8,16 @@ import NotifScreenMobile from './notifScreenMobile';
 import SearchBox from './searchBox';
 
 import { useRouter } from 'next/router';
+import { api } from '~/utils/api';
+import { useSession } from 'next-auth/react';
 
 export const NotifContext = createContext<any>(null);
 
 const Navbar: FC = () => {
+
+  const session = useSession();
+  console.log(session);
+  
     const [notifSelected, setNotifSelected] = useState<boolean>(false)
     const [friendReqSelected, setFriendReqSelected] = useState<boolean>(false)
     const [mobileNotifSelected, setMobileNotifSelected] = useState<boolean>(false)
@@ -19,12 +25,34 @@ const Navbar: FC = () => {
     const [notifList, setNotifList] = useState<Array<Object>>();
     const [friendReqList, setFriendReqList] = useState<Array<Object>>();
 
+    const notifQuery = api.notifs.getNotifs.useQuery({uname: `${session.data?.user.uname}`});
+    const friendReqQuery = api.friends.getFriendReqList.useQuery({uname: `${session.data?.user.uname}`});
+
     useEffect(() => {
       console.log('Navbar mounted');
-      getNotifList();
-      getFriendReqList();
+      // getNotifList();
+      // getFriendReqList();
     }, []);
 
+    useEffect(() => {
+      if (session.status === 'authenticated') {
+        (async () => {
+
+          const notifData = await notifQuery.refetch();
+          // console.log('Navbar', session.data.user.uname);
+          
+          setNotifList(notifData.data?.notifs)
+        })();
+        (async () => {
+
+          const friendReqData = await friendReqQuery.refetch();
+          // console.log('Navbar', session.data.user.uname);
+          
+          setFriendReqList(friendReqData.data?.reqs)
+        })();
+        
+      }
+    }, [session])
     const getNotifList = async () => {
       //todo: make this dynamic
       //after login. store uname in context api.

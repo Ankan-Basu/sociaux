@@ -8,6 +8,7 @@ import { replyCommentsRouter } from "./routers/replyComments";
 import { likesRouter } from "./routers/likes";
 import { signupRouter } from "./routers/signup";
 import { imageRouter } from "./routers/image";
+import { friendsRouter } from "./routers/friend";
 
 /**
  * This is the primary router for your server.
@@ -19,6 +20,7 @@ export const appRouter = createTRPCRouter({
   signup: signupRouter,
   users: usersRouter,
   notifs: notifsRouter,
+  friends: friendsRouter,
   posts: postsRouter,
   comments: commentsRouter,
   replyComments: replyCommentsRouter,

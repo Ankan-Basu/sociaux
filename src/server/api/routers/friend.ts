@@ -10,13 +10,24 @@ import FriendReqModel from "~/server/db/models/FriendReq";
 
 import dbConnect from "~/server/db/mongo";
 
-export const postsRouter = createTRPCRouter({
+export const friendsRouter = createTRPCRouter({
     getFriendReqList: publicProcedure
     .input(z.object({uname: z.string()}))
     .query(async ({ input }) => {
+      try {
+
         dbConnect();
-        const notif = await FriendReqModel.findOne({ uname: input.uname });
-            
-        return notif;
+        const friendReqs = await FriendReqModel.findOne({ uname: input.uname });
+
+        if (!friendReqs) {
+          return {reqs: []}
+        }
+      
+        return friendReqs;
+      } catch(err) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR'
+        })
+      }
     }),
 });

@@ -1,3 +1,4 @@
+import { TRPCError } from "@trpc/server";
 import { HydratedDocument } from "mongoose";
 import { z } from "zod";
 import {
@@ -12,13 +13,26 @@ import dbConnect from "~/server/db/mongo";
 
 export const notifsRouter = createTRPCRouter({
   getNotifs: publicProcedure
-    .input(z.object({ uname: z.string() }))
+    .input(z.object({ uname: z.string()}))
     .query(async ({ input }) => {
-      dbConnect();
+      try {
 
-      const notif: HydratedDocument<INotification> | null =
+        dbConnect();
+        
+        const notif: HydratedDocument<INotification> | null =
         await NotificationModel.findOne({ uname: input.uname });
-
-      return notif;
+        
+        console.log('Notif Api\n', notif);
+        
+        if (!notif) {
+          return {notifs: []};
+        }
+        return notif;
+      } catch(err) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR'
+        })
+        // return {notifs: []};
+      }
     }),
 });
