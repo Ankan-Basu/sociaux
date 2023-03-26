@@ -2,7 +2,7 @@ import mongoose, {Schema, models, model} from "mongoose";
 
 interface IFriendReqItem {
     source: string;
-    time: Date;
+    time?: Date;
 }
 
 interface IFriendReqs {

@@ -30,4 +30,38 @@ export const friendsRouter = createTRPCRouter({
         })
       }
     }),
+
+    sendFriendReq: publicProcedure
+    .input(z.object({targetUname: z.string(), requesterUname: z.string()}))
+    .mutation(async ({ input }) => {
+      try {
+        dbConnect();
+        const targetUser = await FriendReqModel.findOne({uname: input.targetUname});
+
+        if (!targetUser) {
+          //create
+          console.log('Creating new');
+          const reqs = [{source: input.requesterUname}];
+          const friendListObj = {
+            uname: input.targetUname,
+            reqs: reqs
+          }
+          const dbResp = await FriendReqModel.create(friendListObj);
+  
+          
+          return dbResp;
+        } else {
+          console.log('Modifying old');
+          targetUser.reqs.push({source: input.requesterUname});
+          const dbResp = await targetUser.save();
+  
+          return dbResp;
+        }
+       
+      } catch(err) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR'
+        })
+      }
+    }),
 });
