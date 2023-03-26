@@ -34,7 +34,7 @@ const postSchema: Schema = new Schema<IPost> ({
     },
     imageId: {
         type: String,
-        required: true,
+        // required: true,
         default: '',
     },
     likes: {

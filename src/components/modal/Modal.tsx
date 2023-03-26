@@ -39,6 +39,7 @@ const Modal: FC<IModalProps> = ({
   const session = useSession();
 
   const postMutation = api.posts.createPost.useMutation();
+  const [img, setImg] = useState<string>();
 
   const handleClose = () => {
     console.log("Close");
@@ -46,8 +47,39 @@ const Modal: FC<IModalProps> = ({
     setShowModal(false);
   };
 
+
+
   const uname = session.data?.user?.uname;
   const privacy = 0;
+
+
+  const handleImg = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    console.log(e);
+    console.log(e.target.files);
+    const file = e.target.files?e.target.files[0]:null;
+
+    const reader = new FileReader();
+
+    if (!file) {
+      return;
+    }
+    reader.readAsDataURL(file);
+
+    reader.onload = () => {
+      // console.log(reader.result);
+      if (!reader.result) {
+        return;
+      }
+      const imgStr = reader.result as string
+      setImg(imgStr)
+  
+    }
+    reader.onerror = (err) => {
+      console.log(err);
+    }
+}
+
 
   const handlePost = async () => {
     console.log(postMessage);
@@ -62,6 +94,7 @@ const Modal: FC<IModalProps> = ({
         uname,
         message: postMessage,
         privacy,
+        img: img || ''
       });
       console.log(x);
       setPostMessage("");
@@ -126,13 +159,17 @@ const Modal: FC<IModalProps> = ({
             className="w-full resize-none rounded-lg bg-secondary2 p-1 outline-none lg:w-99"
           ></textarea>
         </div>
+        <input type={'file'} accept='image/*' onChange={handleImg} />
+        {img?
+        <img src={img} height={100} width={100} alt='img' />
+        :<></>}
         <div className="flex justify-center gap-2 py-1">
           <button className="flex flex-1 justify-center rounded-md bg-deactiv p-2">
             <FiImage />
           </button>
-          <button className="flex flex-1 justify-center rounded-md bg-deactiv p-2">
+          {/* <button className="flex flex-1 justify-center rounded-md bg-deactiv p-2">
             <FiVideo />
-          </button>
+          </button> */}
         </div>
         <div className="flex flex-col justify-center gap-1 pt-1">
           <span className="flex-1">

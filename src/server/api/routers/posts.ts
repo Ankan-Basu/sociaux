@@ -81,12 +81,17 @@ export const postsRouter = createTRPCRouter({
 
      //create post obj
      const imgId = imgResp?imgResp._id.toString() : '';
+     console.log('imgId', imgId);
+     
      const postObj: IPost = {
       uname: input.uname,
       privacy: input.privacy,
       message: input.message,
       imageId: imgId
      };
+
+     console.log('post', postObj);
+     
 
       const dbResp = await PostModel.create(postObj);
 
