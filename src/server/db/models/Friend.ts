@@ -1,25 +1,25 @@
-import {Schema, models, model} from "mongoose";
+import {Schema, models, model, Model} from "mongoose";
 
-interface FriendList {
+interface IFriendList {
     uname: string;
-    reqs: Array<string>;
+    friends: Array<string>;
 }
 
-const friendListSchema: Schema = new Schema<FriendList>({
+const friendListSchema: Schema = new Schema<IFriendList>({
     uname: {
         type: String,
         required: true,
         unique: true,
         index: true
     },
-    reqs: {
+    friends: {
         type: [String],
         required: true,
         default: []
     }
 });
 
-var FriendListModel = models.friendList || 
-    model<FriendList>('friendList', friendListSchema);
+var FriendListModel = (models.friendList as Model<IFriendList>) || 
+    model<IFriendList>('friendList', friendListSchema);
 
     export default FriendListModel;

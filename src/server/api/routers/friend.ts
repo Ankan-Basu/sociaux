@@ -6,6 +6,7 @@ import {
   publicProcedure,
   protectedProcedure,
 } from "~/server/api/trpc";
+import FriendListModel from "~/server/db/models/Friend";
 import FriendReqModel from "~/server/db/models/FriendReq";
 
 import dbConnect from "~/server/db/mongo";
@@ -56,6 +57,95 @@ export const friendsRouter = createTRPCRouter({
           const dbResp = await targetUser.save();
   
           return dbResp;
+        }
+       
+      } catch(err) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR'
+        })
+      }
+    }),
+
+    acceptFriendReq: publicProcedure
+    .input(z.object({targetUname: z.string(), acceptorUname: z.string()}))
+    .mutation(async ({ input }) => {
+      try {
+        dbConnect();
+
+        const friendReqList = await FriendReqModel.findOne({uname: input.acceptorUname});
+        if (!friendReqList) {
+          // do something
+          // res.status(500).json({message: 'int serv err'});
+          throw new TRPCError ({
+            code: 'NOT_FOUND'
+          })
+        } else {
+  
+        // add to friend List
+  
+        const friendListTarget = await FriendListModel.findOne({uname: input.targetUname});
+  
+        if (!friendListTarget) {
+          // add
+          const friendListTargetObj = {
+            uname: input.targetUname,
+            friends: [input.acceptorUname]
+          }
+          await FriendListModel.create(friendListTargetObj);
+        } else {
+          //modify
+  
+          let alreadyExists = false;
+  
+          for (let i=0; i<friendListTarget.friends.length; i++) {
+            if (friendListTarget.friends[i] === input.acceptorUname) {
+              alreadyExists = true;
+              break;
+            }
+          }
+  
+          if (!alreadyExists) {
+            friendListTarget.friends.push(input.acceptorUname);
+            await friendListTarget.save();
+          }
+        }
+  
+        const friendListAcceptor = await FriendListModel.findOne({uname: input.acceptorUname});
+  
+        if (!friendListAcceptor) {
+          // add
+          const friendListAcceptorObj = {
+            uname: input.acceptorUname,
+            friends: [input.targetUname]
+          }
+          await FriendListModel.create(friendListAcceptorObj);
+        } else {
+          //modify
+          let alreadyExists = false;
+          for (let i=0; i<friendListAcceptor.friends.length; i++) {
+            if (friendListAcceptor.friends[i] === input.targetUname) {
+              alreadyExists = true;
+              break;
+            }
+          }
+          if (!alreadyExists) {
+            friendListAcceptor.friends.push(input.targetUname);
+            await friendListAcceptor.save();
+          }
+        }
+          
+          //delete from req list
+          const newReqs = friendReqList.reqs.filter((req) => {
+            return req.source !== input.targetUname;
+          });
+          
+          //@ts-ignore
+          friendReqList.reqs = newReqs;
+         
+  
+          const dbResp1 = await friendReqList.save();
+  
+          return dbResp1;
         }
        
       } catch(err) {

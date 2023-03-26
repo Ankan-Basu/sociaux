@@ -26,7 +26,8 @@ const friendReqListSchema: Schema = new Schema<IFriendReqs>({
     uname: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
+        index: true
     },
     reqs: {
         type: [friendReqItemSchema],
