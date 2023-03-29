@@ -61,7 +61,7 @@ export const postsRouter = createTRPCRouter({
     }))
     .mutation(async ({ input }) => {
       dbConnect();
-      console.log(input);
+      // console.log(input);
       const post = input;
 
       const img = input.img;
@@ -81,7 +81,7 @@ export const postsRouter = createTRPCRouter({
 
      //create post obj
      const imgId = imgResp?imgResp._id.toString() : '';
-     console.log('imgId', imgId);
+    //  console.log('imgId', imgId);
      
      const postObj: IPost = {
       uname: input.uname,
@@ -90,7 +90,7 @@ export const postsRouter = createTRPCRouter({
       imageId: imgId
      };
 
-     console.log('post', postObj);
+    //  console.log('post', postObj);
      
 
       const dbResp = await PostModel.create(postObj);
@@ -108,7 +108,7 @@ export const postsRouter = createTRPCRouter({
     }))
     .mutation(async ({ input }) => {
       dbConnect();
-      console.log(input);
+      // console.log(input);
 
       const post = await PostModel.findOne({_id: input.postId});
 
@@ -135,7 +135,7 @@ export const postsRouter = createTRPCRouter({
     }))
     .query(async ({ input }) => {
       try {
-        console.log('imgId', input.imageId);
+        // console.log('imgId', input.imageId);
         
         if (!input.imageId) {
           return {img: ''}
@@ -171,7 +171,7 @@ export const postsRouter = createTRPCRouter({
     }))
     .mutation(async ({ input }) => {
       dbConnect();
-      console.log(input);
+      // console.log(input);
 
       const dbResp = await PostModel.deleteOne({_id: input.postId});
 

@@ -16,7 +16,7 @@ export const usersRouter = createTRPCRouter({
     .input(z.object({ uname: z.string() }))
     .query(async ({ ctx, input }) => {
         dbConnect();
-        console.log('Context', ctx);
+        // console.log('Context', ctx);
         
       const res: IUser | null = await UserModel.findOne({uname: input.uname});
       

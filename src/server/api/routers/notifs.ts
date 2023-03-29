@@ -22,7 +22,7 @@ export const notifsRouter = createTRPCRouter({
         const notif: HydratedDocument<INotification> | null =
         await NotificationModel.findOne({ uname: input.uname });
         
-        console.log('Notif Api\n', notif);
+        // console.log('Notif Api\n', notif);
         
         if (!notif) {
           return {notifs: []};

@@ -14,7 +14,7 @@ export const authOptions: NextAuthOptions = {
         CredentialsProvider({
             name: 'Credentials',
             async authorize(credentials, req) {
-                console.log('authorize, credentials', credentials);
+                // console.log('authorize, credentials', credentials);
                 dbConnect().catch(err => { error: 'Connection failed'; });
 
                 // console.log(credentials);

@@ -16,7 +16,7 @@ export const NotifContext = createContext<any>(null);
 const Navbar: FC = () => {
 
   const session = useSession();
-  console.log(session);
+  // console.log(session);
   
     const [notifSelected, setNotifSelected] = useState<boolean>(false)
     const [friendReqSelected, setFriendReqSelected] = useState<boolean>(false)

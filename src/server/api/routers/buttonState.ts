@@ -10,7 +10,7 @@ export const buttonRouter = createTRPCRouter({
   getState: publicProcedure
     .input(z.object({ profileUname: z.string() }))
     .query(({ ctx, input }) => {
-      console.log('Button', ctx, '\nprofil', input.profileUname);
+      // console.log('Button', ctx, '\nprofil', input.profileUname);
       
       return {
         greeting: `Hello`,

@@ -18,7 +18,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
       if (!targetUser) {
         //create
-        console.log('Creating new');
+        // console.log('Creating new');
         const reqs = [{source: body.requesterUname}];
         const friendListObj = {
           uname: body.targetUname,
@@ -29,7 +29,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         
         res.status(201).json(dbResp);
       } else {
-        console.log('Modifying old');
+        // console.log('Modifying old');
         targetUser.reqs.push({source: body.requesterUname});
         const dbResp = await targetUser.save();
 

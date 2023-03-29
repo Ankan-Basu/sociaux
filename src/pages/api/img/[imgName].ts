@@ -7,7 +7,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         dbConnect();
 
         const imgName = req.query.imgName;
-        console.log('Query', imgName);
+        // console.log('Query', imgName);
         
         try {
 
@@ -35,7 +35,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
 
     } catch(err) {
-        console.log(err);
+        // console.log(err);
 
     }
 

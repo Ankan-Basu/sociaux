@@ -108,7 +108,7 @@ export const likesRouter = createTRPCRouter({
          * exception will arise when mongoose won't be able to do typecasting
          * ie user send wrong lwength or format of string
          * */
-        console.log(err);
+        // console.log(err);
         throw new TRPCError({
           code: "NOT_FOUND",
           message: "Comment not found",
