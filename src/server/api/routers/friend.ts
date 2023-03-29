@@ -154,4 +154,124 @@ export const friendsRouter = createTRPCRouter({
         })
       }
     }),
+
+
+    cancelFriendReq: publicProcedure
+    .input(z.object({cancellerUname: z.string(), targetUname: z.string()}))
+    .mutation(async ({ input }) => {
+      try {
+        dbConnect();
+
+        // friend req has gone to the target.
+        // canceller had sent the req. (Now he is canceller)
+        // find friend req list of the target. 
+        const friendReqList = await FriendReqModel.findOne({uname: input.targetUname});
+
+      if (!friendReqList) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST'
+        });
+      } else {
+        const newReqs = friendReqList.reqs.filter((req) => {
+          // remve the cancellor's name
+          return req.source !== input.cancellerUname;
+        });
+
+        //@ts-ignore
+        friendReqList.reqs = newReqs;
+
+        const dbResp = await friendReqList.save();
+
+        return dbResp;
+      }
+
+      } catch(err) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR'
+        })
+      }
+    }),
+
+
+    rejectFriendReq: publicProcedure
+    .input(z.object({rejectorUname: z.string(), targetUname: z.string()}))
+    .mutation(async ({ input }) => {
+      try {
+        dbConnect();
+
+        const friendReqList = await FriendReqModel.findOne({uname: input.rejectorUname});
+
+      if (!friendReqList) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST'
+        });
+      } else {
+        const newReqs = friendReqList.reqs.filter((req) => {
+          return req.source !== input.targetUname;
+        });
+
+        //@ts-ignore
+        friendReqList.reqs = newReqs;
+
+        const dbResp = await friendReqList.save();
+
+        return dbResp;
+      }
+
+      } catch(err) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR'
+        })
+      }
+    }),
+
+
+    unFriend: publicProcedure
+    .input(z.object({unFrienderUname: z.string(), targetUname: z.string()}))
+    .mutation(async ({ input }) => {
+      try {
+        dbConnect();
+
+        const friendListUnFriender = await FriendListModel.findOne({uname: input.unFrienderUname});
+
+        if (!friendListUnFriender) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST'
+          });
+        }
+
+        const friendListTarget = await FriendListModel.findOne({uname: input.targetUname});
+
+        if (!friendListTarget) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST'
+          });
+        }
+
+
+        // remove the target from unFriender
+
+        const newFriendsTarget = friendListTarget.friends.filter((friend) => {
+          return friend !== input.unFrienderUname;
+        })
+
+        friendListTarget.friends = newFriendsTarget;
+
+        const newFriendsUnFriender = friendListUnFriender.friends.filter((friend) => {
+          return friend !== input.targetUname;
+        })
+
+        friendListUnFriender.friends = newFriendsUnFriender;
+
+        const dbResp1 = await friendListTarget.save();
+        const dbRresp2 = await friendListUnFriender.save();
+
+        return dbRresp2;
+
+      } catch(err) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR'
+        })
+      }
+    }),
 });
