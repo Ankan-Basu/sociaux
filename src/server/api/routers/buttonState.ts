@@ -16,7 +16,10 @@ export const buttonRouter = createTRPCRouter({
       console.log('Button', ctx, '\nprofil', input.profileUname);
 
       if (!ctx.session) {
-        return 'Login';
+        return {
+          code: -1,
+          message: 'Login'
+        };
       } else {
         const currUname = ctx.session.user.uname;
         const targetUname = input.profileUname;
@@ -28,7 +31,10 @@ export const buttonRouter = createTRPCRouter({
         }
 
         if (currUname === targetUname) {
-          return 'LITERALLY ME'
+          return {
+            code: 0,
+            message: 'LITERALLY ME'
+          }
         }
         
         // check if friend
@@ -43,7 +49,10 @@ export const buttonRouter = createTRPCRouter({
           // check the friendLit 
           if (currUserFriendList.friends.indexOf(targetUname) !== -1) {
             // they're friends
-            return 'UNFRIEND BUTTON'
+            return {
+              code: 4,
+              message: 'UNFRIEND BUTTON'
+            };
           } else {
             // not friend, but can be pending
             return await checkFriendReqLists(currUname, targetUname);
@@ -69,27 +78,39 @@ const checkFriendReqLists = async (currUname: string, targetUname: string) => {
       // currUser has also not received any friend req (from anyone)
       // so these ppl are not friends, neither pending friends
 
-      return 'ADD FRIEND BUTTON';
+      return {
+        code: 1,
+        message: 'ADD FRIEND BUTTON'
+      };
     } else {
       // let's check inside the friendList of currUser
 
       for (let i=0; i<friendReqListCurrUser.reqs.length; i++) {
         if (friendReqListCurrUser.reqs[i]?.source === targetUname) {
-          return 'ACCEPT FRIEND BUTTON'
+          return {
+            code: 2,
+            message: 'ACCEPT FRIEND BUTTON'
+          };
         }
       }
 
       // for loop ends without finding target user in currUser's request list
       // ie they're not pending friends
 
-      return 'ADD FRIEND BUTTON'
+      return {
+        code: 1,
+        message: 'ADD FRIEND BUTTON'
+      }
     }
   } else {
     // check inside req list of target user
     for (let i=0; i<friendReqListTarget.reqs.length; i++) {
       if (friendReqListTarget.reqs[i]?.source === currUname) {
         // currUser sent friend req to target user
-        return 'CANCEL REQUEST BUTTON'
+        return {
+          code: 3,
+          message: 'CANCEL REQUEST BUTTON'
+        };
       }
     }
 
@@ -100,20 +121,29 @@ const checkFriendReqLists = async (currUname: string, targetUname: string) => {
 
       if (!friendReqListCurrUser) {
         // curr User didn't receive any req from anyone
-        return 'ADD FRIEND BUTTON'
+        return {
+          code: 1,
+          message: 'ADD FRIEND BUTTON'
+        }
       } else {
         // check inside currUser's req list
         for (let i=0; i<friendReqListCurrUser.reqs.length; i++) {
           if (friendReqListCurrUser.reqs[i]?.source === targetUname) {
             // target sent req
-            return 'ACCEPT REQ'
+            return {
+              code: 2,
+              message: 'ACCEPT FRIEND BUTTON'
+            };
           }
         }
 
         // loop ends without finding targetUser in currUser's req list
         // targetUser didn't send req to currUser
         // (neither did currUser send to targetUSer)
-        return 'ADD FRIEND BUTTON';
+        return {
+          code: 1,
+          message: 'ADD FRIEND BUTTON'
+        };
       }
   }
 }

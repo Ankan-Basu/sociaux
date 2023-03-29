@@ -22,15 +22,15 @@ const Profile: FC = () => {
     uname: `${router.query.uname}`,
   });
 
-  const imgQuery = api.users.getProfileImage.useQuery({uname: `${router.query.uname}`})
-
+  const imgQuery = api.users.getProfileImage.useQuery({
+    uname: `${router.query.uname}`,
+  });
 
   useEffect(() => {
     if (router.query.uname) {
-    //   console.log(router.query.uname);
+      //   console.log(router.query.uname);
       (async () => {
         refetch().then((resp) => {
-
           // console.log("USE EFFECT\n", x);
           setFullName(resp.data?.name);
           setUserName(resp.data?.uname);
@@ -39,7 +39,7 @@ const Profile: FC = () => {
         imgQuery.refetch().then((resp) => {
           // console.log('IMAGE', resp);
           setImg(resp.data.img);
-        })
+        });
       })();
     }
   }, [router]);
@@ -60,14 +60,20 @@ const Profile: FC = () => {
           src={img}
           className="h-36 w-36 rounded-full shadow-lg lg:h-56 lg:w-56"
         />
-        <div className="absolute bottom-12 right-0 inline-block rounded-full bg-secondary2 p-3 text-primary shadow-lg lg:bottom-4 lg:right-2"
-        onClick={() => {setShowUploadModal(true)}}
+        <div
+          className="absolute bottom-12 right-0 inline-block rounded-full bg-secondary2 p-3 text-primary shadow-lg lg:bottom-4 lg:right-2"
+          onClick={() => {
+            setShowUploadModal(true);
+          }}
         >
           <FiEdit3 />
         </div>
         {/* <div>Upload</div> */}
         <div className="block lg:hidden">
-          <FriendButton />
+          {/* <FriendButton /> */}
+          {router.query.uname && typeof router.query.uname === "string" && (
+            <ButtonTest profileUname={router.query.uname} />
+          )}
         </div>
       </div>
       <div className="flex flex-1 flex-col gap-1 rounded-lg bg-white p-1 shadow-lg lg:flex-none">
@@ -86,7 +92,10 @@ const Profile: FC = () => {
           </div>
         </div>
         <div className="mt-1 hidden lg:block">
-          <FriendButton />
+          {/* <FriendButton /> */}
+          {router.query.uname && typeof router.query.uname === "string" && (
+            <ButtonTest profileUname={router.query.uname} />
+          )}
         </div>
         <div>
           <div className="mt-1 flex items-center justify-between p-1 text-sm lg:text-base">
@@ -100,14 +109,22 @@ const Profile: FC = () => {
           <div className="h-24 overflow-hidden whitespace-pre-wrap rounded-lg bg-secondary2 p-1 text-sm lg:h-28 lg:text-base"></div>
         </div>
       </div>
-      {uname?
-      <FileUploadModal display={showUploadModal} setDisplay={setShowUploadModal} uname={userName} setProfileImg={setImg}/>
-        : <></>
-    }
+      {uname ? (
+        <FileUploadModal
+          display={showUploadModal}
+          setDisplay={setShowUploadModal}
+          uname={userName}
+          setProfileImg={setImg}
+        />
+      ) : (
+        <></>
+      )}
 
-{router.query.uname && <ButtonTest profileUname={router.query.uname} />
- } 
- </div>
+      {/* {router.query.uname &&
+typeof router.query.uname === 'string' &&
+<ButtonTest profileUname={router.query.uname} />
+ }  */}
+    </div>
   );
 };
 
@@ -118,15 +135,15 @@ const FriendButton: FC = () => {
   const frienReqMutation = api.friends.sendFriendReq.useMutation();
 
   const sendFriendReq = async () => {
-    console.log('Freind req');
+    console.log("Freind req");
 
-    if (session.status !== 'authenticated') {
-      console.log('LOGIN PLZ');
+    if (session.status !== "authenticated") {
+      console.log("LOGIN PLZ");
       return;
     }
 
     if (!router.query.uname) {
-      console.log('WHo req to send?');
+      console.log("WHo req to send?");
       return;
     }
 
@@ -134,26 +151,23 @@ const FriendButton: FC = () => {
     const targetUname = router.query.uname as string;
 
     if (!requesterUname || !targetUname) {
-      console.log('UnauThorIseD');
+      console.log("UnauThorIseD");
       return;
     }
 
     try {
-      const x = frienReqMutation.mutateAsync({requesterUname, targetUname});
+      const x = frienReqMutation.mutateAsync({ requesterUname, targetUname });
       console.log(x);
-      
-
-    } catch(err) {
+    } catch (err) {
       console.log(err);
     }
-    
-  }
+  };
 
   return (
     <>
       <button
-      onClick={sendFriendReq} 
-      className="rounded-lg border-2 border-solid border-primary2 bg-primary p-1 lg:px-2"
+        onClick={sendFriendReq}
+        className="rounded-lg border-2 border-solid border-primary2 bg-primary p-1 lg:px-2"
       >
         <span className="text-sm lg:text-base">Add Friend</span>
       </button>
