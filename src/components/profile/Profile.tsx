@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { api } from "~/utils/api";
 import FileUploadModal from "./fileUploadModal";
 import { useSession } from "next-auth/react";
+import ButtonTest from "./button";
 
 const Profile: FC = () => {
   const [fullName, setFullName] = useState<string>();
@@ -103,7 +104,10 @@ const Profile: FC = () => {
       <FileUploadModal display={showUploadModal} setDisplay={setShowUploadModal} uname={userName} setProfileImg={setImg}/>
         : <></>
     }
-      </div>
+
+{router.query.uname && <ButtonTest profileUname={router.query.uname} />
+ } 
+ </div>
   );
 };
 
