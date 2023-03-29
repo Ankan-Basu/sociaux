@@ -12,7 +12,10 @@ const ButtonTest: FC<IProps> = ({profileUname}) => {
   // console.log(buttonQuery);
   
   return (
+    <>
     <div>{profileUname}</div>
+    <div>{buttonQuery.data?.toString()}</div>
+    </>
   )
 }
 
