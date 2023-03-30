@@ -327,7 +327,8 @@ const Post: FC<IPostProps> =({
         </span>
       </div>
 
-      {/* <SharePostModal mode='desktop' display={true} setShowModal={setShowShareModal} /> */}
+      {/* don't allow reshare of shared post */}
+      <SharePostModal postId={_id} mode='desktop' display={!shareId && showShareModal} setShowModal={setShowShareModal} />
     </div>
   );
 }
