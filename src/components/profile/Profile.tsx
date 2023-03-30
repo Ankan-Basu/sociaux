@@ -42,6 +42,11 @@ const Profile: FC = () => {
         });
       })();
     }
+    return () => {
+      setFullName(undefined)
+      setUserName(undefined)
+      setImg(undefined)
+    }
   }, [router]);
 
   return (
