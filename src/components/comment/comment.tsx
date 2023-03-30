@@ -1,7 +1,10 @@
 import { useSession } from 'next-auth/react';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React, { createContext, FC, useContext, useEffect, useState } from 'react'
 import {FaEllipsisV, FaEllipsisH} from 'react-icons/fa';
 import { EditCommentContext } from '~/contexts/editCommentContext';
+import { PostFeedContext } from '~/contexts/postFeedContext';
 import { ReplyingContext } from '~/contexts/replyingContext';
 import { api } from '~/utils/api';
 import ReplyCommentList from './replyCommentList';
@@ -21,6 +24,7 @@ const Comment: FC<ICommentProps> = (
 ) => {
 
     // console.log('Comment renders', _id);
+    const router = useRouter();
     
     const deleteCommentMutation = api.comments.deleteComment.useMutation();
     const likeCommentMutation = api.likes.likeComment.useMutation();
@@ -36,6 +40,8 @@ const Comment: FC<ICommentProps> = (
     const {setIsReplying, setReplyingTo, replyingTo} = useContext(ReplyingContext);
 
     const {setShowCommentEditModal, setCurrEditComment, setIsReplyComment, setRefreshComments, refreshComments} = useContext(EditCommentContext);
+
+    const {setShowExpanded} = useContext(PostFeedContext);
 
     const session = useSession();
 
@@ -142,12 +148,17 @@ const Comment: FC<ICommentProps> = (
         }
     }
 
+    const handleNavigate = () => {
+        setShowExpanded(false);
+        router.push(`/user/${uname}`)
+    }
+
   return (
     <>
     <div className={`flex 
     //w-80 w-full p-1 rounded-lg
     ${replyingTo?._id===_id? 'bg-yellow-100':''}
-    lg:w-98`}>
+    //lg:w-98`}>
         <div className='w-16'>
         <div className='w-full'>
             <img src={profileImgQuery.data?.img} height='60rem' width='60rem' className='rounded-full'/>
@@ -160,10 +171,16 @@ const Comment: FC<ICommentProps> = (
                     <span><h4 className='m-0 p-0 font-medium'>
                          {/* Kamisato Ayaka  */}
                          </h4></span>
-                    <span><h4 className='text-sm font-light'>
+                    <span
+                    onClick={handleNavigate}
+                    >
+                        
+                        <h4 className='//text-sm //font-light font-medium'>
                         {/* (@aether_simp) */}
                         {uname}
-                        </h4></span>
+                        </h4>
+                        
+                        </span>
                     </div>
                     <div className='flex gap-2'>
                         <span

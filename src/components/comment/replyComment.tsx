@@ -1,7 +1,9 @@
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { FC, useContext, useEffect, useState } from "react";
 import { FaEllipsisH } from "react-icons/fa";
 import { EditCommentContext } from "~/contexts/editCommentContext";
+import { PostFeedContext } from "~/contexts/postFeedContext";
 import { api } from "~/utils/api";
 import Comment from "./comment";
 
@@ -15,12 +17,16 @@ interface IReplyCommentProps {
 }
 
 const ReplyComment: FC<IReplyCommentProps> = ({_id, parenCommId, uname, message, likes, time}) => {
+
+    const router = useRouter();
   const {
     setShowCommentEditModal,
         setCurrEditComment,
       setIsReplyComment,
       refreshReplies,
       setRefreshReplies} = useContext(EditCommentContext);
+
+      const {setShowExpanded} = useContext(PostFeedContext);
 
       const deleteReplyMutation = api.replyComments.deleteReplyComment.useMutation();
       const likeReplyMutation = api.likes.likeReplyComment.useMutation();
@@ -103,6 +109,11 @@ const ReplyComment: FC<IReplyCommentProps> = ({_id, parenCommId, uname, message,
 
     }
 
+    const handleNavigate = () => {
+        setShowExpanded(false);
+        router.push(`/user/${uname}`)
+    }
+
     return (
     <div className='flex 
     //w-80 w-full
@@ -119,7 +130,9 @@ const ReplyComment: FC<IReplyCommentProps> = ({_id, parenCommId, uname, message,
                     <span><h4 className='m-0 p-0 font-medium'>
                          {/* Kamisato Ayaka  */}
                          </h4></span>
-                    <span><h4 className='text-sm font-light'>
+                    <span
+                    onClick={handleNavigate}
+                    ><h4 className='font-medium'>
                         {/* (@aether_simp) */}
                         {uname}
                         </h4></span>
