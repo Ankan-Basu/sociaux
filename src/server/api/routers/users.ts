@@ -1,3 +1,4 @@
+import { TRPCError } from "@trpc/server";
 import { HydratedDocument } from "mongoose";
 import { z } from "zod";
 
@@ -52,6 +53,27 @@ export const usersRouter = createTRPCRouter({
       return {img: dbResp.img};
     }),
 
+
+
+    // change to private
+    modifyBio: publicProcedure
+    .input(z.object({uname: z.string(), bio: z.string()}))
+    .mutation(async ({ input }) => {
+
+      try {
+
+        dbConnect();
+        const dbResp = await UserModel.findOneAndUpdate({uname: input.uname}, {uname: input.uname, bio: input.bio}, {upsert: true});
+        
+        return {
+          dbResp
+        };
+      } catch(err) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR'
+        });
+      }
+    }),
 
   getSecretMessage: protectedProcedure.query(() => {
     return "you can now see this secret message!";
