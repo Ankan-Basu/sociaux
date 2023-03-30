@@ -132,9 +132,10 @@ const ReplyComment: FC<IReplyCommentProps> = ({_id, parenCommId, uname, message,
                          </h4></span>
                     <span
                     onClick={handleNavigate}
+                    className='cursor-pointer'
                     ><h4 className='font-medium'>
                         {/* (@aether_simp) */}
-                        {uname}
+                        {`@${uname}`}
                         </h4></span>
                     </div>
                     <div className="flex gap-1">

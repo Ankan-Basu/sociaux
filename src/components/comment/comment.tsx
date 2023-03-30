@@ -173,11 +173,11 @@ const Comment: FC<ICommentProps> = (
                          </h4></span>
                     <span
                     onClick={handleNavigate}
+                    className='cursor-pointer'
                     >
-                        
                         <h4 className='//text-sm //font-light font-medium'>
                         {/* (@aether_simp) */}
-                        {uname}
+                        {`@${uname}`}
                         </h4>
                         
                         </span>

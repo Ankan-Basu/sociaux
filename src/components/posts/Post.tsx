@@ -1,5 +1,6 @@
 import { TRPCError } from "@trpc/server";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 import { FC, useContext, useEffect, useState } from "react";
 
 import {
@@ -228,16 +229,20 @@ const Post: FC<IPostProps> =({
         </div>
       </div>
       <div className="flex flex-col py-1 pt-0">
-        <div>
-          <h3 className="font-medium text-lg">
+        
+        {/* <div>
+          <h3 className="font-medium text-lg"> */}
             {/* Kamisato Ayaka */}
-            Name
+            {/* Name
           </h3>
-        </div>
+        </div> */}
         <div>
-          <h3 className="font-light text-sm">
+          <h3 
+          className="//font-light //text-sm font-medium text-lg">
+          <Link href={`/user/${uname}`}>
             {/* @aether_simp */}
-            {uname || "Loading ..."}
+            {uname? `@${uname}` : "Loading ..."}
+          </Link>
           </h3>
         </div>
       </div>
