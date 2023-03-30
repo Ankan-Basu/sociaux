@@ -30,23 +30,27 @@ const PostScreen: FC<IPostScreenProps> = ({ display }) => {
       className={`
     ${display ? "block" : "hidden"}
     fixed z-50
+   
     top-0 left-0 w-screen h-screen
     bg-gray-600/50 backdrop-blur-lg
+    //overflow-hidden
     `}
     >
       <div
         className="
         bg-white/70
-        lg:bg-white h-screen 
+        bg-yellow-200//
+        lg:bg-white h-screen //h-auto
         w-full sm:w-101
         m-auto sm:rounded-lg
+        border-2 border-red border-green-500
         shadow-lg pt-2 p-2 overflow-auto
         "
       >
         <div
           className="
             flex justify-end
-            mb-2 mr-2
+            mb-2 mr-2 bg-white
             "
         >
           <span
@@ -57,13 +61,16 @@ const PostScreen: FC<IPostScreenProps> = ({ display }) => {
             className="
                 active:text-primary2
                 lg:hover:text-primary lg:active:text-primary2
+                fixed top-1
+                bg-secondary2 p-3 rounded-full border-2 border-solid border-primary
+                z-10
                 "
           >
             <FiX />
           </span>
         </div>
 
-        <div>
+        <div className="mt-8">
           {currPost && (
             <Post
               expanded={true}
@@ -80,7 +87,9 @@ const PostScreen: FC<IPostScreenProps> = ({ display }) => {
           )}
         </div>
 
-        <div>{currPost && <CommentScreen postId={currPost._id} />}</div>
+        <div
+        className=""
+        >{currPost && <CommentScreen postId={currPost._id} />}</div>
       </div>
     </div>
   );

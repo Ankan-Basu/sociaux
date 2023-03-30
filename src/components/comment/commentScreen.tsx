@@ -17,12 +17,8 @@ const CommentScreen: FC<ICommentScreenProps> = ({ postId }) => {
   // console.log('comment screen here', postId);
 
   return (
-    <div className="">
-      <div className="p-2 pt-0">
-        <h3 className="text-lg font-medium">Comments:</h3>
-      </div>
-
-      <CommentContextProvider>
+    <div className="//overflow-x-hidden">
+        <CommentContextProvider>
         <ReplyingContextProvider
           additionVals={{
             refreshReplies,
@@ -37,18 +33,36 @@ const CommentScreen: FC<ICommentScreenProps> = ({ postId }) => {
               setRefreshComments,
             }}
           >
+      <div className="sticky top-0
+      bg-white/40 backdrop-blur-md
+      rounded-lg pb-2
+      ">
+      <div className="p-2 pt-0">
+        <h3 className="text-lg font-medium
+        //sticky //top-0
+        pb-2 pt-2
+        ">Comments:</h3>
+        </div>
+        <CommentInput
+              postId={postId}
+              customCssClass="
+        //sticky //absolute //top-0 //left-0
+        "
+        />
+        </div>
+
             <CommentList
               postId={postId}
               refresh={refreshComments}
               customCssClass="pb-14"
             />
-            <CommentInput
+            {/* <CommentInput
               postId={postId}
               customCssClass="
-        fixed bottom-0
+        //fixed //absolute bottom-0
         // /border-2 /border-solid /border-black
         "
-            />
+            /> */}
             <EditComment />
           </EditCommentContextProvider>
         </ReplyingContextProvider>

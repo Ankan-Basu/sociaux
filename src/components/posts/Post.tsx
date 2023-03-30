@@ -16,6 +16,8 @@ import {
 import { PostEditContext } from "~/contexts/postEditContext";
 import { PostFeedContext } from "~/contexts/postFeedContext";
 import { api } from "~/utils/api";
+import Modal from "../modal/Modal";
+import SharePostModal from "../modal/sharePostModal";
 
 
 
@@ -53,6 +55,8 @@ const Post: FC<IPostProps> =({
 
   const imgQuery = api.posts.getPostImage.useQuery({imageId: `${imageId}`});
 
+  const sharePostMutation = api.posts.sharePost.useMutation();
+
   const {showEditModal,
     setShowEditModal,
     currEditPost,
@@ -63,6 +67,9 @@ const Post: FC<IPostProps> =({
   const session = useSession();
 
   const reactorUname = session.data?.user.uname;
+
+  const [showShareModal, setShowShareModal] = useState<boolean>(false);
+
 
   useEffect(() => {
     // console.log("post renders");
@@ -188,6 +195,14 @@ const Post: FC<IPostProps> =({
     }
   }
 
+  // const handleShare = async () => {
+  //   try {
+  //     const x = await sharePostMutation.mutateAsync({uname:})
+  //   } catch(err) {
+  //     console.log(err);
+  //   }
+  // }
+
   return (
     <div
       className={`
@@ -285,13 +300,18 @@ const Post: FC<IPostProps> =({
             {comments?.length}
           </span>
         </span>
-        <span className="py-1 flex-1 flex justify-center items-center gap-1 border-solid border-2 border-primary rounded-lg">
+        <span 
+        onClick={() => setShowShareModal(true)}
+        className="py-1 pointer
+        flex-1 flex justify-center items-center gap-1 border-solid border-2 border-primary rounded-lg">
           <FiCornerUpRight />
 
           {/* Display Text only in big screen */}
           <span className="hidden lg:inline">Share</span>
         </span>
       </div>
+
+      {/* <SharePostModal mode='desktop' display={true} setShowModal={setShowShareModal} /> */}
     </div>
   );
 }

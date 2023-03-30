@@ -29,6 +29,14 @@
   ::-webkit-scrollbar-thumb:hover {
     background: #028174;
   }
+/* 
+  body {
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+  }
+  html {
+    height: -webkit-fill-available;
+  } */
 
 @tailwind components;
 @tailwind utilities;

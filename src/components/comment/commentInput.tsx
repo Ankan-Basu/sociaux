@@ -116,11 +116,11 @@ const CommentInput: FC<ICommentInputProps> = ({ postId, customCssClass }) => {
     <div
       className={`
         ${customCssClass + " "}
-        //border-2 //border-solid
-        //border-black -left-1 -right-1 m-auto
+        //sticky //top-0
+        -left-1 -right-1 m-auto
         flex w-full flex-col
-        bg-white p-2
-        pb-1 pt-2 sm:w-100
+        //bg-white p-2
+        pb-1 pt-1 sm:w-100
         `}
     >
       <div

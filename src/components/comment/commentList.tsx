@@ -52,7 +52,7 @@ const CommentList: FC<ICommentListProps> = ({ postId, refresh, customCssClass })
     ${customCssClass + ' '}
     p-2 
     flex flex-col gap-4
-    //border-2 //border-solid //border-blue-500
+    overflow-auto
     `}
     >
 

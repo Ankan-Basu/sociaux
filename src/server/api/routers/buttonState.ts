@@ -32,7 +32,7 @@ export const buttonRouter = createTRPCRouter({
 
         if (currUname === targetUname) {
           return {
-            code: 0,
+            code: -2,
             message: 'LITERALLY ME'
           }
         }

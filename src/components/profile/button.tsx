@@ -91,6 +91,26 @@ const ButtonTest: FC<IProps> = ({profileUname}) => {
     )
   }
 
+  else if (buttonState === -1) {
+    return (
+      <button 
+    className="rounded-lg border-2 border-solid border-deactiv bg-deactiv p-1 lg:px-2"
+    >
+      <span className="text-sm lg:text-base">Login</span>
+    </button>
+    )
+  }
+
+  else if (buttonState === -2) {
+    return (
+      <button 
+    className="rounded-lg border-2 border-solid border-deactiv bg-deactiv p-1 lg:px-2"
+    >
+      <span className="text-sm lg:text-base">Literally Me</span>
+    </button>
+    )
+  }
+
   else if(buttonState === 1) {
     return (
       <button 
