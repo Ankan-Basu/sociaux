@@ -63,7 +63,45 @@ export const usersRouter = createTRPCRouter({
       try {
 
         dbConnect();
-        const dbResp = await UserModel.findOneAndUpdate({uname: input.uname}, {uname: input.uname, bio: input.bio}, {upsert: true});
+        const dbResp = await UserModel.findOneAndUpdate({uname: input.uname}, {uname: input.uname, bio: input.bio}, {upsert: false});
+        
+        return {
+          dbResp
+        };
+      } catch(err) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR'
+        });
+      }
+    }),
+
+    modifyName: publicProcedure
+    .input(z.object({uname: z.string(), fName: z.string()}))
+    .mutation(async ({ input }) => {
+
+      try {
+
+        dbConnect();
+        const dbResp = await UserModel.findOneAndUpdate({uname: input.uname}, {uname: input.uname, name: input.fName}, {upsert: false});
+        
+        return {
+          dbResp
+        };
+      } catch(err) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR'
+        });
+      }
+    }),
+
+
+    modifyEmail: publicProcedure
+    .input(z.object({uname: z.string(), email: z.string()}))
+    .mutation(async ({ input }) => {
+
+      try {
+        dbConnect();
+        const dbResp = await UserModel.findOneAndUpdate({uname: input.uname}, {uname: input.uname, email: input.email}, {upsert: false});
         
         return {
           dbResp
