@@ -31,7 +31,8 @@ const postSchema: Schema = new Schema<IPost> ({
     },
     message: {
         type: String,
-        required: true
+        // required: true,
+        default: ''
     },
     imageId: {
         type: String,

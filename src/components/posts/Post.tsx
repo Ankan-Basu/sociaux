@@ -28,10 +28,12 @@ interface IPostProps {
   time: Date;
   privacy: number;
   imageId: string;
+  shareId: string | undefined;
   comments?: Array<string>;
   likes?: Array<string>;
   _id: string;
   isModalMode?: boolean;
+  isSharedPost?: boolean;
 }
 
 const Post: FC<IPostProps> =({
@@ -41,10 +43,12 @@ const Post: FC<IPostProps> =({
   time,
   privacy,
   imageId,
+  shareId,
   comments,
   likes,
   _id,
   isModalMode = false,
+  isSharedPost = false,
 }) => {
 
   const [liked, setLiked] = useState<boolean>(false);
@@ -56,6 +60,8 @@ const Post: FC<IPostProps> =({
   const imgQuery = api.posts.getPostImage.useQuery({imageId: `${imageId}`});
 
   const sharePostMutation = api.posts.sharePost.useMutation();
+
+  const sharedPostQuery = api.posts.getOnePost.useQuery({postId: `${shareId}`});
 
   const {showEditModal,
     setShowEditModal,
@@ -71,30 +77,19 @@ const Post: FC<IPostProps> =({
   const [showShareModal, setShowShareModal] = useState<boolean>(false);
 
 
-  useEffect(() => {
-    // console.log("post renders");
+  const [sharedPost, setSharedPost] = useState<Object | undefined>(undefined);
 
+  useEffect(() => {
     if (!reactorUname) {
       return;
     }
-
     if (likes?.includes(reactorUname)) {
-      // console.log("post renders includes");
-
       setLiked(true);
     } else {
-      // console.log("post renders includes NOT");
-
       setLiked(false);
     }
   }, [reactorUname]);
 
-
-
-  useEffect(() => {
-    console.log(`Post Id: ${_id}\nMessage: ${message}\nImage Id: ${imageId}`);
-    
-  }, [])
 
 
   const handleLike = async () => {
@@ -157,6 +152,7 @@ const Post: FC<IPostProps> =({
           message,
           time,
           imageId,
+          shareId,
           privacy,
           comments,
           likes,
@@ -195,13 +191,6 @@ const Post: FC<IPostProps> =({
     }
   }
 
-  // const handleShare = async () => {
-  //   try {
-  //     const x = await sharePostMutation.mutateAsync({uname:})
-  //   } catch(err) {
-  //     console.log(err);
-  //   }
-  // }
 
   return (
     <div
@@ -210,6 +199,7 @@ const Post: FC<IPostProps> =({
     w-80 mb-8 shadow-lg border-2 
     border-solid border-secondary 
     lg:w-100 p-2 pt-1 rounded-lg
+    ${isSharedPost? "w-full lg:w-full mb-1": ""}
     bg-white
     `}
     >
@@ -219,7 +209,9 @@ const Post: FC<IPostProps> =({
         </div>
 
         <div 
-        className="flex gap-2 text-primary">
+        className={`
+        ${isSharedPost ? "hidden" : "flex"}
+        flex gap-2 text-primary`}>
           <span
           onClick={handleEdit}
           >
@@ -254,20 +246,44 @@ const Post: FC<IPostProps> =({
             Lorem ipsum dolor sit amet consectetur adipisicing elit. 
             Repellendus doloremque sapiente asperiores molestiae. Quae repudiandae ab quia excepturi? 
             Nemo molestiae culpa iste magnam officia temporibus quisquam omnis dignissimos odio impedit. */}
-        {message || "Loading ..."}
+        {/* {message || "Loading ..."} */}
+        {(message || message==='')?message:''}
       </div>
+      <div>
+        {shareId && sharedPostQuery.isFetched &&
+        <Post 
+        expanded={true}
+        isSharedPost={true}
+        uname={sharedPostQuery.data?.uname}
+        message={sharedPostQuery.data?.message}
+        privacy={sharedPostQuery.data?.privacy}
+        imageId={sharedPostQuery.data?.imageId}
+        //shareId={sharedPostQuery.data?.shareId}
+        time={sharedPostQuery.data?.time}
+        likes={sharedPostQuery.data?.likes}
+        comments={sharedPostQuery.data?.comments}
+        _id={sharedPostQuery.data?._id}
+
+        />
+        }
+      </div>
+      {imageId && 
       <div className="border-solid border-2 border-yellow-500 flex justify-center gap-2 py-1">
        {
-        imageId?
-        <img src={imgQuery.data?.img} />
-      :
+         imageId?
+         <img src={imgQuery.data?.img} />
+         :
       <></> 
       }       
       </div>
+      }
+
 
       <div
         className={`
             ${isModalMode ? "hidden" : "block"}
+            ${isSharedPost ? "hidden" : "block"}
+            //${expanded ? "hidden" : "block"}
             text-primary 
             flex justify-center gap-2 pt-1
             `}

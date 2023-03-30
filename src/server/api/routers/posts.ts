@@ -36,19 +36,33 @@ export const postsRouter = createTRPCRouter({
     getOnePost: publicProcedure
     .input(z.object({ postId: z.string() }))
     .query(async ({ input }) => {
-      dbConnect();
+      try {
 
-      
-      const post: Array<HydratedDocument<IPost>> | null = await PostModel.findOne({_id: input.postId})
-      
-      if (!post) {
-        throw new TRPCError({
+        if (!input.postId || input.postId === 'undefined') {
+          // console.log('Get One Post IGNORING');
+          return {}
+        }
+
+        dbConnect();
+        
+        
+        const post: Array<HydratedDocument<IPost>> | null = await PostModel.findOne({_id: input.postId})
+        
+        if (!post) {
+          throw new TRPCError({
             code: "NOT_FOUND",
             message: "Not found"
+          })
+        }
+        
+        return post;
+      } catch (err) {
+        console.log(err);
+        
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR'
         })
       }
-
-      return post;
     }),
 
     

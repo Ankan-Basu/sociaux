@@ -79,6 +79,7 @@ const PostScreen: FC<IPostScreenProps> = ({ display }) => {
               time={currPost.time}
               privacy={currPost.privacy}
               imageId={currPost.imageId}
+              shareId={currPost.shareId}
               comments={currPost.comments}
               likes={currPost.likes}
               _id={currPost._id}
