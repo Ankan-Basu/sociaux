@@ -6,7 +6,8 @@ export interface IPost {
     time?: Date;
     privacy: number;
     message: string;
-    imageId?:string;
+    imageId?: string;
+    shareId?: string;
     likes?: Array<string>;
     comments?: Array<string>;
     shares?: number;
@@ -36,6 +37,10 @@ const postSchema: Schema = new Schema<IPost> ({
         type: String,
         // required: true,
         default: '',
+    },
+    shareId: {
+        type: String,
+        default: ''
     },
     likes: {
         type: [String],

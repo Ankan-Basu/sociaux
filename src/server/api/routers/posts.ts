@@ -177,4 +177,28 @@ export const postsRouter = createTRPCRouter({
 
       return dbResp;
     }),
+
+
+    sharePost: publicProcedure
+    .input(z.object({
+      uname: z.string(),
+      privacy: z.number(),
+      message: z.string(),
+      shareId: z.string(),  
+    }))
+    .mutation(async ({ input }) => {
+      try {
+        dbConnect();
+        // console.log(input);
+        const dbResp = await PostModel.create({uname: input.uname, privacy: input.privacy, message: input.message, shareId: input.shareId});
+
+        return dbResp;
+
+      } catch(err) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'catch block of share post'
+        })
+      }
+    }),
 });
