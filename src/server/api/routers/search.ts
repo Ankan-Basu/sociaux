@@ -16,9 +16,15 @@ export const searchRouter = createTRPCRouter({
       try {
         dbConnect();
 
+        const queryString = '^' + input.searchName;
+
+        // set 'i' for case insensitive matching
+        const queryRegexp = new RegExp(queryString, 'i');
+
+
         const dbResp = await UserModel.find({ $or: [
-          {uname: input.searchName}, 
-          {name: input.searchName}
+          {uname: {$regex: queryRegexp}}, 
+          {name: {$regex: queryRegexp}}
         ]}
       );
 
