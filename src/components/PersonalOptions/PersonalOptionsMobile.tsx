@@ -81,10 +81,12 @@ const PersonalOptionsMobile: FC<IPersonalOptionsMobileProps> = ({
           <FiUser />
           <h4>My Profile</h4>
         </div>
+        <Link href='/dashboard'>
         <div className="flex cursor-pointer items-center gap-1 rounded-lg p-2 hover:bg-primary">
           <FiSettings />
           <h4>Settings</h4>
         </div>
+        </Link>
         <div
           onClick={() => {
             signOut({

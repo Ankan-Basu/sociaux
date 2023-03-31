@@ -81,10 +81,12 @@ const PersonalOptions: FC = () => {
         <div className='p-2 flex gap-1 items-center rounded-lg cursor-pointer hover:bg-primary'>
             <FiUser /><h4>My Profile</h4>
         </div>
+        <Link href='/dashboard'>
         <div className='p-2 flex gap-1 items-center rounded-lg cursor-pointer hover:bg-primary'>
             <FiSettings/>
             <h4>Settings</h4>
         </div>
+        </Link>
         <div 
         onClick={() => {
             signOut({

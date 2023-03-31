@@ -1,4 +1,5 @@
 import { useSession } from 'next-auth/react';
+import Link from 'next/link';
 import { bracketSameLine } from 'prettier.config.cjs';
 import React, { FC, useEffect, useState } from 'react'
 import { string } from 'zod'
@@ -103,11 +104,13 @@ const ButtonTest: FC<IProps> = ({profileUname}) => {
 
   else if (buttonState === -2) {
     return (
+      <Link href='/dashboard'>
       <button 
     className="rounded-lg border-2 border-solid border-deactiv bg-deactiv p-1 lg:px-2"
     >
-      <span className="text-sm lg:text-base">Literally Me</span>
+      <span className="text-sm lg:text-base">Edit Profile</span>
     </button>
+      </Link>
     )
   }
 
