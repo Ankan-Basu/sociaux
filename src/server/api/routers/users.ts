@@ -16,12 +16,27 @@ export const usersRouter = createTRPCRouter({
   getUser: publicProcedure
     .input(z.object({ uname: z.string() }))
     .query(async ({ ctx, input }) => {
+      try {
+        if (!input.uname) {
+          console.log('user, ignoring', input.uname);
+          return {
+            uname: undefined,
+            name: undefined,
+            email: undefined
+          };
+        }
+
         dbConnect();
         // console.log('Context', ctx);
         
-      const res: IUser | null = await UserModel.findOne({uname: input.uname});
-      
+        const res: IUser | null = await UserModel.findOne({uname: input.uname});
+        
         return res; 
+      } catch(err) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR'
+        })
+      }
     }
     ),
 
@@ -41,16 +56,25 @@ export const usersRouter = createTRPCRouter({
     getProfileImage: publicProcedure
     .input(z.object({uname: z.string()}))
     .query(async ({ input }) => {
-
-      dbConnect();
+      try {
+        if (!input.uname) {
+          return {img: ''}
+        }
+        
+        dbConnect();
         // console.log('Img upload', input);
         const dbResp = await ProfileImageModel.findOne({uname: input.uname});
-
+        
         if (!dbResp) {
           return {img:''};
         }
         
-      return {img: dbResp.img};
+        return {img: dbResp.img};
+      } catch(err) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR'
+        })
+      }
     }),
 
 
@@ -107,9 +131,17 @@ export const usersRouter = createTRPCRouter({
           dbResp
         };
       } catch(err) {
+        // console.log(err.codeName);
+        if (err.codeName === 'DuplicateKey') {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'Duplicate Email'
+          });
+        }
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR'
         });
+        
       }
     }),
 
