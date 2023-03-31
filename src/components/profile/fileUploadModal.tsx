@@ -70,9 +70,13 @@ const handleProfilImgUpload = async (e: React.FormEvent<HTMLFormElement>) => {
     const x = await profileImgMutation.mutateAsync({uname: session.data?.user.uname, image: img});
     setDisplay(false);
     const newImg = x.dbResp?.img;
-    setProfileImg(newImg)
+    // console.log('NEW IMG', newImg);
+    
+    // setProfileImg(newImg)
+    setProfileImg(img);
     // console.log(newImg)
-    router.push(`/user/${session.data.user.uname}`);
+    // router.push(`/user/${session.data.user.uname}`);
+    // router.push('/dashboard');
   } catch(err) {
     console.log(err)
   }

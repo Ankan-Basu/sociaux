@@ -44,14 +44,21 @@ export const usersRouter = createTRPCRouter({
     uploadProfileImage: publicProcedure
     .input(z.object({uname: z.string(), image: z.string()}))
     .mutation(async ({ input }) => {
+      try {
 
-      dbConnect();
+        
+        dbConnect();
         // console.log('Img upload', input);
         const dbResp = await ProfileImageModel.findOneAndUpdate({uname: input.uname}, {uname: input.uname, img: input.image}, {upsert: true});
         
-      return {
-        dbResp
-      };
+        return {
+          dbResp
+        };
+      } catch(err) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR'
+        })
+      }
     }),
 
     getProfileImage: publicProcedure

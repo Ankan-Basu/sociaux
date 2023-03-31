@@ -5,6 +5,7 @@ import { api } from "~/utils/api";
 import { TRPCClientError } from "@trpc/client";
 import { AppRouter } from "~/server/api/root";
 import { useRouter } from "next/router";
+import FileUploadModal from "~/components/profile/fileUploadModal";
 
 
 const Dashboard: FC = () => {
@@ -16,6 +17,10 @@ const Dashboard: FC = () => {
   const [email, setEmail] = useState<string>();
   const [bio, setBio] = useState<string>();
   const [img, setImg] = useState<string>();
+
+  const [dummy, setDummy] = useState<Object>({status: 1});
+  
+  const [showUploadModal, setShowUploadModal] = useState<boolean>(false);
 
   let uname = session.data?.user.uname || '';
 
@@ -95,6 +100,9 @@ const Dashboard: FC = () => {
         absolute bottom-2 
         ml-28 inline-block
         rounded-full bg-secondary2 p-3 text-primary shadow-lg"
+        onClick={() => {
+          setShowUploadModal(true);
+        }}
           >
             <FiEdit3 />
           </div>
@@ -129,6 +137,17 @@ const Dashboard: FC = () => {
             </button>
           </div>
         </div>
+
+        {uname ? (
+        <FileUploadModal
+          display={showUploadModal}
+          setDisplay={setShowUploadModal}
+          uname={uname}
+          setProfileImg={setImg}
+        />
+      ) : (
+        <></>
+      )}
       </div>
   
   );
