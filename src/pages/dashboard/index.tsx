@@ -2,6 +2,9 @@ import React, { FC, useEffect, useState } from "react";
 import { FiEdit2, FiEdit3, FiX, FiTrash } from "react-icons/fi";
 import { useSession } from "next-auth/react";
 import { api } from "~/utils/api";
+import { TRPCClientError } from "@trpc/client";
+import { AppRouter } from "~/server/api/root";
+import { useRouter } from "next/router";
 
 
 const Dashboard: FC = () => {
@@ -11,6 +14,7 @@ const Dashboard: FC = () => {
   const [fName, setFName] = useState<string>();
   const [uName, setUName] = useState<string>();
   const [email, setEmail] = useState<string>();
+  const [bio, setBio] = useState<string>();
   const [img, setImg] = useState<string>();
 
   let uname = session.data?.user.uname || '';
@@ -32,6 +36,7 @@ const Dashboard: FC = () => {
           setFName(userQuery.data?.name);
           // setUName(userQuery.data?.uname);
           setEmail(userQuery.data?.email);
+          setBio(userQuery.data?.bio);
         }
 
       })();
@@ -48,9 +53,10 @@ const Dashboard: FC = () => {
   useEffect(() => {
     return () => {
       setFName(undefined);
-      setUName(undefined);
+      // setUName(undefined);
       setEmail(undefined);
       setImg(undefined);
+      setBio(undefined);
     }
   }, [])
 
@@ -66,9 +72,7 @@ const Dashboard: FC = () => {
     w-screen
     max-w-md"
     >
-      {/* <div>
-        <FiX />
-       </div> */}
+
       <div>
         <h2 className="text-3xl font-medium p-2">Dashboard: </h2>
       </div>
@@ -96,11 +100,15 @@ const Dashboard: FC = () => {
           </div>
         </div>
 
+
+          </div>
+
         <div
           className="
-      flex
-      flex-col gap-3 p-4
-      ">
+          flex
+          flex-col gap-3 p-4
+          ">
+        <Bio bio={bio || ''}/>
           <DataField mode='Name' data={fName || ''} />
           <DataField mode='Uname' data={uname} />
           <DataField mode='Email' data={email || ''} />
@@ -122,7 +130,7 @@ const Dashboard: FC = () => {
           </div>
         </div>
       </div>
-    </div>
+  
   );
 };
 
@@ -146,6 +154,8 @@ const DataField: FC<IDataFieldProps> = ({mode, data}) => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    // console.log('Submit event');
+    
     if (session.status !== 'authenticated') {
       console.log('Unauthenticated');
       return;
@@ -162,11 +172,25 @@ const DataField: FC<IDataFieldProps> = ({mode, data}) => {
 
     switch(mode) {
       case 'Name':
-        resp = await changeNameMutation.mutateAsync({uname, fName: editedText});
+        try {
+          resp = await changeNameMutation.mutateAsync({uname, fName: editedText});
+          setState(editedText)
+          setEditedText('');
+          setEditMode(false);
+        } catch(err) {
+          console.log(err);
+        }
         break;
       
       case 'Email':
-        resp = await changeEmailMutation.mutateAsync({uname, email: editedText});
+        try {
+          resp = await changeEmailMutation.mutateAsync({uname, email: editedText});
+          setEditedText('');
+          setEditMode(false);
+        } catch(err) {
+          console.log(err);
+          
+        }
         break;
 
       default:
@@ -219,6 +243,7 @@ const DataField: FC<IDataFieldProps> = ({mode, data}) => {
           type='submit'>Submit</button>
           <button
           className="p-1 bg-deactiv rounded-lg text-sm"
+          type="button"
           onClick={() => setEditMode(false)}
           >Cancel</button>
         </form>
@@ -238,6 +263,110 @@ const DataField: FC<IDataFieldProps> = ({mode, data}) => {
     </span>
   </div>
   )
+}
+
+interface IBioProps  {bio: string;}
+const Bio: FC<IBioProps> = ({bio}) => {
+  const [state, setState] = useState<string>(bio);
+  const [editMode, setEditMode] = useState<boolean>(false);
+  const [editedText, setEditedText] = useState<string>('');
+
+  const changeBioMutation = api.users.modifyBio.useMutation();
+
+  const session = useSession();
+
+  const router = useRouter();
+
+  useEffect(() => {
+    setState(bio);
+  }, [bio])
+  const handleSubmitBio = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    // console.log('Submit', editedText);
+
+    if (session.status === 'unauthenticated') {
+      console.log('Error');
+      return;
+    }
+
+    if (session.status === 'loading') {
+      // console.log('Error');
+      return;
+    }
+
+    const uname = session.data?.user.uname;
+
+    if (!uname) {
+      console.log('Unauth');
+      return;
+    }
+
+    try {
+      const x = await changeBioMutation.mutateAsync({uname, bio: editedText});
+      setState(editedText);
+      setEditedText('');
+      setEditMode(false);
+      
+    } catch(err: TRPCClientError<AppRouter>) {
+      console.log(err);
+      return;
+    }
+    
+  }
+
+  return (
+    <div
+    className="
+    flex gap-1 justify-between
+    px-2 py-2 bg-deactiv rounded-lg
+    ">
+      
+      <span className="font-medium">Bio:</span>
+      <div className={`
+      ${editMode?'hidden':'block'}
+      border-2 border-solid border-gray-300 rounded-lg
+      overflow-hidden whitespace-pre-wrap flex-1 p-1 pt-0`}>
+      {state}
+      </div>
+      
+      <form
+      onSubmit={handleSubmitBio}
+      className={`
+      ${editMode?'flex':'hidden'}
+      gap-1 flex-1
+      `}
+      >
+        <textarea 
+        className="h-24 overflow-hidden 
+        whitespace-pre-wrap rounded-lg bg-secondary2 
+        p-1 text-sm lg:h-28 lg:text-base flex-1" 
+        placeholder="Enter new bio"
+        value={editedText}
+        onChange={(e) => setEditedText(e.target.value)}
+        />
+        <div 
+        className="flex flex-col gap-1"
+        >
+        <button type='submit'
+        className="p-1 rounded-lg bg-primary"
+        >Submit</button>
+        <button
+        type="button"
+        onClick={() => setEditMode(false)}
+        className="p-1 rounded-lg bg-deactiv"
+        >Cancel</button>
+        </div>
+      </form>
+      <span 
+    onClick={() => setEditMode(true)}
+    className={`cursor-pointer
+    ${editMode?'hidden':'block'}
+    `}
+    >
+      <FiEdit3 />
+    </span>
+    </div>
+  );
 }
 
 export default Dashboard;

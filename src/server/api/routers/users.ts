@@ -22,7 +22,8 @@ export const usersRouter = createTRPCRouter({
           return {
             uname: undefined,
             name: undefined,
-            email: undefined
+            email: undefined,
+            bio: undefined,
           };
         }
 
