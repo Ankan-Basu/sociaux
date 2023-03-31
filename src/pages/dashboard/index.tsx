@@ -64,22 +64,20 @@ const Dashboard: FC = () => {
     <div
       className="
     w-screen
-    max-w-md
-    border-2 border-solid"
+    max-w-md"
     >
       {/* <div>
         <FiX />
        </div> */}
       <div>
-        <h2 className="text-3xl font-medium">Dashboard: </h2>
+        <h2 className="text-3xl font-medium p-2">Dashboard: </h2>
       </div>
 
       <div>
         <div
           className="
       relative 
-      flex items-center justify-center
-      border-2 border-solid"
+      flex items-center justify-center"
         >
           <img
             src={img}
@@ -102,19 +100,10 @@ const Dashboard: FC = () => {
           className="
       flex
       flex-col gap-3 p-4
-      "
-        >
-          
+      ">
           <DataField mode='Name' data={fName || ''} />
-
-          
           <DataField mode='Uname' data={uname} />
-
-          
           <DataField mode='Email' data={email || ''} />
-
-          
-
           <div>
             <button
               className="
@@ -122,7 +111,7 @@ const Dashboard: FC = () => {
   justify-center gap-2 rounded-lg 
   border-2 
   border-solid border-primary2
-  bg-primary p-2
+  bg-primary p-1
   active:bg-primary2 active:text-white
   lg:hover:bg-primary2 lg:hover:text-white lg:active:bg-primary lg:active:text-black
   "
@@ -189,29 +178,36 @@ const DataField: FC<IDataFieldProps> = ({mode, data}) => {
     <div
     className="
     flex items-center justify-between
-    border-2 border-solid"
+   px-2 py-1
+    "
   >
     <span 
     className={`${editMode?'hidden':'block'}
     py-1`}
     >
-      {mode}: {state || 'Loading ...'}
+      <span className="font-medium">{mode}:</span> {state || 'Loading ...'}
     </span>
+      
+      
       <div
       className={`${editMode?'block':'hidden'}
-      flex items-center
+      flex gap-1 
+      sm:items-center flex-col items-stretch sm:flex-row justify-center
       `}
-      >{mode}: 
+      >
+        <span className="font-medium">{mode}:</span>
+      <div className="min-w-0 flex-1">
+        
         <form
         onSubmit={handleSubmit}
-        className="border-2 border-solid border-green-500
-      
+        className="
+        w-full
         flex gap-2 
         "
         >
           <input 
-          className="border-2 border-solid border-blue-500
-          bg-secondary2 rounded-lg "
+          className="
+          bg-secondary2 rounded-lg w-full p-1"
           type='text'
           placeholder={`New ${mode}`} 
           value={editedText}
@@ -226,7 +222,11 @@ const DataField: FC<IDataFieldProps> = ({mode, data}) => {
           onClick={() => setEditMode(false)}
           >Cancel</button>
         </form>
+        </div>
       </div>
+
+
+
     <span 
     onClick={() => setEditMode(true)}
     className={`cursor-pointer

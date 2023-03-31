@@ -130,8 +130,9 @@ export const usersRouter = createTRPCRouter({
         return {
           dbResp
         };
-      } catch(err) {
+      } catch(err: any) {
         // console.log(err.codeName);
+        
         if (err.codeName === 'DuplicateKey') {
           throw new TRPCError({
             code: 'BAD_REQUEST',
