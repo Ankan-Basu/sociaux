@@ -3,10 +3,12 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { createContext, FC, useContext, useEffect, useState } from 'react'
 import {FaEllipsisV, FaEllipsisH} from 'react-icons/fa';
+import { FiMoreHorizontal } from 'react-icons/fi';
 import { EditCommentContext } from '~/contexts/editCommentContext';
 import { PostFeedContext } from '~/contexts/postFeedContext';
 import { ReplyingContext } from '~/contexts/replyingContext';
 import { api } from '~/utils/api';
+import Dropdown from '../dropdown/dropdown';
 import ReplyCommentList from './replyCommentList';
 
 export interface ICommentProps {
@@ -36,6 +38,8 @@ const Comment: FC<ICommentProps> = (
     const [showReplies, setShowReplies] = useState<boolean>(false);
 
     const [img, setImg] = useState<string>();
+
+    const [displayDropdown, setDisplayDropdown] = useState<boolean>(false);
 
     const {setIsReplying, setReplyingTo, replyingTo} = useContext(ReplyingContext);
 
@@ -182,28 +186,25 @@ const Comment: FC<ICommentProps> = (
                         
                         </span>
                     </div>
-                    <div className='flex gap-2'>
-                        <span
-                        onClick={handleEdit}
+                    <div className={`
+                    ${session.data?.user.uname===uname? 'flex': 'hidden'} 
+                    gap-2 relative`}>
+                        <span className='cursor-pointer'
+                        onClick={() => setDisplayDropdown(currState => !currState)}
                         >
-                        Edit
+                        <FiMoreHorizontal />
                         </span>
-                        <span
-                        onClick={handleDelete}
-                        >
-                            Delete
-                        </span>
-                        <span>
-                        <FaEllipsisH />
-                        </span>
+                        <Dropdown 
+                        display={displayDropdown}
+                        options={[
+                            {optionName: 'Edit', callback: handleEdit},
+                            {optionName: 'Delete', callback: handleDelete}
+                        ]}
+                        additionCSS = 'top-4 right-0'
+                        />
                     </div>
                 </div>
                 <div className='p-2 pt-0'>
-                {/* Lorem ipsum dolor sit, amet consectetur 
-                adipisicing elit. Maiores animi in libero 
-                ratione sed architecto sit, repudiandae eum porro, 
-                dignissimos voluptate nihil 
-                tempore eius illum! Totam unde deleniti eos voluptas!     */}
                 {message}
                 </div>                
             </div>
