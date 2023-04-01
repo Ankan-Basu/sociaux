@@ -4,17 +4,25 @@ interface x {
   uname: string;
   source: string;
   type: 'likePost' | 'comment' | 'replyToComment' | 'likeComment' | 'likeReplyComment' | 'acceptReq';
-  targetId: string;
+  postId?: string;
+  commentId?: string;
+  replyCommentId?: string;
 }
 
-const removeNotification = async ({uname, source, type, targetId}: x) => {
+const removeNotification = async ({uname, source, type, postId = "",
+commentId = "",
+replyCommentId = "",}: x) => {
   const notifListTarget = await NotificationModel.findOne({uname: uname});
 
   if (!notifListTarget) {
     // create one
   } else {
     const newNotifs = notifListTarget.notifs.filter((notif) => {
-      return !(notif.source === source && notif.type === type && notif.targetId === targetId)
+      return !(notif.source === source 
+        && notif.type === type 
+        && notif.postId === postId
+        && notif.commentId === commentId
+        && notif.replyCommentId === replyCommentId)
     });
 
     notifListTarget.notifs = newNotifs;

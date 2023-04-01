@@ -37,7 +37,7 @@ export const likesRouter = createTRPCRouter({
           const dbResp = await post.save();
 
           //change
-          sendNotification({uname: post.uname, source: input.uname, type: 'likePost', targetId: post._id.toString()});
+          sendNotification({uname: post.uname, source: input.uname, type: 'likePost', postId: post._id.toString()});
 
           
           return dbResp;
@@ -86,7 +86,7 @@ export const likesRouter = createTRPCRouter({
 
 
           //// remove notif
-          removeNotification({source: input.uname, uname: post.uname, type: 'likePost', targetId: post._id.toString()});
+          removeNotification({source: input.uname, uname: post.uname, type: 'likePost', postId: post._id.toString()});
 
           
           return dbResp;
@@ -129,7 +129,7 @@ export const likesRouter = createTRPCRouter({
             
             const dbResp = await comment.save();
 
-            sendNotification({source: input.uname, uname: comment.uname, type: "likeComment", targetId: comment._id.toString()})
+            sendNotification({source: input.uname, uname: comment.uname, type: "likeComment", commentId: comment._id.toString(), postId: comment.postId})
 
             return dbResp;
           }
@@ -181,7 +181,7 @@ export const likesRouter = createTRPCRouter({
 
             const dbResp = await comment.save();
 
-            removeNotification({source: input.uname, uname: comment.uname, type: "likeComment", targetId: comment._id.toString()});
+            removeNotification({source: input.uname, uname: comment.uname, type: "likeComment", commentId: comment._id.toString(), postId: comment.postId});
 
             return dbResp;
           }
@@ -228,6 +228,22 @@ export const likesRouter = createTRPCRouter({
 
             const dbResp = await replyComment.save();
 
+
+            // send the notification
+            (async () => {
+
+              // find the parent postId
+              const parenComm = await CommentModel.findOne({_id: replyComment.parenCommId});
+              
+              if (!parenComm) {
+                return;
+              } else {              
+                sendNotification({uname: replyComment.uname, source: input.uname, type: "likeReplyComment", commentId: replyComment.parenCommId, replyCommentId: replyComment._id.toString(), postId: parenComm.postId});   
+              }
+            })();
+
+
+
             return dbResp;
           }
         }
@@ -270,6 +286,20 @@ export const likesRouter = createTRPCRouter({
             replyComment.likes = likesArr;
 
             const dbResp = await replyComment.save();
+
+
+            // remove the notification
+            (async () => {
+
+              // find the parent postId
+              const parenComm = await CommentModel.findOne({_id: replyComment.parenCommId});
+              
+              if (!parenComm) {
+                return;
+              } else {              
+                removeNotification({uname: replyComment.uname, source: input.uname, type: "likeReplyComment", commentId: replyComment.parenCommId, replyCommentId: replyComment._id.toString(), postId: parenComm.postId});   
+              }
+            })();
 
             return dbResp;
           }

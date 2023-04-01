@@ -1,12 +1,11 @@
 import mongoose, {Schema, models, model} from "mongoose";
 
-interface INotifItem {
+export interface INotifItem {
     source: string;
-    // message: string;
     type: 'likePost' | 'comment' | 'replyToComment' | 'likeComment' | 'likeReplyComment' | 'acceptReq';
-    targetId?: string;
-    // for likePost /comment - postId, replyComment/likeComment - commentId
-    // likeReplyComment - , acceptReq - userId  
+    postId?: string;
+    commentId?: string;
+    replyCommentId?: string;
     time?: Date;
     isSend?: boolean;
 }
@@ -29,9 +28,19 @@ const notifItemSchema: Schema = new Schema<INotifItem> ({
         type: String,
         required: true
     },
-    targetId : {
+    postId : {
         type: String,
-        required: true,
+        // required: true,
+        default: ''
+    },
+    commentId : {
+        type: String,
+        // required: true,
+        default: ''
+    },
+    replyCommentId : {
+        type: String,
+        // required: true,
         default: ''
     },
     time: {
