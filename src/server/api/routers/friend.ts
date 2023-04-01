@@ -10,6 +10,7 @@ import FriendListModel from "~/server/db/models/Friend";
 import FriendReqModel from "~/server/db/models/FriendReq";
 
 import dbConnect from "~/server/db/mongo";
+import sendNotification from "../utilFuncs/sendNotification";
 
 export const friendsRouter = createTRPCRouter({
     getFriendReqList: publicProcedure
@@ -144,6 +145,11 @@ export const friendsRouter = createTRPCRouter({
          
   
           const dbResp1 = await friendReqList.save();
+
+
+
+
+          sendNotification({source: input.acceptorUname, uname: input.targetUname, type: "acceptReq"})
   
           return dbResp1;
         }
