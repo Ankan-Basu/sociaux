@@ -7,7 +7,10 @@ import {
   protectedProcedure,
 } from "~/server/api/trpc";
 import CommentModel, { IComment } from "~/server/db/models/Comment";
+import PostModel from "~/server/db/models/Post";
 import dbConnect from "~/server/db/mongo";
+import removeNotification from "../utilFuncs/removeNotification";
+import sendNotification from "../utilFuncs/sendNotification";
 
 export const commentsRouter = createTRPCRouter({
   getComments: publicProcedure
@@ -33,6 +36,24 @@ export const commentsRouter = createTRPCRouter({
           input
         );
         if (dbResp) {
+
+          // send notification
+          (async () => {
+            try {
+              // get the targetuname from the post
+              const post = await PostModel.findOne({_id: input.postId});
+              if (!post) {
+                //ignore
+                return;
+              } else {
+                sendNotification({uname: post.uname, source: input.uname, type: "comment", postId: input.postId, commentId: dbResp._id.toString()});
+
+              }
+            } catch(err) {
+              //ignore
+            }
+          })();
+
           return dbResp;
         } else {
           throw new TRPCError({
@@ -88,12 +109,40 @@ export const commentsRouter = createTRPCRouter({
     }),
 
   deleteComment: publicProcedure
-    .input(z.object({ commentId: z.string() }))
+    .input(z.object({ uname: z.string(), commentId: z.string() }))
     .mutation(async ({ input }) => {
       dbConnect();
 
       try {
-        const dbResp = await CommentModel.deleteOne({ _id: input.commentId });
+        const dbResp = await CommentModel.findOneAndDelete({ _id: input.commentId });
+
+        console.log('DELETE COMMENT', dbResp);
+
+        if (!dbResp) {
+          throw new TRPCError({
+            code: "NOT_FOUND"
+          })
+        }
+        
+
+        //remove notification
+        (async () => {
+          try {
+            // get the targetuname from the post
+            const post = await PostModel.findOne({_id: dbResp.postId});
+            if (!post) {
+              //ignore
+              return;
+            } else {
+              removeNotification({uname: post.uname, source: input.uname, type: "comment", postId: post._id.toString(), commentId: dbResp._id.toString()});
+
+            }
+          } catch(err) {
+            //ignore
+          }
+        })();
+
+
         return dbResp;
       } catch (err) {
         throw new TRPCError({

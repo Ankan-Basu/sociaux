@@ -143,8 +143,13 @@ const Comment: FC<ICommentProps> = (
     }
 
     const handleDelete = async () => {
+        if (!reactorUname) {
+            console.log('UNAUTH');
+            return;
+        }
+        
         try {
-            await deleteCommentMutation.mutateAsync({commentId: _id});
+            await deleteCommentMutation.mutateAsync({uname: reactorUname, commentId: _id});
             setRefreshComments({...refreshComments});
         } catch(err) {
             console.log(err);
