@@ -74,10 +74,11 @@ export const postsRouter = createTRPCRouter({
         const post: HydratedDocument<IPost> | null = await PostModel.findOne({_id: input.postId})
         
         if (!post) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "Not found"
-          })
+          // throw new TRPCError({
+          //   code: "NOT_FOUND",
+          //   message: "Not found"
+          // })
+          return {}
         } 
 
           

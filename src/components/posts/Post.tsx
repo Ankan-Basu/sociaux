@@ -192,6 +192,27 @@ const Post: FC<IPostProps> =({
     }
   }
 
+  if (!_id) {
+    return (
+      <div
+      className={`
+    ${expanded ? "w-full" : ""}
+    w-80 mb-8 shadow-lg border-2 
+    border-solid border-secondary 
+    lg:w-100 p-2 pt-1 rounded-lg
+    ${isSharedPost? "w-full lg:w-full mb-1": ""}
+    bg-white
+    `}
+    >
+      <div className="text-sm font-light italic">
+      Post NOT found. <br />
+      The post may have been deleted or it's privacy setting doesn't allow
+      you to view it.
+      </div>
+      </div>
+    )
+  }
+
 
   return (
     <div
