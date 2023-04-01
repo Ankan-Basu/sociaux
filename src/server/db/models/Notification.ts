@@ -13,7 +13,7 @@ interface INotifItem {
 
 export interface INotification {
     uname: string,
-    notifs: [INotifItem]   
+    notifs: INotifItem[]
 }
 
 const notifItemSchema: Schema = new Schema<INotifItem> ({

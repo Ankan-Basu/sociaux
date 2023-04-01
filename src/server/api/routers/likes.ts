@@ -11,6 +11,8 @@ import NotificationModel from "~/server/db/models/Notification";
 import PostModel, { IPost } from "~/server/db/models/Post";
 import ReplyCommentModel, { IReplyComment } from "~/server/db/models/ReplyComment";
 import dbConnect from "~/server/db/mongo";
+import removeNotification from "../utilFuncs/removeNotification";
+import sendNotification from "../utilFuncs/sendNotification";
 
 export const likesRouter = createTRPCRouter({
   likePost: publicProcedure
@@ -34,36 +36,8 @@ export const likesRouter = createTRPCRouter({
           post.likes!.push(input.uname);
           const dbResp = await post.save();
 
-
-
           //change
-          const notifListTarget = await NotificationModel.findOne({uname: post.uname});
-
-          if (!notifListTarget) {
-            // create one
-          } else {
-            notifListTarget.notifs.push({
-              source: input.uname,
-              type: "likePost",
-              targetId: post._id.toString()
-            });
-
-            await notifListTarget.save();
-          }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+          sendNotification({uname: post.uname, source: input.uname, type: 'likePost', targetId: post._id.toString()});
 
           
           return dbResp;
@@ -111,29 +85,8 @@ export const likesRouter = createTRPCRouter({
           const dbResp = await post.save();
 
 
-
-
           //// remove notif
-          const notifListTarget = await NotificationModel.findOne({uname: post.uname});
-
-          if (!notifListTarget) {
-            // create one
-          } else {
-            const newNotifs = notifListTarget.notifs.filter((notif) => {
-              return !(notif.source === input.uname && notif.targetId === post._id.toString())
-            });
-
-            notifListTarget.notifs = newNotifs;
-
-            await notifListTarget.save();
-          }
-
-
-
-
-
-
-
+          removeNotification({source: input.uname, uname: post.uname, type: 'likePost', targetId: post._id.toString()});
 
           
           return dbResp;
@@ -175,6 +128,8 @@ export const likesRouter = createTRPCRouter({
             comment.likes.push(input.uname);
             
             const dbResp = await comment.save();
+
+            sendNotification({source: input.uname, uname: comment.uname, type: "likeComment", targetId: comment._id.toString()})
 
             return dbResp;
           }
@@ -225,6 +180,8 @@ export const likesRouter = createTRPCRouter({
             comment.likes = likesArr;
 
             const dbResp = await comment.save();
+
+            removeNotification({source: input.uname, uname: comment.uname, type: "likeComment", targetId: comment._id.toString()});
 
             return dbResp;
           }
