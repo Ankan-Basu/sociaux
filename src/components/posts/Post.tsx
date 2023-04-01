@@ -247,11 +247,6 @@ const Post: FC<IPostProps> =({
         </div>
       </div>
       <div className="">
-        {/* Post
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-            Repellendus doloremque sapiente asperiores molestiae. Quae repudiandae ab quia excepturi? 
-            Nemo molestiae culpa iste magnam officia temporibus quisquam omnis dignissimos odio impedit. */}
-        {/* {message || "Loading ..."} */}
         {(message || message==='')?message:''}
       </div>
       <div>

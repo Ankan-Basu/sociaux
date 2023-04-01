@@ -60,7 +60,7 @@ export const postsRouter = createTRPCRouter({
     
     getOnePost: publicProcedure
     .input(z.object({ postId: z.string() }))
-    .query(async ({ input }) => {
+    .query(async ({ ctx, input }) => {
       try {
 
         if (!input.postId || input.postId === 'undefined') {
@@ -71,16 +71,34 @@ export const postsRouter = createTRPCRouter({
         dbConnect();
         
         
-        const post: Array<HydratedDocument<IPost>> | null = await PostModel.findOne({_id: input.postId})
+        const post: HydratedDocument<IPost> | null = await PostModel.findOne({_id: input.postId})
         
         if (!post) {
           throw new TRPCError({
             code: "NOT_FOUND",
             message: "Not found"
           })
-        }
+        } 
+
+          
+          if (post.privacy === 0) {
+          // public post;
+          return post;    
+          } else {
+            const targetUname = post.uname;
+            const isFriend: boolean = await detectFriendship(ctx, targetUname);
+
+            if (isFriend) {
+              return post;
+            } else {
+              return {}
+            }
+
+          }
         
-        return post;
+        ///////////////////////////
+        
+        // return post;
       } catch (err) {
         console.log(err);
         
