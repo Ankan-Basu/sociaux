@@ -1,3 +1,4 @@
+import { contextProps } from "@trpc/react-query/shared";
 import { TRPCError } from "@trpc/server";
 import { HydratedDocument } from "mongoose";
 import { z } from "zod";
@@ -6,6 +7,7 @@ import {
   publicProcedure,
   protectedProcedure,
 } from "~/server/api/trpc";
+import FriendListModel from "~/server/db/models/Friend";
 import PostModel, { IPost } from "~/server/db/models/Post";
 import PostImageModel from "~/server/db/models/PostImage";
 
@@ -24,12 +26,65 @@ export const postsRouter = createTRPCRouter({
     
     getUserPosts: publicProcedure
     .input(z.object({ uname: z.string()}))
-    .query(async ({ input }) => {
-      dbConnect();
-      const posts: Array<HydratedDocument<IPost>> = await PostModel.find({uname: input.uname})
-      
+    .query(async ({ ctx, input }) => {
+      try {
+        dbConnect();
+        //console.log('CONTEXT', ctx);
 
-      return posts;
+        ///////////////////////////////////////
+        let isFriend = false;
+        if (!ctx.session) {
+          // not logged in. session: null
+          isFriend = false;
+        } else {
+          //find friendList and check
+          const requesterUname = ctx.session.user.uname;
+
+
+          if (!requesterUname) {
+            isFriend = false;
+          } else {
+
+            if (requesterUname === input.uname) {
+              // literally the same person
+              isFriend = true;
+
+            } else {
+
+              // find friend list of the user
+              const friendList = await FriendListModel.findOne({uname: input.uname});
+              
+              if (!friendList) {
+                //target user has no friends
+                isFriend = false;
+              } else {
+                if (friendList.friends.indexOf(requesterUname) === -1) {
+                  // requester not found in target's friendList
+                  isFriend = false;
+                } else {
+                  isFriend = true;
+                }
+              }
+            }
+          }
+        }
+
+        ////////////////////////////////////////////////////////////////////////
+
+        let posts: Array<HydratedDocument<IPost>> = [];
+
+        if (isFriend) { 
+          posts = await PostModel.find({uname: input.uname})
+        } else {
+          posts = await PostModel.find({uname: input.uname, privacy: 0})
+        }
+                
+        return posts;
+      } catch(err) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR'
+        })
+      }
     }),
     
     
