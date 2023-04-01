@@ -13,10 +13,13 @@ import {
   FiSettings,
   FiLogOut,
   FiUser,
+  FiUsers,
+  FiMoreHorizontal
 } from "react-icons/fi";
 import { PostEditContext } from "~/contexts/postEditContext";
 import { PostFeedContext } from "~/contexts/postFeedContext";
 import { api } from "~/utils/api";
+import Dropdown from "../dropdown/dropdown";
 import Modal from "../modal/Modal";
 import SharePostModal from "../modal/sharePostModal";
 
@@ -79,6 +82,8 @@ const Post: FC<IPostProps> =({
 
 
   const [sharedPost, setSharedPost] = useState<Object | undefined>(undefined);
+
+  const [displayDropdown, setDisplayDropdown] = useState<boolean>(false);
 
   useEffect(() => {
     if (!reactorUname) {
@@ -222,31 +227,33 @@ const Post: FC<IPostProps> =({
     border-solid border-secondary 
     lg:w-100 p-2 pt-1 rounded-lg
     ${isSharedPost? "w-full lg:w-full mb-1": ""}
-    bg-white
+    bg-white relative
     `}
     >
       <div className="text-xs flex justify-between">
         <div className="flex">
-          <DropDown />
+          Privacy: {privacy?'Friend':'Public'}
         </div>
 
         <div 
         className={`
         ${isSharedPost ? "hidden" : "flex"}
-        flex gap-2 text-primary`}>
-          <span
-          onClick={handleEdit}
+        ${session.data?.user.uname===uname? 'flex': 'hidden'}
+        //flex //gap-2 //text-primary`}>
+      
+          <span 
+          className='cursor-pointer text-base //p-1 rounded-full'
+          onClick={() => setDisplayDropdown(currState => !currState)}
           >
-            <FiEdit3 />
+            <FiMoreHorizontal />
           </span>
-          <span
-          onClick={handleDelete}
-          >
-            <FiTrash />
-          </span>
-          <span>
-            <FiX />
-          </span>
+          <Dropdown additionCSS="top-6 right-0" display={displayDropdown}
+          options={
+           [
+            {optionName: 'Edit', callback: handleEdit},
+            {optionName: 'Delete', callback: handleDelete}
+           ] 
+          } />
         </div>
       </div>
       <div className="flex flex-col py-1 pt-0">
@@ -350,19 +357,6 @@ const Post: FC<IPostProps> =({
 
       {/* don't allow reshare of shared post */}
       <SharePostModal postId={_id} mode='desktop' display={!shareId && showShareModal} setShowModal={setShowShareModal} />
-    </div>
-  );
-}
-
-const DropDown: FC = () => {
-  const choiceArr = {};
-  return (
-    <div>
-      <select>
-        <option value="public">Public</option>
-        <option value="friends">Friends</option>
-        <option value="onlyMe">Only Me</option>
-      </select>
     </div>
   );
 }
