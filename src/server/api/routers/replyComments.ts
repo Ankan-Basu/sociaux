@@ -11,6 +11,8 @@ import ReplyCommentModel, {
   IReplyComment,
 } from "~/server/db/models/ReplyComment";
 import dbConnect from "~/server/db/mongo";
+import removeNotification from "../utilFuncs/removeNotification";
+import sendNotification from "../utilFuncs/sendNotification";
 
 export const replyCommentsRouter = createTRPCRouter({
   getComments: publicProcedure
@@ -62,6 +64,12 @@ export const replyCommentsRouter = createTRPCRouter({
 
             const dbResp = await parenComm.save();
 
+
+
+            sendNotification({source: input.uname, uname: parenComm.uname, type: "replyToComment", postId: parenComm.postId, commentId: parenComm._id.toString(),
+          replyCommentId: replyComm._id.toString()});
+
+          
             return dbResp;
           }
         } catch (err) {
@@ -110,7 +118,7 @@ export const replyCommentsRouter = createTRPCRouter({
   deleteReplyComment: publicProcedure
     .input(
       z.object({
-        // uname: z.string(),
+        uname: z.string(),
         parenCommId: z.string(),
         replyCommId: z.string(),
       })
@@ -167,9 +175,20 @@ export const replyCommentsRouter = createTRPCRouter({
                 _id: input.replyCommId,
               });
 
+
+
+              //remove the notif
+              removeNotification({source: input.uname, uname: parenComm.uname, type: "replyToComment", postId: parenComm.postId, commentId: parenComm._id.toString(),
+          replyCommentId: input.replyCommId});
+
+
+
+
               return dbResp1;
             }
           } catch (err) {
+            // console.log('INNER DEL CMM', err);
+            
             throw new TRPCError({
               code: "INTERNAL_SERVER_ERROR",
               message: "Internal server error",
@@ -177,6 +196,7 @@ export const replyCommentsRouter = createTRPCRouter({
           }
         }
       } catch (err) {
+        // console.log('Outer DEL CMM', err);
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
           message: "Internal Server Error",

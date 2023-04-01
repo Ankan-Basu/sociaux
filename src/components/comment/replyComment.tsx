@@ -65,8 +65,12 @@ const ReplyComment: FC<IReplyCommentProps> = ({_id, parenCommId, uname, message,
     }
 
     const handleDelete = async () => {
+        if (!reactorUname) {
+            console.log('Unauth');
+            return;
+        }
         try {
-            await deleteReplyMutation.mutateAsync({parenCommId, replyCommId: _id});
+            await deleteReplyMutation.mutateAsync({uname: reactorUname, parenCommId, replyCommId: _id});
             setRefreshReplies({...refreshReplies});
         } catch(err) {
             console.log(err);
