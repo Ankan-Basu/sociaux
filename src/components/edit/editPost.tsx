@@ -9,6 +9,7 @@ import {
 } from "react-icons/fi";
 import { PostEditContext } from "~/contexts/postEditContext";
 import { api } from "~/utils/api";
+import Dropdown from "../dropdown/dropdown";
 import { Button } from "../modal/Modal";
 
 
@@ -22,6 +23,10 @@ const EditPost: FC = ({}) => {
 
   const [postMessage, setPostMessage] = useState(currEditPost?.message);
 
+  const [displayDropdown, setDisplayDropdown] = useState<boolean>(false);
+
+  const [privacy, setPrivacy] = useState<number>(currEditPost?.privacy || 0)
+
   useEffect(() => {
     console.log("Edit post mounts");
   }, []);
@@ -29,6 +34,7 @@ const EditPost: FC = ({}) => {
     console.log("use Effect", currEditPost);
 
     setPostMessage(currEditPost?.message);
+    setPrivacy(currEditPost?.privacy)
 
     // return () => {
     //     setPostMessage('');
@@ -56,7 +62,7 @@ const EditPost: FC = ({}) => {
             message: postMessage,
             postId: currEditPost._id,
             uname: currEditPost.uname,
-            privacy: currEditPost.privacy,
+            privacy: privacy,
         });
 
         setReload({ ...reload});
@@ -95,10 +101,26 @@ const EditPost: FC = ({}) => {
           </span>
         </div>
         {/* <FiPenTool /> Edit Post: */}
-        <div className="flex py-1 pt-0">
-          Privacy:
-          {/* <DropDown /> */}
-        </div>
+        <div className="flex py-1 pt-0 relative gap-1"
+        >
+          <span className="font-medium">Privacy: </span>
+          <span
+          className="border-2 border-solid border-black cursor-pointer"
+          onClick={() => {setDisplayDropdown(currState => !currState)}}
+          >
+            {privacy?'Friends':'Public'}
+          </span>
+          <Dropdown display={displayDropdown} 
+          options={
+            [
+              {optionName: 'Public', callback: () => {setPrivacy(0)}},
+              {optionName: 'Friends', callback: () => {setPrivacy(1)}}
+            ]
+          }
+          additionCSS='top-6 left-14'
+          setDisplay={setDisplayDropdown}
+          />
+          </div>
         <div className="">
           {/* <label htmlFor="textarea" className='py-1'>Edit post:</label> */}
 
