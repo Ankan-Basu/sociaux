@@ -2,9 +2,11 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { FC, useContext, useEffect, useState } from "react";
 import { FaEllipsisH } from "react-icons/fa";
+import { FiMoreHorizontal } from "react-icons/fi";
 import { EditCommentContext } from "~/contexts/editCommentContext";
 import { PostFeedContext } from "~/contexts/postFeedContext";
 import { api } from "~/utils/api";
+import Dropdown from "../dropdown/dropdown";
 import Comment from "./comment";
 
 interface IReplyCommentProps {
@@ -35,6 +37,8 @@ const ReplyComment: FC<IReplyCommentProps> = ({_id, parenCommId, uname, message,
       const profileImgQuery = api.users.getProfileImage.useQuery({uname: uname});
 
       const [liked, setLiked] = useState<boolean>(false);
+
+      const [displayDropdown, setDisplayDropdown] = useState<boolean>(false);
     
       const session = useSession();
 
@@ -138,23 +142,25 @@ const ReplyComment: FC<IReplyCommentProps> = ({_id, parenCommId, uname, message,
                         {`@${uname}`}
                         </h4></span>
                     </div>
-                    <div className="flex gap-1">
-                        <span onClick={handleEdit}>
-                            Edit</span>
-                        <span
-                        onClick={handleDelete}
-                        >Delete</span>
-                        <span>
-                        <FaEllipsisH />
+                    <div className={`
+                    ${session.data?.user.uname===uname? 'flex': 'hidden'} 
+                     relative
+                    flex gap-1`}>
+                        <span className='cursor-pointer'
+                        onClick={() => setDisplayDropdown(currState => !currState)}>
+                        <FiMoreHorizontal />
                         </span>
+                        <Dropdown 
+                        display={displayDropdown}
+                        options={[
+                            {optionName: 'Edit', callback: handleEdit},
+                            {optionName: 'Delete', callback: handleDelete}
+                        ]}
+                        additionCSS = 'top-4 right-0'
+                        />
                     </div>
                 </div>
                 <div className='p-2 pt-0'>
-                {/* Lorem ipsum dolor sit, amet consectetur 
-                adipisicing elit. Maiores animi in libero 
-                ratione sed architecto sit, repudiandae eum porro, 
-                dignissimos voluptate nihil 
-                tempore eius illum! Totam unde deleniti eos voluptas!     */}
                 {message}
                 </div>                
             </div>
