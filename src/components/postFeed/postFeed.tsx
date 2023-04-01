@@ -15,7 +15,7 @@ const PostFeed: FC = () => {
   const router = useRouter();
 
   const { data, refetch } = api.posts.getUserPosts.useQuery(
-    { uname: `${router.query.uname}` },
+    { uname: `${router.query.uname || ''}` },
     {}
   );
 

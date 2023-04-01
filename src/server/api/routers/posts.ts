@@ -12,6 +12,7 @@ import PostModel, { IPost } from "~/server/db/models/Post";
 import PostImageModel from "~/server/db/models/PostImage";
 
 import dbConnect from "~/server/db/mongo";
+import detectFriendship from "../utilFuncs/detectFriend";
 
 export const postsRouter = createTRPCRouter({
   getAllPosts: publicProcedure
@@ -28,47 +29,16 @@ export const postsRouter = createTRPCRouter({
     .input(z.object({ uname: z.string()}))
     .query(async ({ ctx, input }) => {
       try {
-        dbConnect();
-        //console.log('CONTEXT', ctx);
 
-        ///////////////////////////////////////
-        let isFriend = false;
-        if (!ctx.session) {
-          // not logged in. session: null
-          isFriend = false;
-        } else {
-          //find friendList and check
-          const requesterUname = ctx.session.user.uname;
-
-
-          if (!requesterUname) {
-            isFriend = false;
-          } else {
-
-            if (requesterUname === input.uname) {
-              // literally the same person
-              isFriend = true;
-
-            } else {
-
-              // find friend list of the user
-              const friendList = await FriendListModel.findOne({uname: input.uname});
-              
-              if (!friendList) {
-                //target user has no friends
-                isFriend = false;
-              } else {
-                if (friendList.friends.indexOf(requesterUname) === -1) {
-                  // requester not found in target's friendList
-                  isFriend = false;
-                } else {
-                  isFriend = true;
-                }
-              }
-            }
-          }
+        if (!input.uname) {
+          // console.log('NO UNAME IGNORING');
+          return [];
         }
 
+        dbConnect();
+
+        ///////////////////////////////////////        
+        const isFriend = await detectFriendship(ctx, input.uname);
         ////////////////////////////////////////////////////////////////////////
 
         let posts: Array<HydratedDocument<IPost>> = [];
