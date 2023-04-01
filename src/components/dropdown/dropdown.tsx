@@ -8,10 +8,11 @@ interface IOptionsObject {
 interface IDropdownProps {
   additionCSS?: string;
   display: boolean;
+  setDisplay: React.Dispatch<React.SetStateAction<boolean>>;
   options: Array<IOptionsObject>;
 }
 
-const Dropdown: FC<IDropdownProps> = ({additionCSS='', display, options}) => {
+const Dropdown: FC<IDropdownProps> = ({additionCSS='', display, setDisplay, options}) => {
   return (
     <div className={`
     ${additionCSS + ' '}
@@ -27,7 +28,10 @@ const Dropdown: FC<IDropdownProps> = ({additionCSS='', display, options}) => {
       {options.map((option, indx) => {
         return (
           <div key={indx}
-          onClick={() => option.callback()}
+          onClick={() => {
+            option.callback();
+            setDisplay(false);
+          }}
           >
           <Options>{option.optionName}</Options>
           </div>

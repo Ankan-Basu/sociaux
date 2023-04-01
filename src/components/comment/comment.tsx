@@ -201,6 +201,7 @@ const Comment: FC<ICommentProps> = (
                             {optionName: 'Delete', callback: handleDelete}
                         ]}
                         additionCSS = 'top-4 right-0'
+                        setDisplay={setDisplayDropdown}
                         />
                     </div>
                 </div>

@@ -253,7 +253,9 @@ const Post: FC<IPostProps> =({
             {optionName: 'Edit', callback: handleEdit},
             {optionName: 'Delete', callback: handleDelete}
            ] 
-          } />
+          } 
+          setDisplay={setDisplayDropdown}
+          />
         </div>
       </div>
       <div className="flex flex-col py-1 pt-0">

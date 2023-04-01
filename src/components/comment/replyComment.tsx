@@ -157,6 +157,7 @@ const ReplyComment: FC<IReplyCommentProps> = ({_id, parenCommId, uname, message,
                             {optionName: 'Delete', callback: handleDelete}
                         ]}
                         additionCSS = 'top-4 right-0'
+                        setDisplay={setDisplayDropdown}
                         />
                     </div>
                 </div>
