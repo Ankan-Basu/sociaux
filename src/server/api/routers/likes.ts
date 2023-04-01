@@ -7,6 +7,7 @@ import {
   protectedProcedure,
 } from "~/server/api/trpc";
 import CommentModel, { IComment } from "~/server/db/models/Comment";
+import NotificationModel from "~/server/db/models/Notification";
 import PostModel, { IPost } from "~/server/db/models/Post";
 import ReplyCommentModel, { IReplyComment } from "~/server/db/models/ReplyComment";
 import dbConnect from "~/server/db/mongo";
@@ -15,9 +16,11 @@ export const likesRouter = createTRPCRouter({
   likePost: publicProcedure
     .input(z.object({ uname: z.string(), postId: z.string() }))
     .mutation(async ({ input }) => {
-      dbConnect();
+      try {
 
-      const post: HydratedDocument<IPost> | null = await PostModel.findOne({
+        dbConnect();
+        
+        const post: HydratedDocument<IPost> | null = await PostModel.findOne({
         _id: input.postId,
       });
 
@@ -27,45 +30,112 @@ export const likesRouter = createTRPCRouter({
           message: "Not found",
         });
       } else {
-        if (!post.likes.includes(input.uname)) {
-          post.likes.push(input.uname);
+        if (!post.likes!.includes(input.uname)) {
+          post.likes!.push(input.uname);
           const dbResp = await post.save();
 
+
+
+          //change
+          const notifListTarget = await NotificationModel.findOne({uname: post.uname});
+
+          if (!notifListTarget) {
+            // create one
+          } else {
+            notifListTarget.notifs.push({
+              source: input.uname,
+              type: "likePost",
+              targetId: post._id.toString()
+            });
+
+            await notifListTarget.save();
+          }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          
           return dbResp;
         } else {
           // return {
-          //   message: "Already Liked",
-          // };
-          throw new TRPCError({
-            code: 'BAD_REQUEST',
-            message: 'Already Liked'
-          })
+            //   message: "Already Liked",
+            // };
+            throw new TRPCError({
+              code: 'BAD_REQUEST',
+              message: 'Already Liked'
+            })
+          }
         }
+      } catch(err) {
+        // console.log("POST LIKE", err);
+        
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR'
+        })
       }
     }),
 
   unlikePost: publicProcedure
     .input(z.object({ uname: z.string(), postId: z.string() }))
     .mutation(async ({ input }) => {
-      dbConnect();
-      const post: HydratedDocument<IPost> | null = await PostModel.findOne({
-        _id: input.postId,
-      });
+      try {
 
-      if (!post) {
+        dbConnect();
+        const post: HydratedDocument<IPost> | null = await PostModel.findOne({
+          _id: input.postId,
+        });
+        
+        if (!post) {
         throw new TRPCError({
           code: "NOT_FOUND",
           message: "Post not found",
         });
       } else {
-        if (post.likes.includes(input.uname)) {
-          const likesArr = post.likes.filter((likeName: string | undefined) => {
+        if (post.likes!.includes(input.uname)) {
+          const likesArr = post.likes!.filter((likeName: string | undefined) => {
             return likeName !== input.uname;
           });
           post.likes = likesArr;
-
+          
           const dbResp = await post.save();
 
+
+
+
+          //// remove notif
+          const notifListTarget = await NotificationModel.findOne({uname: post.uname});
+
+          if (!notifListTarget) {
+            // create one
+          } else {
+            const newNotifs = notifListTarget.notifs.filter((notif) => {
+              return !(notif.source === input.uname && notif.targetId === post._id.toString())
+            });
+
+            notifListTarget.notifs = newNotifs;
+
+            await notifListTarget.save();
+          }
+
+
+
+
+
+
+
+
+          
           return dbResp;
         } else {
           return {
@@ -73,16 +143,23 @@ export const likesRouter = createTRPCRouter({
           };
         }
       }
+    } catch(err) {
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR'
+      })
+    }
     }),
 
   likeComment: publicProcedure
     .input(z.object({ uname: z.string(), commentId: z.string() }))
     .mutation(async ({ input }) => {
-      dbConnect();
       try {
-        const comment: HydratedDocument<IComment> | null =
+
+        dbConnect();
+        try {
+          const comment: HydratedDocument<IComment> | null =
           await CommentModel.findOne({ _id: input.commentId });
-        // console.log(comment);
+          // console.log(comment);
         if (!comment) {
           //ie null
           throw new TRPCError({
@@ -96,7 +173,7 @@ export const likesRouter = createTRPCRouter({
             };
           } else {
             comment.likes.push(input.uname);
-
+            
             const dbResp = await comment.save();
 
             return dbResp;
@@ -114,14 +191,21 @@ export const likesRouter = createTRPCRouter({
           message: "Comment not found",
         });
       }
+    } catch(err) {
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR'
+      })
+    }
     }),
 
   unlikeComment: publicProcedure
     .input(z.object({ uname: z.string(), commentId: z.string() }))
     .mutation(async ({ input }) => {
-      dbConnect();
       try {
-        const comment: HydratedDocument<IComment> | null =
+
+        dbConnect();
+        try {
+          const comment: HydratedDocument<IComment> | null =
           await CommentModel.findOne({ _id: input.commentId });
 
         if (!comment) {
@@ -156,6 +240,11 @@ export const likesRouter = createTRPCRouter({
           message: "Comment not found",
         });
       }
+    } catch(err) {
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR'
+      })
+    }
     }),
 
     likeReplyComment: publicProcedure

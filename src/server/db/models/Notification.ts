@@ -1,11 +1,14 @@
 import mongoose, {Schema, models, model} from "mongoose";
 
 interface INotifItem {
-    source: string,
-    message: string,
-    link: string,
-    time: Date,
-    isSend: boolean
+    source: string;
+    // message: string;
+    type: 'likePost' | 'comment' | 'replyToComment' | 'likeComment' | 'likeReplyComment' | 'acceptReq';
+    targetId?: string;
+    // for likePost /comment - postId, replyComment/likeComment - commentId
+    // likeReplyComment - , acceptReq - userId  
+    time?: Date;
+    isSend?: boolean;
 }
 
 export interface INotification {
@@ -18,13 +21,18 @@ const notifItemSchema: Schema = new Schema<INotifItem> ({
         type: String,
         required: true
     },
-    message: {
+    // message: {
+    //     type: String,
+    //     required: true
+    // },
+    type: {
         type: String,
         required: true
     },
-    link: {
+    targetId : {
         type: String,
-        required: true
+        required: true,
+        default: ''
     },
     time: {
         type: Date,
