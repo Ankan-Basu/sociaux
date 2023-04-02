@@ -1,10 +1,14 @@
+import { HydratedDocument } from "mongoose";
+import { useSession } from "next-auth/react";
 import { FC, useContext } from "react";
+import { INotifItem } from "~/server/db/models/Notification";
+import { api } from "~/utils/api";
 import FrenReq from "./friendReq";
 import { NotifContext } from "./navbar";
 import NotifItem from "./notifItem";
 
 interface INotifMobileProps {
-  notifs: Array<Object>; 
+  notifs: Array<HydratedDocument<INotifItem>>; 
   friendReqs: Array<Object>; 
   display: boolean; 
   type: string;
@@ -13,33 +17,30 @@ interface INotifMobileProps {
 const NotifMobile: FC<INotifMobileProps> = ({notifs, friendReqs, display, type}) => {
 
     const {setNotifList} = useContext(NotifContext);
-    const uname = 'kamisato_ayaka'; //change later
+
+    const readNotifMutation = api.notifs.readNotifs.useMutation();
+
+    const session = useSession();
+    // const uname = 'kamisato_ayaka'; //change later
 
     const handleReadAll = async () => {
-      const url = `/api/notifs/${uname}`;
-  
-      const reqBody = {
-          notifId: '0'
+      if (session.status !== "authenticated") {
+        console.log("UNAUTH");
+        return;
       }
   
-      const resp = await fetch(url, {
-          method: 'DELETE',
-          headers: {
-              "Content-Type": "application/json"
-          },
-          body: JSON.stringify(reqBody)
-      });
+      const uname = session.data.user.uname;
   
-      if (resp.status === 200) {
-          const data = await resp.json();
-          console.log(data);
-          setNotifList(data.notifs);
-      } else {
-          //todo
-          console.log('err in notif');
+      if (!uname) {
+        console.log("UNAUTH");
+        return;
       }
   
-    }
+      const x = await readNotifMutation.mutateAsync({ uname, notifId: "0" });
+      // console.log('Notif', x);
+  
+      setNotifList(x.notifs);
+    };
 
     return (
       <div className={`
@@ -70,7 +71,7 @@ const NotifMobile: FC<INotifMobileProps> = ({notifs, friendReqs, display, type})
           (
             
                 notifs &&
-                notifs.map((notif, indx) => {
+                notifs.map((notif: HydratedDocument<INotifItem>, indx) => {
                     return (
                         <NotifItem key={indx} notif={notif}/>
                     )
