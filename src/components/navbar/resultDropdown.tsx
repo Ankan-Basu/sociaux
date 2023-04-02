@@ -29,10 +29,10 @@ const ResultDropdown: FC<IResultDropdownProps> = ({display, setDisplay, searchBo
 
   const handleClickOutside = (e: MouseEvent) => {
     if (!refOne?.current.contains(e.target) && !searchBoxRef?.current.contains(e.target) ) {
-      console.log('CLICK OUTSIDE');
+      console.log('CLICK OUTSIDE search');
       setDisplay && setDisplay(false);
     } else {
-      console.log('CLICK INSIDE');
+      console.log('CLICK INSIDE search');
       setDisplay && setDisplay(true);
     }
   }

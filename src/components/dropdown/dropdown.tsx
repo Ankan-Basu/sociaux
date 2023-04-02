@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useEffect, useRef } from 'react'
 
 interface IOptionsObject {
   optionName: string;
@@ -13,8 +13,36 @@ interface IDropdownProps {
 }
 
 const Dropdown: FC<IDropdownProps> = ({additionCSS='', display, setDisplay, options}) => {
+
+  const dropDownRef = useRef(null);
+
+  useEffect(() => {
+    document.addEventListener('click', handleClickOutside, true);
+    if (!display) {
+      document.removeEventListener('click', handleClickOutside, true);
+    }
+
+    return () => {
+      document.removeEventListener('click', handleClickOutside, true);
+    }
+
+  }, [display]);
+
+
+  const handleClickOutside = (e: MouseEvent) => {
+    if (!dropDownRef?.current.contains(e.target)) {
+      console.log('CLICK OUTSIDE menu');
+      setDisplay && setDisplay(false);
+    } else {
+      console.log('CLICK INSIDE menu');
+      setDisplay && setDisplay(true);
+    }
+  }
+
   return (
-    <div className={`
+    <div 
+    ref={dropDownRef}
+    className={`
     ${additionCSS + ' '}
     absolute
     ${display?'flex':'hidden'}
