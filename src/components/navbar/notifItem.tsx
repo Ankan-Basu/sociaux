@@ -69,7 +69,7 @@ const NotifItem: FC<INotifProps> = ({notif}) => {
                     }
                 }}
                 
-                className='p-1 cursor-pointer bg-secondary rounded-lg rounded-tl-none h-14 //min-h-full lg:text-sm text-ellipsis overflow-hidden'>
+                className='p-1 cursor-pointer bg-secondary rounded-lg rounded-tl-none h-14  lg:text-sm text-ellipsis overflow-hidden'>
                     {
                     notif &&
                     <>

@@ -59,12 +59,12 @@ const Notif: FC<INotifProps> = ({ display, type }) => {
           </span>
         ) : (
           <span className="flex justify-between">
-            <span className="cursor-pointer hover:text-primary active:text-primary2">
+            {/* <span className="cursor-pointer hover:text-primary active:text-primary2">
               Accept All
             </span>
             <span className="cursor-pointer hover:text-primary active:text-primary2">
               Reject All
-            </span>
+            </span> */}
           </span>
         )}
       </div>
