@@ -1,7 +1,4 @@
-// 'use client'
-
-import React, { createContext, FC, useEffect, useState } from 'react'
-// import { FaBars, FaUserFriends, FaSearch, FaUserAlt, FaBell } from "react-icons/fa";
+import { createContext, FC, useEffect, useState } from 'react'
 import { FiSearch, FiBell, FiUsers, FiMenu, FiX } from "react-icons/fi";
 import Notif from './notif';
 import NotifScreenMobile from './notifScreenMobile';
@@ -37,71 +34,18 @@ const Navbar: FC = () => {
     useEffect(() => {
       if (session.status === 'authenticated') {
         (async () => {
-
           const notifData = await notifQuery.refetch();
-          // console.log('Navbar', session.data.user.uname);
-          
           setNotifList(notifData.data?.notifs)
         })();
-        (async () => {
 
+        (async () => {
           const friendReqData = await friendReqQuery.refetch();
-          // console.log('Navbar', session.data.user.uname);
-          
           setFriendReqList(friendReqData.data?.reqs)
         })();
         
       }
     }, [session])
-    const getNotifList = async () => {
-      //todo: make this dynamic
-      //after login. store uname in context api.
-      //use that uname
-      const url = '/api/notifs/kamisato_ayaka';
-      console.log('fetching data');
-
-      const resp = await fetch(url);
-      
-      // console.log(resp);
-      const data = await resp.json();
-      
-      // console.log(data);
-      
-      if (resp.status === 200) {
-        if (!data) {
-          setNotifList([]);
-          return;
-        } else {
-          const notifsArr = data.notifs.reverse();
-          setNotifList(notifsArr);
-          // console.log(notifsArr);
-        }
-      }
-    }
-
-    const getFriendReqList = async () => {
-      const url = '/api/friend-reqs/kamisato_ayaka';
-      // console.log('fetching data');
-
-      const resp = await fetch(url);
-      
-      // console.log(resp);
-      const data = await resp.json();
-      
-      // console.log(data);
-      
-      if (resp.status === 200) {
-        if (!data) {
-          setFriendReqList([]);
-          return;
-        } else {
-          const friendReqArr = data.reqs.reverse();
-          setFriendReqList(friendReqArr);
-          // console.log(notifsArr);
-        }
-      }
-    }
-
+    
   return (
     <>
     <nav className='z-10 mb-2 shadow-lg backdrop-blur-md py-2 px-2 flex items-center gap-1 sticky top-0'>
@@ -154,18 +98,17 @@ const Navbar: FC = () => {
 
         <NotifContext.Provider value={{
           notifList, setNotifList,
-          friendReqList, setFriendReqList
+          friendReqList, setFriendReqList,
+          notifSelected, setNotifSelected,
+          friendReqSelected, setFriendReqSelected,
+          mobileNotifSelected, setMobileNotifSelected
         }}>
 
         <Notif
-        // notifs={notifList || []}
-        // friendReqs = {friendReqList || []}
         display={notifSelected||friendReqSelected} 
         type={friendReqSelected?'Friend Requests':'Notifications'}/>
     
         <NotifScreenMobile 
-        // notifs={notifList || []}
-        // friendReqs = {friendReqList || []}
         display={notifSelected||friendReqSelected||mobileNotifSelected} 
         type={friendReqSelected?'Friend Requests':'Notifications'}
         notifState={notifSelected}

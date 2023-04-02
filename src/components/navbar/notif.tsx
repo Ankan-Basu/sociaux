@@ -1,4 +1,6 @@
+import { HydratedDocument } from "mongoose";
 import { useEffect, useContext, FC } from "react";
+import { INotifItem } from "~/server/db/models/Notification";
 import FrenReq from "./friendReq";
 import { NotifContext } from "./navbar";
 import NotifItem from "./notifItem";
@@ -75,10 +77,9 @@ const Notif: FC<INotifProps> = ({display, type}) => {
           type==='Notifications'?
           (              
             notifList &&
-                notifList.map((notif: any, indx: number) => {
+                notifList.map((notif: HydratedDocument<INotifItem>, indx: number) => {
                   // console.log(notif);
                   return notif && <NotifItem key={indx} notif={notif} />
-
                 })          
           ):
           (
