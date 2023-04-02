@@ -1,4 +1,5 @@
 import { useSession } from "next-auth/react"
+import { useRouter } from "next/router"
 import { FC, useContext } from "react"
 import { api } from "~/utils/api"
 import { NotifContext } from "./navbar"
@@ -12,8 +13,9 @@ interface IFrenReqProps {
 const FrenReq: FC<IFrenReqProps> = ({friendReq}) => {
 
     const session = useSession();
+    const router = useRouter();
 
-    const {setFriendReqList} = useContext(NotifContext);
+    const {setFriendReqList, setFriendReqSelected, setMobileNotifSelected} = useContext(NotifContext);
 
     const acceptFriendMutation = api.friends.acceptFriendReq.useMutation();
     const rejectFriendMutation = api.friends.rejectFriendReq.useMutation();
@@ -68,12 +70,22 @@ const FrenReq: FC<IFrenReqProps> = ({friendReq}) => {
         
     }
 
+    const handleRedirect = () => {
+        setFriendReqSelected(false);
+        setMobileNotifSelected(false);
+        router.push(`/user/${friendReq.source}`)
+    }
+
 
     return (
         <div className='mb-4 shadow-lg rounded-lg p-1 flex gap-1'>
-            <img src={imgQuery.data?.img} className='w-12 h-12 rounded-full' />
+            <img 
+            onClick={handleRedirect}
+            src={imgQuery.data?.img} className='w-12 h-12 rounded-full' />
             <div className='flex-1 w-100'>
-                <div className='p-1 bg-secondary rounded-lg rounded-tl-none h-14  lg:text-sm text-ellipsis overflow-hidden'>
+                <div 
+                onClick={handleRedirect}
+                className='p-1 bg-secondary rounded-lg rounded-tl-none h-14  lg:text-sm text-ellipsis overflow-hidden'>
                     {
                         friendReq&&
                         <>
