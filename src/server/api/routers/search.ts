@@ -14,6 +14,10 @@ export const searchRouter = createTRPCRouter({
     .input(z.object({ searchName: z.string() }))
     .query(async ({ input }) => {
       try {
+        if (!input.searchName) {
+          return []
+        }
+
         dbConnect();
 
         const queryString = '^' + input.searchName;
