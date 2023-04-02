@@ -1,4 +1,5 @@
 import { HydratedDocument } from "mongoose";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { FC, useContext, useEffect } from "react";
 import { INotifItem } from "~/server/db/models/Notification";
@@ -15,35 +16,30 @@ const NotifItem: FC<INotifProps> = ({notif}) => {
     const {setNotifList, setNotifSelected, setFriendReqSelected, setMobileNotifSelected} = useContext(NotifContext);
 
     const imgQuery = api.users.getProfileImage.useQuery({uname: notif.source});
+
+    const readNotifMutation = api.notifs.readNotifs.useMutation();
     
     const router = useRouter();
+    const session = useSession();
     
-    //change later. after auth
-    const uname = 'kamisato_ayaka';
     
     const handleReadNotif = async () => {
-        const url = `/api/notifs/${uname}`;
-
-        const reqBody = {
-            notifId: notif._id
+        if (session.status !== 'authenticated') {
+            console.log('UNAUTH');
+            return;
         }
 
-        const resp = await fetch(url, {
-            method: 'DELETE',
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(reqBody)
-        });
+        const uname = session.data.user.uname;
 
-        if (resp.status === 200) {
-            const data = await resp.json();
-            console.log(data);
-            setNotifList(data.notifs);
-        } else {
-            //todo
-            console.log('err in notif');
+        if (!uname) {
+            console.log('UNAUTH');
+            return;
         }
+
+        const x = await readNotifMutation.mutateAsync({uname, notifId: notif._id.toString()});
+        // console.log('Notif', x);
+        
+        setNotifList(x.notifs);
 
     }
 
@@ -53,6 +49,7 @@ const NotifItem: FC<INotifProps> = ({notif}) => {
             <div className='flex-1 w-100'>
                 <div 
                 onClick={() => {
+                    handleReadNotif();
                     setNotifSelected(false);
                     setMobileNotifSelected(false);
                     switch(notif.type) {
