@@ -107,6 +107,7 @@ const Post: FC<IPostProps> =({
     try {
       const x = await likeMutation.mutateAsync({postId: _id, uname: reactorUname})
       console.log(x);
+      likes?.push(reactorUname);
       
         setLiked(true);
     } catch (err: any) {
@@ -125,6 +126,10 @@ const Post: FC<IPostProps> =({
       console.log(x);
       
         setLiked(false);
+        // likes = likes?.filter((like) => {
+        //   return like !== reactorUname;
+        // })
+        likes?.pop();
     } catch (e: any) {
       console.log(e);      
     }
@@ -226,7 +231,7 @@ const Post: FC<IPostProps> =({
     w-80 mb-8 shadow-lg border-2 
     border-solid border-secondary 
     lg:w-100 p-2 pt-1 rounded-lg
-    ${isSharedPost? "w-full lg:w-full mb-1": ""}
+    ${isSharedPost? "w-full lg:w-full mb-0": ""}
     bg-white relative
     `}
     >
@@ -308,7 +313,15 @@ const Post: FC<IPostProps> =({
       </div>
       }
 
-
+      <div className={`text-sm font-light mt-2
+      ${isSharedPost ? "hidden" : "block"}
+      `}>
+        
+        {likes?likes.length?`${likes?.length} like(s)`:'':''}
+        {/* {likes?.length && <>{likes?.length} like(s)</>} */}
+        
+        
+        </div>
       <div
         className={`
             ${isModalMode ? "hidden" : "block"}
@@ -331,7 +344,7 @@ const Post: FC<IPostProps> =({
           {/* Display Text only in big screen */}
           <span className="hidden lg:inline">
             Like
-            {likes?.length}
+            {/* {likes?.length} */}
           </span>
         </span>
         <span
@@ -343,7 +356,7 @@ const Post: FC<IPostProps> =({
           {/* Display Text only in big screen */}
           <span className="hidden lg:inline">
             Comment
-            {comments?.length}
+            {/* {comments?.length} */}
           </span>
         </span>
         <span 
