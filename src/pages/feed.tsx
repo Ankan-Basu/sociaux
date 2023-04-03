@@ -7,6 +7,7 @@ import Profile from '~/components/profile/Profile'
 import { useSession } from 'next-auth/react'
 import React, { FC } from 'react'
 import Link from 'next/link'
+import NewsFeed from '~/components/postFeed/newsFeed'
 
 const Feed: FC = () => {
 
@@ -19,11 +20,11 @@ const Feed: FC = () => {
     )
   }
 
-  if (session.status === 'unauthenticated') {
-    return (
-      <div>Forbidden</div>
-    )
-  }
+  // if (session.status === 'unauthenticated') {
+  //   return (
+  //     <div>Forbidden</div>
+  //   )
+  // }
   
   return (
     <div 
@@ -38,10 +39,11 @@ const Feed: FC = () => {
         <Post />
         <Post />
         </PostFeed> */}
+        <NewsFeed />
 
         {/* {session.data?.user?.uname} */}
 
-        <Link href={`/user/abc`}>User Page</Link>
+        {/* <Link href={`/user/abc`}>User Page</Link> */}
       <PersonalOptions />
       <Plus />
     </div>

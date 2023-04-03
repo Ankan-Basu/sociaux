@@ -13,15 +13,22 @@ import PostImageModel from "~/server/db/models/PostImage";
 
 import dbConnect from "~/server/db/mongo";
 import detectFriendship from "../utilFuncs/detectFriend";
+import fetchPosts from "../utilFuncs/fetchPosts";
 
 export const postsRouter = createTRPCRouter({
   getAllPosts: publicProcedure
-    .query(async () => {
-      dbConnect();
-        const posts: Array<HydratedDocument<IPost>> = await PostModel.find({})
-      
-
-      return posts;
+    .query(async ({ctx}) => {
+      try {
+        dbConnect();
+        
+        const resArr = await fetchPosts(ctx);
+        
+        return resArr;
+      } catch(err) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR'
+        })
+      }
     }),
     
     
