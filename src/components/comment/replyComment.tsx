@@ -9,6 +9,12 @@ import { api } from "~/utils/api";
 import Dropdown from "../dropdown/dropdown";
 import Comment from "./comment";
 
+import dayjs from "dayjs";
+import relativeTime from 'dayjs/plugin/relativeTime';
+
+dayjs.extend(relativeTime);
+
+
 interface IReplyCommentProps {
     _id: string;
     parenCommId: string;
@@ -180,7 +186,7 @@ const ReplyComment: FC<IReplyCommentProps> = ({_id, parenCommId, uname, message,
                 
                 
                 </div>
-                <div>20 wks</div>
+                <div className="text-xs">{dayjs(time).fromNow()}</div>
             </div>
             </div>
             </div>

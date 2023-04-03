@@ -158,7 +158,7 @@ export const postsRouter = createTRPCRouter({
     //  console.log('post', postObj);
      
 
-      const dbResp = await PostModel.create(postObj);
+      const dbResp = await PostModel.create({...postObj, time: Date.now()});
 
       return dbResp;
     }),

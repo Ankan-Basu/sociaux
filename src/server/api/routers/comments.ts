@@ -32,9 +32,9 @@ export const commentsRouter = createTRPCRouter({
       dbConnect();
 
       try {
-        const dbResp: HydratedDocument<IComment> = await CommentModel.create(
-          input
-        );
+        const dbResp: HydratedDocument<IComment> = await CommentModel.create({
+          ...input, time: Date.now()
+        });
         if (dbResp) {
 
           // send notification

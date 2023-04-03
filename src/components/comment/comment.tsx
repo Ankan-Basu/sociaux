@@ -233,7 +233,7 @@ const Comment: FC<ICommentProps> = (
                 className='cursor-pointer'>
                     Reply</span>
                 </div>
-                <div>{dayjs(time).fromNow()}</div>
+                <div className="text-xs">{dayjs(time).fromNow()}</div>
             </div>
             <div 
             className='

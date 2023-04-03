@@ -84,6 +84,7 @@ const ReplyCommentList: FC<IReplyCommentListProps> = ({
               message={reply.message}
               likes={reply.likes}
               time={reply.time}
+              time={reply.time}
             />
           );
         })}

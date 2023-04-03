@@ -66,6 +66,7 @@ const CommentList: FC<ICommentListProps> = ({ postId, refresh, customCssClass })
                     uname={comment.uname} 
                     message={comment.message} 
                     likes={comment.likes}
+                    time={comment.time}
                     _id={comment._id}/>
                 )
             })

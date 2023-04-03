@@ -1,11 +1,11 @@
 import { TRPCError } from "@trpc/server";
 import dayjs from "dayjs";
 import relativeTime from 'dayjs/plugin/relativeTime';
+dayjs.extend(relativeTime);
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { FC, useContext, useEffect, useState } from "react";
 
-dayjs.extend(relativeTime);
 
 import {
   FiEdit3,

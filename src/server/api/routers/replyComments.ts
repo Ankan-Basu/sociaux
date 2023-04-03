@@ -48,12 +48,12 @@ export const replyCommentsRouter = createTRPCRouter({
         const replyCommObj: IReplyComment = {
           uname: input.uname,
           parenCommId: input.parenCommId,
-          message: input.message,
+          message: input.message
         };
 
         try {
           const replyComm: HydratedDocument<IReplyComment> | null =
-            await ReplyCommentModel.create(replyCommObj);
+            await ReplyCommentModel.create({...replyCommObj, time: Date.now()});
           if (!replyComm) {
             throw new TRPCError({
               code: "INTERNAL_SERVER_ERROR",
