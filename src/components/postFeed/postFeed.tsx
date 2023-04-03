@@ -25,14 +25,28 @@ const PostFeed: FC = () => {
 
     if (router.query.uname) {
       (async () => {
-        const x = await refetch();
+        refetchData()
+      })();
+    }
+  }, [reload]);
+
+  useEffect(() => {
+    if (router.query.uname) {
+      refetchData();
+    }
+
+    return () => {
+      setPosts([]);
+    }
+  }, [router])
+
+  const refetchData = async () => {
+    const x = await refetch();
         console.log(x);
         if (x.status === "success") {
           setPosts(x.data);
         }
-      })();
-    }
-  }, [router, reload]);
+  }
 
   return (
     <div className="m-auto rounded-lg p-2 lg:w-101">
