@@ -27,7 +27,10 @@ const sendNotification = async ({
   const obj: INotifItem = {
     source: source,
     type: type,
+    //@ts-ignore
+    time: Date.now()
   }
+  
   if (postId) {
     obj.postId = postId
   }

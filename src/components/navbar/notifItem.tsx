@@ -6,6 +6,11 @@ import { INotifItem } from "~/server/db/models/Notification";
 import { api } from "~/utils/api";
 import { NotifContext } from "./navbar";
 
+import dayjs from "dayjs";
+import relativeTime from 'dayjs/plugin/relativeTime';
+
+dayjs.extend(relativeTime);
+
 interface INotifProps {
   notif: HydratedDocument<INotifItem>;
 }
@@ -80,7 +85,8 @@ const NotifItem: FC<INotifProps> = ({ notif }) => {
       <div className="w-100 flex-1">
         <div
           onClick={handleRedirect}
-          className="h-14 cursor-pointer overflow-hidden text-ellipsis rounded-lg rounded-tl-none  bg-secondary p-1 lg:text-sm"
+          className="h-16 cursor-pointer overflow-hidden text-ellipsis rounded-lg rounded-tl-none  bg-secondary p-1 lg:text-sm
+          "
         >
           {notif && (
             <>
@@ -98,6 +104,7 @@ const NotifItem: FC<INotifProps> = ({ notif }) => {
                 : ""}
             </>
           )}
+          <div className="text-xs">({dayjs(notif.time).fromNow()})</div>
         </div>
         <div
           onClick={handleReadNotif}
