@@ -7,6 +7,7 @@ import { api } from "~/utils/api";
 import "~/styles/globals.css";
 import Layout from "~/components/layout";
 import ErrorContextProvider from "~/contexts/errorContext";
+import Loading from "~/components/loading/loading";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -17,6 +18,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
       <ErrorContextProvider>
       <Layout>
       <Component {...pageProps} />
+      <Loading />
       </Layout>
       </ErrorContextProvider>
     </SessionProvider>
