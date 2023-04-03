@@ -32,6 +32,9 @@ const SignupComponent: FC = () => {
   const [unameInvalid, setUnameInvalid] = useState<boolean>(false);
   const [passwordInvalid, setPasswordInvalid] = useState<boolean>(false);
 
+  const [duplEmail, setDuplEmail] = useState<boolean>(false);
+  const [duplUname, setDuplUname] = useState<boolean>(false);
+
   const router = useRouter();
 
   const signupMutation = api.signup.signup.useMutation();
@@ -45,62 +48,60 @@ const SignupComponent: FC = () => {
       password: password,
     };
 
-    const resObj: ValidatedOutput = inputValidator(obj);
-
-    console.log(resObj);
-
     if (password !== cPassword) {
       setPasswordMisMatch(true);
       return;
     }
 
+    const resObj: ValidatedOutput = inputValidator(obj);
+
+    console.log("Res Obj", resObj);
+
     const obj2 = { name, uname: "", email: "", password: "" };
 
+    let invalidDetected = false;
+
     if (!resObj.password) {
+      console.log("INVALID Password");
       setPasswordInvalid(true);
-      return;
+      invalidDetected = true;
+      // return;
     } else {
       obj2.password = password;
     }
 
     if (!resObj.email) {
+      console.log("INVALID EMAIL");
+
       setEmailInvalid(true);
-      return;
+      invalidDetected = true;
+      // return;
     } else {
       obj2.email = email;
     }
 
     if (!resObj.uname) {
+      console.log("INVALID Uname");
       setUnameInvalid(true);
-      return;
+      invalidDetected = true;
+      // return;
     } else {
       obj2.uname = uname;
     }
 
-    // console.log(obj2);
-
-    // const url = "/api/signup";
-    // const resp = await fetch(url, {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(obj2),
-    // });
-
-    // const data = await resp.json();
-
-    // console.log(data);
+    if (invalidDetected) {
+      return;
+    }
 
     const resp = await signupMutation.mutateAsync({
       email: obj2.email,
       name: obj2.name,
       uname: obj2.uname,
-      password: obj2.password
+      password: obj2.password,
     });
 
-    console.log(resp);
-    
+    console.log("RESP TO SEND", resp);
+
     if (resp.status === 201) {
       //do login and redirect
 
@@ -113,6 +114,16 @@ const SignupComponent: FC = () => {
 
       if (status.ok) {
         router.push("/feed");
+      } else {
+        // ERROR
+      }
+    } else if (resp.status === 400) {
+      if (resp.email) {
+        setDuplEmail(true);
+      } else if (resp.uname) {
+        setDuplUname(true);
+      } else {
+        // show err modal
       }
     }
   };
@@ -120,54 +131,61 @@ const SignupComponent: FC = () => {
   return (
     <div
       className="
-    w-5/6 max-w-md m-auto p-3 rounded-lg shadow-lg
-    border-2 border-solid"
+    m-auto w-5/6 max-w-md rounded-lg border-2 border-solid
+    p-3 shadow-lg"
     >
       <h2
         className="
-      text-3xl font-medium
       flex gap-1
+      text-3xl font-medium
       "
       >
         <FiUserCheck />
         Sign Up:
       </h2>
       <form
-        className="flex flex-col gap-4 mt-4 relative"
+        className="relative mt-4 flex flex-col gap-4"
         onSubmit={handleLoginSubmit}
       >
         <input
           className={`
-        p-1 bg-secondary2
         w-full rounded-lg
         border-2 border-solid
+        bg-secondary2 p-1
         `}
           placeholder="Full Name"
           type="text"
           value={name}
           onChange={(e: ChangeEvent<HTMLInputElement>) => {
             setName(e.target.value);
+            setDuplEmail(false);
+            setDuplUname(false);
           }}
         ></input>
 
         <div>
           <input
             className={`
-        p-1 bg-secondary2
         w-full rounded-lg
         border-2 border-solid
+        bg-secondary2 p-1
         `}
             placeholder="Email"
             type="text"
             value={email}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
               setEmail(e.target.value);
+              setEmailInvalid(false);
+              setDuplEmail(false);
+              setDuplUname(false);
             }}
           ></input>
           <div
             className={`
             ${emailInvalid ? "block" : "hidden"}
-          `}>
+            text-red-500
+          `}
+          >
             Invalid Email
           </div>
         </div>
@@ -175,22 +193,27 @@ const SignupComponent: FC = () => {
         <div>
           <input
             className={`
-        p-1 bg-secondary2
         w-full rounded-lg
         border-2 border-solid
+        bg-secondary2 p-1
         `}
             placeholder="Username"
             type="text"
             value={uname}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
               setUname(e.target.value);
+              setUnameInvalid(false);
+              setDuplEmail(false);
+              setDuplUname(false);
             }}
           ></input>
           <div
             className={`
             ${unameInvalid ? "block" : "hidden"}
-          `}>
-            username can only contain letters, digits, dots, underscores and
+            text-red-500
+          `}
+          >
+            Username can only contain letters, digits, dots, underscores and
             hyphens
           </div>
         </div>
@@ -198,15 +221,18 @@ const SignupComponent: FC = () => {
         <div className="relative">
           <input
             className={`
-        p-1 bg-secondary2
         w-full rounded-lg
         border-2 border-solid
+        bg-secondary2 p-1
         `}
             placeholder="Password"
             type={`${showPassword ? "text" : "password"}`}
             value={password}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
               setPassword(e.target.value);
+              setPasswordInvalid(false);
+              setDuplEmail(false);
+              setDuplUname(false);
               if (e.target.value !== cPassword) {
                 setPasswordMisMatch(true);
               } else {
@@ -219,9 +245,9 @@ const SignupComponent: FC = () => {
           <div
             className={`
         ${showPassword ? "block" : "hidden"}
-        text-lg p-2
-        absolute top-0 right-0
-        cursor-pointer
+        absolute top-0
+        right-0 cursor-pointer p-2
+        text-lg
         active:text-primary2
         lg:hover:text-primary2 lg:active:text-primary
         `}
@@ -233,9 +259,9 @@ const SignupComponent: FC = () => {
           <div
             className={`
         ${!showPassword ? "block" : "hidden"}
-        text-lg p-2
-        absolute top-0 right-0
-        cursor-pointer
+        absolute top-0
+        right-0 cursor-pointer p-2
+        text-lg
         active:text-primary2
         lg:hover:text-primary2 lg:active:text-primary
         `}
@@ -248,6 +274,8 @@ const SignupComponent: FC = () => {
           <div
             className={`
 ${passwordInvalid ? "block" : "hidden"}
+text-red-500
+
 `}
           >
             Passwords must be atleast 8 characters long
@@ -258,15 +286,18 @@ ${passwordInvalid ? "block" : "hidden"}
         <div className="relative">
           <input
             className={`
-        p-1 bg-secondary2
         w-full rounded-lg
         border-2 border-solid
+        bg-secondary2 p-1
         `}
             placeholder="Confirm Password"
             type={`${showCPassword ? "text" : "password"}`}
             value={cPassword}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
               setCPassword(e.target.value);
+              setPasswordInvalid(false);
+              setDuplEmail(false);
+              setDuplUname(false);
               if (e.target.value !== password) {
                 setPasswordMisMatch(true);
               } else {
@@ -279,9 +310,9 @@ ${passwordInvalid ? "block" : "hidden"}
           <div
             className={`
         ${showCPassword ? "block" : "hidden"}
-        text-lg p-2
-        absolute top-0 right-0
-        cursor-pointer
+        absolute top-0
+        right-0 cursor-pointer p-2
+        text-lg
         active:text-primary2
         lg:hover:text-primary2 lg:active:text-primary
         `}
@@ -293,9 +324,9 @@ ${passwordInvalid ? "block" : "hidden"}
           <div
             className={`
         ${!showCPassword ? "block" : "hidden"}
-        text-lg p-2
-        absolute top-0 right-0
-        cursor-pointer
+        absolute top-0
+        right-0 cursor-pointer p-2
+        text-lg
         active:text-primary2
         lg:hover:text-primary2 lg:active:text-primary
         `}
@@ -308,20 +339,31 @@ ${passwordInvalid ? "block" : "hidden"}
           <div
             className={`
 ${passwordMisMatch ? "block" : "hidden"}
+text-red-500
+
 `}
           >
             Passwords don't match
           </div>
         </div>
 
+        <div
+          className={`
+            ${duplEmail || duplUname ? "block" : "hidden"}
+            text-red-500
+          `}
+        >
+          {`User with this ${duplEmail ? "email" : "username"} already exists`}
+        </div>
+
         <button
           className="
-        bg-primary p-1 rounded-lg
-        border-2 border-solid border-primary2
-        cursor-pointer flex justify-center items-center
+        flex cursor-pointer items-center
+        justify-center rounded-lg border-2
+        border-solid border-primary2 bg-primary p-1
         active:bg-primary2 active:text-white
-        lg:hover:bg-primary2 lg:active:bg-primary
-        lg:hover:text-white lg:active:text-black
+        lg:hover:bg-primary2 lg:hover:text-white
+        lg:active:bg-primary lg:active:text-black
         "
           type="submit"
         >

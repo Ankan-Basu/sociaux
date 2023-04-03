@@ -30,7 +30,10 @@ export const signupRouter = createTRPCRouter({
         } catch(err) {
             let errorsFound = handleErrors(err);
             if (errorsFound.others) {
-              return {status: 500, message: 'Internal Server Error'};
+              // return {status: 500, message: 'Internal Server Error'};
+              throw new TRPCError({
+                code: 'INTERNAL_SERVER_ERROR'
+              });
             } else {
               return {status: 400, ...errorsFound};
             }

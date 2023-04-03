@@ -171,7 +171,6 @@ const LoginComponent: FC = () => {
         <div 
         className={`
         ${(unauth || passwordInvalid || inpInvalid)?'block':'hidden'}
-        -my-2 mx-auto
         text-red-500
         `}
         >Invalid Email/Uname or Password</div>
