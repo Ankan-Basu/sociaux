@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef } from 'react'
+import { FC, useEffect, useLayoutEffect, useRef } from 'react'
 
 interface IOptionsObject {
   optionName: string;
@@ -14,9 +14,9 @@ interface IDropdownProps {
 
 const Dropdown: FC<IDropdownProps> = ({additionCSS='', display, setDisplay, options}) => {
 
-  const dropDownRef = useRef(null);
+  const dropDownRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     document.addEventListener('click', handleClickOutside, true);
     if (!display) {
       document.removeEventListener('click', handleClickOutside, true);

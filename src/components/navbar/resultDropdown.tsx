@@ -1,5 +1,5 @@
 import { HydratedDocument } from 'mongoose';
-import React, { FC, useEffect, useRef } from 'react'
+import React, { FC, useEffect, useLayoutEffect, useRef } from 'react'
 import { IUser } from '~/server/db/models/User';
 import { api } from '~/utils/api';
 
@@ -12,10 +12,10 @@ interface IResultDropdownProps {
 }
 
 const ResultDropdown: FC<IResultDropdownProps> = ({display, setDisplay, searchBoxRef, additionCss='', results=[]}) => {
-  const refOne = useRef(null);
+  const refOne = useRef<HTMLDivElement>(null);
 
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     document.addEventListener('click', handleClickOutside, true);
     if (!display) {
       document.removeEventListener('click', handleClickOutside, true);
@@ -28,7 +28,13 @@ const ResultDropdown: FC<IResultDropdownProps> = ({display, setDisplay, searchBo
   }, [display]);
 
   const handleClickOutside = (e: MouseEvent) => {
-    if (!refOne?.current.contains(e.target) && !searchBoxRef?.current.contains(e.target) ) {
+   
+    if (e.target === null) {
+      return;
+    }
+
+    //@ts-ignore
+    if (!refOne.current.contains(e.target) && !searchBoxRef.current.contains(e.target)) {
       console.log('CLICK OUTSIDE search');
       setDisplay && setDisplay(false);
     } else {
