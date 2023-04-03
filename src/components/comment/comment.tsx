@@ -10,6 +10,11 @@ import { ReplyingContext } from '~/contexts/replyingContext';
 import { api } from '~/utils/api';
 import Dropdown from '../dropdown/dropdown';
 import ReplyCommentList from './replyCommentList';
+import dayjs from "dayjs";
+import relativeTime from 'dayjs/plugin/relativeTime';
+
+dayjs.extend(relativeTime);
+
 
 export interface ICommentProps {
     uname: string;
@@ -228,7 +233,7 @@ const Comment: FC<ICommentProps> = (
                 className='cursor-pointer'>
                     Reply</span>
                 </div>
-                <div>20 wks</div>
+                <div>{dayjs(time).fromNow()}</div>
             </div>
             <div 
             className='

@@ -19,6 +19,7 @@
     "bcrypt": "^5.1.0",
     "bcryptjs": "^2.4.3",
     "cloudinary-react": "^1.8.1",
+    "dayjs": "^1.11.7",
     "lodash": "^4.17.21",
     "mongoose": "^7.0.1",
     "next": "^13.2.1",

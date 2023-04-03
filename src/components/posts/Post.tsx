@@ -1,7 +1,11 @@
 import { TRPCError } from "@trpc/server";
+import dayjs from "dayjs";
+import relativeTime from 'dayjs/plugin/relativeTime';
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { FC, useContext, useEffect, useState } from "react";
+
+dayjs.extend(relativeTime);
 
 import {
   FiEdit3,
@@ -54,6 +58,8 @@ const Post: FC<IPostProps> =({
   isModalMode = false,
   isSharedPost = false,
 }) => {
+
+  // console.log('DAY', dayjs(Date.now()).fromNow());
 
   const [liked, setLiked] = useState<boolean>(false);
 
@@ -279,6 +285,9 @@ const Post: FC<IPostProps> =({
             {uname? `@${uname}` : "Loading ..."}
           </Link>
           </h3>
+        </div>
+        <div className="text-xs font-light mb-1">
+          {dayjs(time).fromNow()}
         </div>
       </div>
       <div className="">
