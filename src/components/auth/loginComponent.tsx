@@ -19,15 +19,16 @@ const LoginComponent: FC = () => {
   const [password, setPassword] = useState<string>('');
   const[inpInvalid, setInpInvalid] = useState<boolean>(false);
   const[passwordInvalid, setPasswordInvalid] = useState<boolean>(false);
+  const [unauth, setUnauth] = useState<boolean>(false);
 
 
   if (session.status === "loading") {
-    return <p>Loading...</p>
+    return <div className='m-auto'>Loading...</div>
   }
 
   if (session.status === "authenticated") {
     router.push('/feed');
-    return <p>You area already logged in</p>
+    return <div className='m-auto'>You are logged in. Redirecting ...</div>
   }
   
 
@@ -52,7 +53,7 @@ const LoginComponent: FC = () => {
     }
     if (!resObj.password) {
       setPasswordInvalid(true);
-      true;
+      return;
     }
 
     const obj2 = {uname:'', email:'', password}
@@ -72,10 +73,16 @@ const LoginComponent: FC = () => {
       callbackUrl:'/feed'
     })
 
-    console.log(status);
-    if (status?.ok) {
-      router.push('/user/1')
+    // console.log(status);
+    // if (status?.ok) {
+    //   router.push('/user/1')
+    // }
+
+    if (!status?.ok) {
+      // console.log('Err');
+      setUnauth(true);
     }
+    
   }
 
   return (
@@ -105,7 +112,10 @@ const LoginComponent: FC = () => {
         type='text'
         value={unameEmail}
         onChange={(e: ChangeEvent<HTMLInputElement>) => {
-          setUnameEmail(e.target.value)
+          setUnameEmail(e.target.value);
+          setInpInvalid(false);
+          setPasswordInvalid(false);
+          setUnauth(false);
         }}
         >
         </input>
@@ -121,7 +131,10 @@ const LoginComponent: FC = () => {
         type={`${showPassword?'text':'password'}`}
         value={password}
         onChange={(e: ChangeEvent<HTMLInputElement>) => {
-          setPassword(e.target.value)
+          setPassword(e.target.value);
+          setInpInvalid(false);
+          setPasswordInvalid(false);
+          setUnauth(false);
         }}
         >
         </input>
@@ -155,6 +168,13 @@ const LoginComponent: FC = () => {
         </div>
         </div>
 
+        <div 
+        className={`
+        ${(unauth || passwordInvalid || inpInvalid)?'block':'hidden'}
+        -my-2 mx-auto
+        text-red-500
+        `}
+        >Invalid Email/Uname or Password</div>
         <button 
         className='
         bg-primary
