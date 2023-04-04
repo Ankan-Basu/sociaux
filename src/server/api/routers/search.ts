@@ -20,7 +20,8 @@ export const searchRouter = createTRPCRouter({
 
         dbConnect();
 
-        const queryString = '^' + input.searchName;
+        // const queryString = '^' + input.searchName;
+        const queryString = '^' + input.searchName + '|' + '\\s' + input.searchName;
 
         // set 'i' for case insensitive matching
         const queryRegexp = new RegExp(queryString, 'i');

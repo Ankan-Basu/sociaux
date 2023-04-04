@@ -10,7 +10,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     console.log('FIND USER', searchName);
     
-    const queryString = '^' + searchName;
+    const queryString = '^' + searchName + '|' + '\\s' + searchName;
 
         // set 'i' for case insensitive matching
     const queryRegexp = new RegExp(queryString, 'i');
