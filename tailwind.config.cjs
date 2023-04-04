@@ -12,12 +12,14 @@ module.exports = {
     
     extend: {
       width: {
+        '100px': '100px',
         '98': '400px',
         '99': '450',
         '100': '500px',
         '101': '520px'
       },
       height: {
+        '100px': '100px',
         '100': '500px'
       },
       colors: {

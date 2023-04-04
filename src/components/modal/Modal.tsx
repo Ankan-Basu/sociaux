@@ -1,7 +1,8 @@
 import { TRPCClientError } from "@trpc/client";
 import { useSession } from "next-auth/react";
 import { RESPONSE_LIMIT_DEFAULT } from "next/dist/server/api-utils";
-import React, { FC, useContext, useEffect, useState } from "react";
+import Image from "next/image";
+import React, { FC, useContext, useEffect, useRef, useState } from "react";
 
 import {
   FiTrash,
@@ -47,6 +48,8 @@ const Modal: FC<IModalProps> = ({
 
   const postMutation = api.posts.createPost.useMutation();
   const [img, setImg] = useState<string>();
+
+  const formRef = useRef<HTMLInputElement>(null);
 
   const handleClose = () => {
     console.log("Close");
@@ -108,6 +111,11 @@ const Modal: FC<IModalProps> = ({
       });
       console.log(x);
       setPostMessage("");
+      setImg("");
+      if (!formRef.current) {
+        return;
+      }
+      formRef.current.value ='';
     } catch (err) {
       // console.log(err);
       setErrorDisplay(true);
@@ -192,12 +200,34 @@ const Modal: FC<IModalProps> = ({
             className="w-full resize-none rounded-lg bg-secondary2 p-1 outline-none lg:w-99"
           ></textarea>
         </div>
-        <input type={'file'} accept='image/*' onChange={handleImg} />
+        <input type={'file'} accept='image/*' onChange={handleImg} ref={formRef} className='invisible' />
+        
+        
         {img?
-        <img src={img} height={100} width={100} alt='img' />
+        <div className="relative h-100px w-100px border-2 border-solid border-black">
+          <span 
+          onClick={() => {
+            setImg('');
+            if (!formRef.current) {
+              return;
+            }
+            formRef.current.value = '';
+          }}
+          className="p-2 bg-secondary2 text-primary rounded-full absolute -top-4 -right-4">
+            <FiX />
+            </span>
+        <Image src={img} height={100} width={100} alt='img' />
+        </div>
         :<></>}
         <div className="flex justify-center gap-2 py-1">
+          
           <button
+          onClick={() => {
+            if (!formRef.current) {
+              return;
+            }
+            formRef.current.click();
+          }}
           type='button' 
           className="flex flex-1 justify-center items-center gap-2 rounded-md bg-deactiv p-2">
             <FiImage /> Image
