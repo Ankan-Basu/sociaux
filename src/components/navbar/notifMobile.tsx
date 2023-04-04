@@ -71,9 +71,9 @@ const NotifMobile: FC<INotifMobileProps> = ({notifs, friendReqs, display, type})
           (
             
                 notifs &&
-                notifs.map((notif: HydratedDocument<INotifItem>, indx) => {
+                notifs.map((notif: HydratedDocument<INotifItem>, indx, arr) => {
                     return (
-                        <NotifItem key={indx} notif={notif}/>
+                        <NotifItem key={indx} notif={arr[arr.length -1 -indx]}/>
                     )
                 })
           
@@ -81,9 +81,9 @@ const NotifMobile: FC<INotifMobileProps> = ({notifs, friendReqs, display, type})
           (
 
             friendReqs && 
-            friendReqs.map((friendReq,indx) => {
+            friendReqs.map((friendReq,indx, arr) => {
                 return (
-                    <FrenReq key={indx} friendReq={friendReq} />
+                    <FrenReq key={indx} friendReq={arr[api.length -1 -indx]} />
                 )
             })
           )

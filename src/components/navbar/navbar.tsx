@@ -45,6 +45,29 @@ const Navbar: FC = () => {
         
       }
     }, [session])
+
+    useEffect(() => {
+      if (notifSelected || mobileNotifSelected) {
+        if (session.status === 'authenticated') {
+          (async () => {
+            const notifData = await notifQuery.refetch();
+            setNotifList(notifData.data?.notifs)
+          })();
+        }
+      }
+
+    }, [notifSelected, mobileNotifSelected])
+
+    useEffect(() => {
+      if (friendReqSelected || mobileNotifSelected) {
+        if (session.status === 'authenticated') {
+          (async () => {
+            const friendReqData = await friendReqQuery.refetch();
+            setFriendReqList(friendReqData.data?.reqs)
+          })();
+        }
+      }
+    }, [friendReqSelected, mobileNotifSelected])
     
   return (
     <>
