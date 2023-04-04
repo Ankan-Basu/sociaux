@@ -8,7 +8,7 @@ const ErrorContextProvider: FC<ContextProviderProps> = ({
   children,
   additionVals = undefined,
 }) => {
-  const [display, setDisplay] = useState<boolean>(true);
+  const [display, setDisplay] = useState<boolean>(false);
   const [message, setMessage] = useState<string>('');
   const [type, setType] = useState<'simple' | 'redirect' | 'logout'>();
 

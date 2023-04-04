@@ -1,17 +1,20 @@
 import Image from 'next/image';
-import React from 'react';
+import React, { FC } from 'react';
 import loadingGif from './loading.gif';
 
-const Loading = () => {
+interface ILoadingProps {
+  height: number;
+  width: number;
+}
+
+const Loading: FC<ILoadingProps> = ({height, width}) => {
   console.log('LOADING', loadingGif);
   
   return (
-    <div>
-      GIF
-      
-      <Image src={loadingGif} height={100} width={100} alt='Loading ...' />
+    <div>      
+      <Image src={loadingGif} height={height} width={width} alt='Loading ...' />
     </div>
   )
 }
 
-export default Loading
+export default Loading;

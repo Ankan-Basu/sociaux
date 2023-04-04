@@ -3,6 +3,7 @@ import PostEditContextProvider from "~/contexts/postEditContext";
 import PostFeedContextProvider from "~/contexts/postFeedContext";
 import { api } from "~/utils/api";
 import EditPost from "../edit/editPost";
+import Loading from "../loading/loading";
 import Post from "../posts/Post";
 import PostScreen from "../posts/postScreen";
 
@@ -16,13 +17,24 @@ const NewsFeed: FC = () => {
   
 
   useEffect(() => {
-    (async () => {
-      //@ts-ignore
-      postsQuery = await postsQuery.refetch();
-      // console.log('NewsFeed2', postsQuery2);
+    // (async () => {
       
-    })();
+    //   // console.log('NewsFeed2', postsQuery2);
+      
+    // })();
+    postsQuery.refetch();
   }, [reload])
+
+  if (postsQuery.isFetching && postsQuery.data === undefined) {
+    return (
+      <>
+      <div className="mx-auto rounded-lg p-2 lg:w-101 flex justify-center
+      ">
+      <Loading height={100} width={100}/>
+      </div>
+      </>
+    );
+  }
 
   return (
     <div className="m-auto rounded-lg p-2 lg:w-101">

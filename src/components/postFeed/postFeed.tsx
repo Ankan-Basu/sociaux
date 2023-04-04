@@ -4,6 +4,7 @@ import PostEditContextProvider from "~/contexts/postEditContext";
 import PostFeedContextProvider from "~/contexts/postFeedContext";
 import { api } from "~/utils/api";
 import EditPost from "../edit/editPost";
+import Loading from "../loading/loading";
 import Post from "../posts/Post";
 import PostScreen from "../posts/postScreen";
 
@@ -14,7 +15,7 @@ const PostFeed: FC = () => {
 
   const router = useRouter();
 
-  const { data, refetch } = api.posts.getUserPosts.useQuery(
+  const { data, refetch, isFetching } = api.posts.getUserPosts.useQuery(
     { uname: `${router.query.uname || ''}` },
     {}
   );
@@ -46,6 +47,15 @@ const PostFeed: FC = () => {
         if (x.status === "success") {
           setPosts(x.data);
         }
+  }
+
+  if (isFetching && posts.length === 0) {
+    return (
+      <div className="mx-auto rounded-lg p-2 lg:w-101 flex justify-center
+      ">
+      <Loading height={100} width={100}/>
+      </div>
+    );
   }
 
   return (
