@@ -1,6 +1,11 @@
+import { HydrateOptions } from "@tanstack/react-query";
+import { HydratedDocument } from "mongoose";
 import React, { FC, useContext, useEffect, useState } from "react";
+import { isNullOrUndefined } from "util";
 import { ReplyingContext } from "~/contexts/replyingContext";
+import { IReplyComment } from "~/server/db/models/ReplyComment";
 import { api } from "~/utils/api";
+import Loading from "../loading/loading";
 import ReplyComment from "./replyComment";
 
 interface IReplyCommentListProps {
@@ -14,13 +19,14 @@ const ReplyCommentList: FC<IReplyCommentListProps> = ({
 }) => {
   // console.log('Reply to', parenCommId);
 
-  const [replies, setReplies] = useState<Array<Object>>([]);
+  const [replies, setReplies] = useState<Array<HydratedDocument<IReplyComment>>>([]);
   const { refreshReplies } = useContext(ReplyingContext);
 
-  let { data, refetch } = api.replyComments.getComments.useQuery({
+  let { data, refetch, isLoading, isFetching } = api.replyComments.getComments.useQuery({
     parenCommId,
   });
 
+  // console.log('Co', isLoading)
   
 
   useEffect(() => {
@@ -50,6 +56,14 @@ const ReplyCommentList: FC<IReplyCommentListProps> = ({
     }
   };
 
+  if (isLoading) {
+    return (
+      <div className={`${display ? "block" : "hidden"}`}>
+      <Loading width={50} height={50}/>
+      </div>
+    )
+  }
+
   if (data?.length === 0) {
     return (
       <div
@@ -65,6 +79,8 @@ const ReplyCommentList: FC<IReplyCommentListProps> = ({
       </div>
     );
   }
+
+
   return (
     <div
       className={`
@@ -73,21 +89,25 @@ const ReplyCommentList: FC<IReplyCommentListProps> = ({
     w-full flex-col gap-3
     `}
     >
-      {replies &&
-        replies?.map((reply: any) => {
+
+
+      {replies?.length>0?
+        replies.map((reply: HydratedDocument<IReplyComment>) => {
           return (
             <ReplyComment
-              key={reply._id}
+              key={reply._id.toString()}
               parenCommId={parenCommId}
-              _id={reply._id}
+              _id={reply._id.toString()}
               uname={reply.uname}
               message={reply.message}
-              likes={reply.likes}
-              time={reply.time}
+              likes={reply.likes || []}
               time={reply.time}
             />
           );
-        })}
+        })
+      :
+      <></>
+      }
     </div>
   );
 };

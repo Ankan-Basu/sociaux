@@ -1,8 +1,11 @@
+import { HydratedDocument } from 'mongoose';
 import { useRouter } from 'next/router';
 import React, { FC, useContext, useEffect, useState } from 'react'
 import { CommentContext } from '~/contexts/commentContext';
 import { api } from '~/utils/api';
+import Loading from '../loading/loading';
 import Comment, { ICommentProps } from './comment'
+import {IComment} from '~/server/db/models/Comment';
 
 interface ICommentListProps {
     postId: string;
@@ -20,7 +23,7 @@ const CommentList: FC<ICommentListProps> = ({ postId, refresh, customCssClass })
 
     const {commentList, setCommentList} = useContext(CommentContext);
    
-    const {data, isLoading, isError, refetch} = api.comments.getComments.useQuery({postId: postId});
+    const {data, isLoading, isFetching, isError, refetch} = api.comments.getComments.useQuery({postId: postId});
 
     if (data) {
         setCommentList(data);
@@ -32,8 +35,8 @@ const CommentList: FC<ICommentListProps> = ({ postId, refresh, customCssClass })
     
     if(isLoading) {
         return (
-            <div>
-                Loading
+            <div className='flex justify-center mt-2'>
+                <Loading height={50} width={50} />
             </div>
         );
     }
@@ -57,19 +60,21 @@ const CommentList: FC<ICommentListProps> = ({ postId, refresh, customCssClass })
     >
 
         {
-            commentList &&
+            commentList?.length>0?
             //change this any
-            commentList?.map((comment: any) => {
+            commentList?.map((comment: HydratedDocument<IComment>) => {
                 return (
                     <Comment 
-                    key={comment._id} 
+                    key={comment._id.toString()} 
                     uname={comment.uname} 
                     message={comment.message} 
                     likes={comment.likes}
                     time={comment.time}
-                    _id={comment._id}/>
+                    _id={comment._id.toString()}/>
                 )
             })
+            : <div className='mx-auto'>No Comments Found</div>
+        
         }
     </div>
   )

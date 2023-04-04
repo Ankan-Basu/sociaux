@@ -1,4 +1,3 @@
-import { TRPCError } from "@trpc/server";
 import dayjs from "dayjs";
 import relativeTime from 'dayjs/plugin/relativeTime';
 dayjs.extend(relativeTime);
@@ -8,16 +7,9 @@ import { FC, useContext, useEffect, useState } from "react";
 
 
 import {
-  FiEdit3,
-  FiTrash,
-  FiX,
   FiThumbsUp,
   FiCornerUpRight,
   FiMessageSquare,
-  FiSettings,
-  FiLogOut,
-  FiUser,
-  FiUsers,
   FiMoreHorizontal
 } from "react-icons/fi";
 import { PostEditContext } from "~/contexts/postEditContext";
@@ -58,8 +50,6 @@ const Post: FC<IPostProps> =({
   isModalMode = false,
   isSharedPost = false,
 }) => {
-
-  // console.log('DAY', dayjs(Date.now()).fromNow());
 
   const [liked, setLiked] = useState<boolean>(false);
 
@@ -153,7 +143,7 @@ const Post: FC<IPostProps> =({
   // let handleEdit = undefined;
 
   try {
-    // when opened in modal has access to context
+    // when opened in post feed has access to context
     const { showExpanded, setShowExpanded, setCurrPost } =
       useContext(PostFeedContext);
 
@@ -294,20 +284,21 @@ const Post: FC<IPostProps> =({
         {(message || message==='')?message:''}
       </div>
       <div>
-        {shareId && sharedPostQuery.isFetched &&
-        <Post 
-        expanded={true}
-        isSharedPost={true}
+        {
+          shareId && sharedPostQuery.isFetched &&
+          //@ts-ignore
+          <Post 
+          expanded={true}
+          isSharedPost={true}
         uname={sharedPostQuery.data?.uname}
         message={sharedPostQuery.data?.message}
         privacy={sharedPostQuery.data?.privacy}
         imageId={sharedPostQuery.data?.imageId}
-        //shareId={sharedPostQuery.data?.shareId}
+        shareId={undefined}
         time={sharedPostQuery.data?.time}
         likes={sharedPostQuery.data?.likes}
         comments={sharedPostQuery.data?.comments}
         _id={sharedPostQuery.data?._id}
-
         />
         }
       </div>
@@ -327,7 +318,6 @@ const Post: FC<IPostProps> =({
       `}>
         
         {likes?likes.length?`${likes?.length} like(s)`:'':''}
-        {/* {likes?.length && <>{likes?.length} like(s)</>} */}
         
         
         </div>

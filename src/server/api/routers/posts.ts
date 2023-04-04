@@ -72,7 +72,16 @@ export const postsRouter = createTRPCRouter({
 
         if (!input.postId || input.postId === 'undefined') {
           // console.log('Get One Post IGNORING');
-          return {}
+          return {
+            uname: undefined,
+        message: undefined,
+        privacy: undefined,
+        imageId: undefined,
+        shareId: undefined,
+        likes: undefined,
+        comments: undefined,
+        _id: undefined 
+          }
         }
 
         dbConnect();
