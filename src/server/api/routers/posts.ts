@@ -276,6 +276,7 @@ export const postsRouter = createTRPCRouter({
           privacy: input.privacy,
           message: input.message,
           shareId: input.shareId,
+          time: Date.now()
         });
 
         return dbResp;
