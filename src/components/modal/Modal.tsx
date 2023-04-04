@@ -52,7 +52,7 @@ const Modal: FC<IModalProps> = ({
   const formRef = useRef<HTMLInputElement>(null);
 
   const handleClose = () => {
-    console.log("Close");
+    // console.log("Close");
 
     setShowModal(false);
   };
@@ -116,6 +116,7 @@ const Modal: FC<IModalProps> = ({
         return;
       }
       formRef.current.value ='';
+      setShowModal(false);
     } catch (err) {
       // console.log(err);
       setErrorDisplay(true);
