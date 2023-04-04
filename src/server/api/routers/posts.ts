@@ -16,27 +16,24 @@ import detectFriendship from "../utilFuncs/detectFriend";
 import fetchPosts from "../utilFuncs/fetchPosts";
 
 export const postsRouter = createTRPCRouter({
-  getAllPosts: publicProcedure
-    .query(async ({ctx}) => {
-      try {
-        dbConnect();
-        
-        const resArr = await fetchPosts(ctx);
-        
-        return resArr;
-      } catch(err) {
-        throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR'
-        })
-      }
-    }),
-    
-    
-    getUserPosts: publicProcedure
-    .input(z.object({ uname: z.string()}))
+  getAllPosts: publicProcedure.query(async ({ ctx }) => {
+    try {
+      dbConnect();
+
+      const resArr = await fetchPosts(ctx);
+
+      return resArr;
+    } catch (err) {
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+      });
+    }
+  }),
+
+  getUserPosts: publicProcedure
+    .input(z.object({ uname: z.string() }))
     .query(async ({ ctx, input }) => {
       try {
-
         if (!input.uname) {
           // console.log('NO UNAME IGNORING');
           return [];
@@ -44,153 +41,161 @@ export const postsRouter = createTRPCRouter({
 
         dbConnect();
 
-        ///////////////////////////////////////        
+        ///////////////////////////////////////
         const isFriend = await detectFriendship(ctx, input.uname);
         ////////////////////////////////////////////////////////////////////////
 
         let posts: Array<HydratedDocument<IPost>> = [];
 
-        if (isFriend) { 
-          posts = await PostModel.find({uname: input.uname}).sort({time: 'desc'});
+        if (isFriend) {
+          posts = await PostModel.find({ uname: input.uname }).sort({
+            time: "desc",
+          });
         } else {
-          posts = await PostModel.find({uname: input.uname, privacy: 0}).sort({time: 'desc'});
+          posts = await PostModel.find({ uname: input.uname, privacy: 0 }).sort(
+            { time: "desc" }
+          );
         }
-                
+
         return posts;
-      } catch(err) {
+      } catch (err) {
         throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR'
-        })
+          code: "INTERNAL_SERVER_ERROR",
+        });
       }
     }),
-    
-    
-    getOnePost: publicProcedure
+
+  getOnePost: publicProcedure
     .input(z.object({ postId: z.string() }))
     .query(async ({ ctx, input }) => {
       try {
-
-        if (!input.postId || input.postId === 'undefined') {
+        if (!input.postId || input.postId === "undefined") {
           // console.log('Get One Post IGNORING');
           return {
             uname: undefined,
-        message: undefined,
-        privacy: undefined,
-        imageId: undefined,
-        shareId: undefined,
-        likes: undefined,
-        comments: undefined,
-        _id: undefined 
-          }
+            message: undefined,
+            privacy: undefined,
+            imageId: undefined,
+            shareId: undefined,
+            likes: undefined,
+            comments: undefined,
+            _id: undefined,
+          };
         }
 
         dbConnect();
-        
-        
-        const post: HydratedDocument<IPost> | null = await PostModel.findOne({_id: input.postId})
-        
+
+        const post: HydratedDocument<IPost> | null = await PostModel.findOne({
+          _id: input.postId,
+        });
+
         if (!post) {
           // throw new TRPCError({
           //   code: "NOT_FOUND",
           //   message: "Not found"
           // })
-          return {}
-        } 
+          return {};
+        }
 
-          
-          if (post.privacy === 0) {
+        if (post.privacy === 0) {
           // public post;
-          return post;    
+          return post;
+        } else {
+          const targetUname = post.uname;
+          const isFriend: boolean = await detectFriendship(ctx, targetUname);
+
+          if (isFriend) {
+            return post;
           } else {
-            const targetUname = post.uname;
-            const isFriend: boolean = await detectFriendship(ctx, targetUname);
-
-            if (isFriend) {
-              return post;
-            } else {
-              return {}
-            }
-
+            return {};
           }
-        
+        }
+
         ///////////////////////////
-        
+
         // return post;
       } catch (err) {
         console.log(err);
-        
+
         throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR'
-        })
+          code: "INTERNAL_SERVER_ERROR",
+        });
       }
     }),
 
-    
-    createPost: publicProcedure
-    .input(z.object({
+  createPost: publicProcedure
+    .input(
+      z.object({
         uname: z.string(),
         privacy: z.number(),
         message: z.string(),
         img: z.string(),
-    }))
+      })
+    )
     .mutation(async ({ input }) => {
-      dbConnect();
-      // console.log(input);
-      const post = input;
+      try {
+        dbConnect();
+        // console.log(input);
+        const post = input;
 
-      const img = input.img;
-      let imgResp = null;
-      
-      if (img) {
-        imgResp = await PostImageModel.create({img: img});
+        const img = input.img;
+        let imgResp = null;
+
+        if (img) {
+          imgResp = await PostImageModel.create({ img: img });
+        }
+
+        if (img && !imgResp) {
+          //something wrong;
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Image not saved",
+          });
+        }
+
+        //create post obj
+        const imgId = imgResp ? imgResp._id.toString() : "";
+        //  console.log('imgId', imgId);
+
+        const postObj: IPost = {
+          uname: input.uname,
+          privacy: input.privacy,
+          message: input.message,
+          imageId: imgId,
+        };
+
+        //  console.log('post', postObj);
+
+        const dbResp = await PostModel.create({ ...postObj, time: Date.now() });
+
+        return dbResp;
+      } catch (err) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+        });
       }
-
-     if (img && !imgResp) {
-      //something wrong;
-      throw new TRPCError({
-        code: 'INTERNAL_SERVER_ERROR',
-        message: 'Image not saved'
-      });
-     }
-
-     //create post obj
-     const imgId = imgResp?imgResp._id.toString() : '';
-    //  console.log('imgId', imgId);
-     
-     const postObj: IPost = {
-      uname: input.uname,
-      privacy: input.privacy,
-      message: input.message,
-      imageId: imgId
-     };
-
-    //  console.log('post', postObj);
-     
-
-      const dbResp = await PostModel.create({...postObj, time: Date.now()});
-
-      return dbResp;
     }),
 
-
-    modifyPost: publicProcedure
-    .input(z.object({
+  modifyPost: publicProcedure
+    .input(
+      z.object({
         postId: z.string(),
         uname: z.string(),
         privacy: z.number(),
         message: z.string(),
-    }))
+      })
+    )
     .mutation(async ({ input }) => {
       dbConnect();
       // console.log(input);
 
-      const post = await PostModel.findOne({_id: input.postId});
+      const post = await PostModel.findOne({ _id: input.postId });
 
       if (!post) {
         throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "Not found"
-        })
+          code: "NOT_FOUND",
+          message: "Not found",
+        });
       }
 
       post.message = input.message;
@@ -201,78 +206,84 @@ export const postsRouter = createTRPCRouter({
       return dbResp;
     }),
 
-
-    getPostImage: publicProcedure
-    .input(z.object({
+  getPostImage: publicProcedure
+    .input(
+      z.object({
         imageId: z.string(),
-        
-    }))
+      })
+    )
     .query(async ({ input }) => {
       try {
         // console.log('imgId', input.imageId);
-        
+
         if (!input.imageId) {
-          return {img: ''}
+          return { img: "" };
         }
 
-        if (input.imageId === 'undefined') {
-          return {img: ''}
+        if (input.imageId === "undefined") {
+          return { img: "" };
         }
 
         dbConnect();
-        
+
         try {
-          const dbResp = await PostImageModel.findOne({_id: input.imageId});
+          const dbResp = await PostImageModel.findOne({ _id: input.imageId });
           return dbResp;
-        } catch(err) {
+        } catch (err) {
           //wrong img id
           throw new TRPCError({
-            code: 'BAD_REQUEST',
-            message: 'Invalid Img Id'
-          })
-        }        
-      } catch(err) {
+            code: "BAD_REQUEST",
+            message: "Invalid Img Id",
+          });
+        }
+      } catch (err) {
         throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR'
+          code: "INTERNAL_SERVER_ERROR",
         });
       }
     }),
 
-    deletePost: publicProcedure
-    .input(z.object({
+  deletePost: publicProcedure
+    .input(
+      z.object({
         postId: z.string(),
-        
-    }))
+      })
+    )
     .mutation(async ({ input }) => {
       dbConnect();
       // console.log(input);
 
-      const dbResp = await PostModel.deleteOne({_id: input.postId});
+      const dbResp = await PostModel.deleteOne({ _id: input.postId });
 
       return dbResp;
     }),
 
-
-    sharePost: publicProcedure
-    .input(z.object({
-      uname: z.string(),
-      privacy: z.number(),
-      message: z.string(),
-      shareId: z.string(),  
-    }))
+  sharePost: publicProcedure
+    .input(
+      z.object({
+        uname: z.string(),
+        privacy: z.number(),
+        message: z.string(),
+        shareId: z.string(),
+      })
+    )
     .mutation(async ({ input }) => {
       try {
         dbConnect();
         // console.log(input);
-        const dbResp = await PostModel.create({uname: input.uname, privacy: input.privacy, message: input.message, shareId: input.shareId});
+        const dbResp = await PostModel.create({
+          uname: input.uname,
+          privacy: input.privacy,
+          message: input.message,
+          shareId: input.shareId,
+        });
 
         return dbResp;
-
-      } catch(err) {
+      } catch (err) {
         throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
-          message: 'catch block of share post'
-        })
+          code: "INTERNAL_SERVER_ERROR",
+          message: "catch block of share post",
+        });
       }
     }),
 });

@@ -42,9 +42,6 @@ export const likesRouter = createTRPCRouter({
           
           return dbResp;
         } else {
-          // return {
-            //   message: "Already Liked",
-            // };
             throw new TRPCError({
               code: 'BAD_REQUEST',
               message: 'Already Liked'
@@ -91,9 +88,10 @@ export const likesRouter = createTRPCRouter({
           
           return dbResp;
         } else {
-          return {
-            message: "Not liked yet",
-          };
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'Not Liked yet'
+          });
         }
       }
     } catch(err) {

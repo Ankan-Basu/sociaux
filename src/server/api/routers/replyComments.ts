@@ -20,15 +20,17 @@ export const replyCommentsRouter = createTRPCRouter({
     .query(async ({ input }) => {
       try {
         dbConnect();
-        
+
         const replyComments: Array<HydratedDocument<IReplyComment>> =
-        await ReplyCommentModel.find({ parenCommId: input.parenCommId }).sort({time: 'desc'});
-        
+          await ReplyCommentModel.find({ parenCommId: input.parenCommId }).sort(
+            { time: "desc" }
+          );
+
         return replyComments;
-      } catch(err) {
+      } catch (err) {
         throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR'
-        })
+          code: "INTERNAL_SERVER_ERROR",
+        });
       }
     }),
 
@@ -41,25 +43,31 @@ export const replyCommentsRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ input }) => {
-      dbConnect();
+      try {
+        dbConnect();
 
-      const parenComm = await CommentModel.findOne({ _id: input.parenCommId });
-
-      if (!parenComm) {
-        throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "Not found",
+        const parenComm = await CommentModel.findOne({
+          _id: input.parenCommId,
         });
-      } else {
-        const replyCommObj: IReplyComment = {
-          uname: input.uname,
-          parenCommId: input.parenCommId,
-          message: input.message
-        };
 
-        try {
+        if (!parenComm) {
+          throw new TRPCError({
+            code: "NOT_FOUND",
+            message: "Not found",
+          });
+        } else {
+          const replyCommObj: IReplyComment = {
+            uname: input.uname,
+            parenCommId: input.parenCommId,
+            message: input.message,
+            likes: [],
+          };
+
           const replyComm: HydratedDocument<IReplyComment> | null =
-            await ReplyCommentModel.create({...replyCommObj, time: Date.now()});
+            await ReplyCommentModel.create({
+              ...replyCommObj,
+              time: Date.now(),
+            });
           if (!replyComm) {
             throw new TRPCError({
               code: "INTERNAL_SERVER_ERROR",
@@ -70,24 +78,27 @@ export const replyCommentsRouter = createTRPCRouter({
 
             const dbResp = await parenComm.save();
 
+            sendNotification({
+              source: input.uname,
+              uname: parenComm.uname,
+              type: "replyToComment",
+              postId: parenComm.postId,
+              commentId: parenComm._id.toString(),
+              replyCommentId: replyComm._id.toString(),
+            });
 
-
-            sendNotification({source: input.uname, uname: parenComm.uname, type: "replyToComment", postId: parenComm.postId, commentId: parenComm._id.toString(),
-          replyCommentId: replyComm._id.toString()});
-
-          
             return dbResp;
           }
-        } catch (err) {
-          throw new TRPCError({
-            code: "INTERNAL_SERVER_ERROR",
-            message: "Internal Server Error",
-          });
         }
+      } catch (err) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Internal Server Error",
+        });
       }
     }),
 
-    editReplyComment: publicProcedure
+  editReplyComment: publicProcedure
     .input(
       z.object({
         uname: z.string(),
@@ -96,28 +107,30 @@ export const replyCommentsRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ input }) => {
-      dbConnect();
+      try {
+        dbConnect();
 
-      const comment = await ReplyCommentModel.findOne({ _id: input.replyCommId });
-
-      if (!comment) {
-        throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "Not found",
+        const comment = await ReplyCommentModel.findOne({
+          _id: input.replyCommId,
         });
-      } else {
-        comment.message = input.message;
 
-        try {
+        if (!comment) {
+          throw new TRPCError({
+            code: "NOT_FOUND",
+            message: "Not found",
+          });
+        } else {
+          comment.message = input.message;
+
           const dbResp = await comment.save();
 
           return dbResp;
-        } catch (err) {
-          throw new TRPCError({
-            code: "INTERNAL_SERVER_ERROR",
-            message: "Internal Server Error",
-          });
         }
+      } catch (err) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Internal Server Error",
+        });
       }
     }),
 
@@ -130,8 +143,8 @@ export const replyCommentsRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ input }) => {
-      dbConnect();
       try {
+        dbConnect();
         const parenComm: HydratedDocument<IComment> | null =
           await CommentModel.findOne({ _id: input.parenCommId });
 
@@ -142,63 +155,55 @@ export const replyCommentsRouter = createTRPCRouter({
             message: "Parent Comment Not found",
           });
         } else {
-          try {
-            // remove from parenComm
+          // remove from parenComm
 
-            //    if (parenComm.replies.includes(reqBody.commentId)) {
+          //    if (parenComm.replies.includes(reqBody.commentId)) {
 
-            //    }
-            //    const repliesArr = parenComm.replies.filter((reply) => {
-            //         return reply !== reqBody.commentId;
-            //    });
+          //    }
+          //    const repliesArr = parenComm.replies.filter((reply) => {
+          //         return reply !== reqBody.commentId;
+          //    });
 
-            // try in single pass
-            const repliesArr: Array<string> = [];
+          // try in single pass
+          const repliesArr: Array<string> = [];
 
-            const len = parenComm.replies.length;
-            let found = false;
+          const len = parenComm.replies.length;
+          let found = false;
 
-            for (let i = 0; i < len; i++) {
-              if (parenComm.replies[i] === input.replyCommId) {
-                found = true;
-              } else {
-                repliesArr.push(parenComm.replies[i]!);
-              }
-            }
-            /*********************************************** */
-            if (!found) {
-              throw new TRPCError({
-                code: "NOT_FOUND",
-                message: "Reply comment doesnt exist",
-              });
+          for (let i = 0; i < len; i++) {
+            if (parenComm.replies[i] === input.replyCommId) {
+              found = true;
             } else {
-              parenComm.replies = repliesArr;
-
-              const dbResp1 = await parenComm.save();
-              // err will be catched by catch block;
-
-              const dbResp = await ReplyCommentModel.deleteOne({
-                _id: input.replyCommId,
-              });
-
-
-
-              //remove the notif
-              removeNotification({source: input.uname, uname: parenComm.uname, type: "replyToComment", postId: parenComm.postId, commentId: parenComm._id.toString(),
-          replyCommentId: input.replyCommId});
-
-
-
-
-              return dbResp1;
+              repliesArr.push(parenComm.replies[i]!);
             }
-          } catch (err) {
-            // console.log('INNER DEL CMM', err);
-            
+          }
+          /*********************************************** */
+          if (!found) {
             throw new TRPCError({
-              code: "INTERNAL_SERVER_ERROR",
-              message: "Internal server error",
+              code: "NOT_FOUND",
+              message: "Reply comment doesnt exist",
             });
+          } else {
+            parenComm.replies = repliesArr;
+
+            const dbResp1 = await parenComm.save();
+            // err will be catched by catch block;
+
+            const dbResp = await ReplyCommentModel.deleteOne({
+              _id: input.replyCommId,
+            });
+
+            //remove the notif
+            removeNotification({
+              source: input.uname,
+              uname: parenComm.uname,
+              type: "replyToComment",
+              postId: parenComm.postId,
+              commentId: parenComm._id.toString(),
+              replyCommentId: input.replyCommId,
+            });
+
+            return dbResp1;
           }
         }
       } catch (err) {

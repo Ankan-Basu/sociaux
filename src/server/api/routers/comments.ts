@@ -16,12 +16,18 @@ export const commentsRouter = createTRPCRouter({
   getComments: publicProcedure
     .input(z.object({ postId: z.string() }))
     .query(async ({ input }) => {
-      dbConnect();
-
-      const comments: Array<HydratedDocument<IComment>> =
+      try {
+        dbConnect();
+        
+        const comments: Array<HydratedDocument<IComment>> =
         await CommentModel.find({ postId: input.postId }).sort({time: 'desc'});
-
-      return comments;
+        
+        return comments;
+      } catch(err) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR'
+        });
+      }
     }),
 
   postComment: publicProcedure
@@ -29,9 +35,8 @@ export const commentsRouter = createTRPCRouter({
       z.object({ uname: z.string(), postId: z.string(), message: z.string() })
     )
     .mutation(async ({ input }) => {
-      dbConnect();
-
       try {
+        dbConnect();
         const dbResp: HydratedDocument<IComment> = await CommentModel.create({
           ...input, time: Date.now()
         });
@@ -74,9 +79,8 @@ export const commentsRouter = createTRPCRouter({
       z.object({ uname: z.string(), commentId: z.string(), message: z.string() })
     )
     .mutation(async ({ input }) => {
-      dbConnect();
-
       try {
+        dbConnect();
         const comment: HydratedDocument<IComment> | null = await CommentModel.findOne(
           {_id: input.commentId}
         );
@@ -96,7 +100,7 @@ export const commentsRouter = createTRPCRouter({
           }
         } else {
           throw new TRPCError({
-            code: "INTERNAL_SERVER_ERROR",
+            code: "BAD_REQUEST",
             message: "Not found",
           });
         }
@@ -111,12 +115,11 @@ export const commentsRouter = createTRPCRouter({
   deleteComment: publicProcedure
     .input(z.object({ uname: z.string(), commentId: z.string() }))
     .mutation(async ({ input }) => {
-      dbConnect();
-
       try {
+        dbConnect();
         const dbResp = await CommentModel.findOneAndDelete({ _id: input.commentId });
 
-        console.log('DELETE COMMENT', dbResp);
+        // console.log('DELETE COMMENT', dbResp);
 
         if (!dbResp) {
           throw new TRPCError({

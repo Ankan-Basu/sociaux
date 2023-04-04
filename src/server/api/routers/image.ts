@@ -1,3 +1,4 @@
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
 import {
@@ -12,30 +13,36 @@ export const imageRouter = createTRPCRouter({
   upload: publicProcedure
     .input(z.object({image: z.string()}))
     .mutation(async ({ input }) => {
-
-      dbConnect();
+      try {
+        dbConnect();
         // console.log('Img upload', input);
         const dbResp = await ImageModel.create({img: input.image});
         
-      return {
-        dbResp
-      };
+        return {
+          dbResp
+        };
+      } catch(err) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR'
+        });
+      }
     }),
-
-  getSecretMessage: protectedProcedure.query(() => {
-    return "you can now see this secret message!";
-  }),
 
   get: publicProcedure
     .input(z.object({imageId: z.string()}))
     .query(async ({ input }) => {
-
-      dbConnect();
+      try {
+        dbConnect();
         // console.log('Img upload', input);
         const dbResp = await ImageModel.findOne({_id: input.imageId});
         
-      return {
-        dbResp
-      };
+        return {
+          dbResp
+        };
+      } catch(err) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR'
+        })
+      }
     })
 });

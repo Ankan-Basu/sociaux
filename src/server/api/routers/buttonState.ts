@@ -13,25 +13,25 @@ export const buttonRouter = createTRPCRouter({
   getState: publicProcedure
     .input(z.object({ profileUname: z.string() }))
     .query(async ({ ctx, input }) => {
-      console.log('Button', ctx, '\nprofil', input.profileUname);
-
-      if (!ctx.session) {
-        return {
-          code: -1,
-          message: 'Login'
-        };
-      } else {
-        const currUname = ctx.session.user.uname;
-        const targetUname = input.profileUname;
-
-        if (!currUname) {
-          throw new TRPCError({
-            code: 'UNAUTHORIZED'
-          });
-        }
-
-        if (currUname === targetUname) {
+      // console.log('Button', ctx, '\nprofil', input.profileUname);
+      try {
+        if (!ctx.session) {
           return {
+            code: -1,
+            message: 'Login'
+          };
+        } else {
+          const currUname = ctx.session.user.uname;
+          const targetUname = input.profileUname;
+          
+          if (!currUname) {
+            throw new TRPCError({
+              code: 'UNAUTHORIZED'
+            });
+          }
+          
+          if (currUname === targetUname) {
+            return {
             code: -2,
             message: 'LITERALLY ME'
           }
@@ -39,11 +39,11 @@ export const buttonRouter = createTRPCRouter({
         
         // check if friend
         const currUserFriendList = await FriendListModel.findOne({uname: currUname});
-
+        
         if (!currUserFriendList) {
           // friendlist doesn't exist. i.e. no friend yet;
           // but there can be pending friend req
-
+          
           return await checkFriendReqLists(currUname, targetUname);
         } else {
           // check the friendLit 
@@ -58,9 +58,14 @@ export const buttonRouter = createTRPCRouter({
             return await checkFriendReqLists(currUname, targetUname);
           }
         }
-        }
-    }),
-});
+      }
+    } catch(err) {
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR'
+      })
+    }
+  }),
+  });
 
 
 const checkFriendReqLists = async (currUname: string, targetUname: string) => {

@@ -17,7 +17,6 @@ export const friendsRouter = createTRPCRouter({
     .input(z.object({uname: z.string()}))
     .query(async ({ input }) => {
       try {
-
         dbConnect();
         const friendReqs = await FriendReqModel.findOne({ uname: input.uname });
 
