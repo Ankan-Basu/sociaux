@@ -1,4 +1,5 @@
 import { AnyArray, HydratedDocument } from 'mongoose';
+import { useRouter } from 'next/router';
 import React, { FC, useEffect, useLayoutEffect, useRef } from 'react'
 import { IUser } from '~/server/db/models/User';
 import { api } from '~/utils/api';
@@ -116,7 +117,7 @@ const ResultDropdown: FC<IResultDropdownProps> = ({display, setDisplay, searchBo
       {results && 
       results.map((result) => {
         return (
-          <Result key={result.uname} result={result}/>
+          <Result key={result.uname} result={result} setDisplay={setDisplay} />
         );
       })
       }
@@ -126,14 +127,20 @@ const ResultDropdown: FC<IResultDropdownProps> = ({display, setDisplay, searchBo
 
 
 interface IResultProps {
-  result: HydratedDocument<IUser>
+  result: HydratedDocument<IUser>;
+  setDisplay: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const Result: FC<IResultProps> = ({result}) => {
+const Result: FC<IResultProps> = ({result, setDisplay}) => {
+  const router = useRouter();
   const imgQuery = api.users.getProfileImage.useQuery({uname: result.uname});
 
   return (
     <div 
+    onClick={() => {
+      router.push(`/user/${result.uname}`);
+      setDisplay(false);
+    }}
     className='
     cursor-pointer
     rounded-lg

@@ -10,15 +10,9 @@ const PersonalOptions: FC = () => {
     const [showModal, setShowModal] = useState<boolean>(false);
 
     const {data, status} = useSession();
-    console.log(data, status);
 
+    const router = useRouter();
     
-
-    // if (status === 'unauthenticated') {
-    //     return (
-    //         <div>PeePeePooPooo</div>
-    //     );
-    // }
   return (
     <div 
     className='hidden sticky z-20 lg:z-0 
@@ -78,7 +72,15 @@ const PersonalOptions: FC = () => {
             customCss=''
             setShowModal={()=>{}} /> */}
         </div>
-        <div className='p-2 flex gap-1 items-center rounded-lg cursor-pointer hover:bg-primary'>
+        <div 
+        onClick={() => {
+            if (data) {
+                router.push(`/user/${data.user.uname}`)
+            }
+        }}
+        className='p-2 flex gap-1 items-center 
+        rounded-lg cursor-pointer hover:bg-primary'
+        >
             <FiUser /><h4>My Profile</h4>
         </div>
         <Link href='/dashboard'>

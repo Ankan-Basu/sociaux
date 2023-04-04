@@ -9,6 +9,7 @@ import {
 } from "react-icons/fi";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 interface IPersonalOptionsMobileProps {
   toShow: boolean;
@@ -23,6 +24,7 @@ const PersonalOptionsMobile: FC<IPersonalOptionsMobileProps> = ({
 }) => {
   // console.log(toShow);
 
+  const router = useRouter();
   const session = useSession();
 
   return (
@@ -77,7 +79,14 @@ const PersonalOptionsMobile: FC<IPersonalOptionsMobileProps> = ({
           <FiEdit />
           <h4>Add Post</h4>
         </div>
-        <div className="flex cursor-pointer items-center gap-1 rounded-lg p-2 hover:bg-primary">
+        <div 
+        onClick={() => {
+          if (session.data) {
+              router.push(`/user/${session.data.user.uname}`);
+              toggleToShow(false);
+          }
+        }}
+        className="flex cursor-pointer items-center gap-1 rounded-lg p-2 hover:bg-primary">
           <FiUser />
           <h4>My Profile</h4>
         </div>
