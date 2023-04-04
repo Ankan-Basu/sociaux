@@ -1,7 +1,8 @@
-import { HydratedDocument } from 'mongoose';
+import { AnyArray, HydratedDocument } from 'mongoose';
 import React, { FC, useEffect, useLayoutEffect, useRef } from 'react'
 import { IUser } from '~/server/db/models/User';
 import { api } from '~/utils/api';
+import Loading from '../loading/loading';
 
 interface IResultDropdownProps {
   display: boolean;
@@ -9,9 +10,10 @@ interface IResultDropdownProps {
   searchBoxRef: React.MutableRefObject<null>;
   additionCss?: string;
   results: Array<HydratedDocument<IUser>>
+  searchQuery: any
 }
 
-const ResultDropdown: FC<IResultDropdownProps> = ({display, setDisplay, searchBoxRef, additionCss='', results=[]}) => {
+const ResultDropdown: FC<IResultDropdownProps> = ({display, setDisplay, searchBoxRef, additionCss='', results=[], searchQuery}) => {
   const refOne = useRef<HTMLDivElement>(null);
 
 
@@ -33,6 +35,14 @@ const ResultDropdown: FC<IResultDropdownProps> = ({display, setDisplay, searchBo
       return;
     }
 
+    if (refOne === null || refOne.current === null) {
+      return;
+    }
+
+    if (searchBoxRef === null || searchBoxRef.current === null) {
+      return;
+    }
+
     //@ts-ignore
     if (!refOne.current.contains(e.target) && !searchBoxRef.current.contains(e.target)) {
       console.log('CLICK OUTSIDE search');
@@ -42,6 +52,51 @@ const ResultDropdown: FC<IResultDropdownProps> = ({display, setDisplay, searchBo
       setDisplay && setDisplay(true);
     }
   }
+
+  if (searchQuery.isFetching && results.length === 0) {
+    return (
+      <div
+    ref={refOne}
+    className={`
+    ${additionCss + ' '}
+    absolute
+    p-1 h-56
+    overflow-auto
+    rounded-lg rounded-t-none
+    shadow-lg
+    bg-white
+    ${display?'flex':'hidden'}
+    justify-center 
+    `}
+    >
+      <Loading width={40} height={40} />
+      </div>
+    );
+  }
+
+
+  if (searchQuery.isFetched && results.length === 0) {
+    return (
+      <div
+    ref={refOne}
+    className={`
+    ${additionCss + ' '}
+    absolute
+    p-1 h-56
+    overflow-auto
+    rounded-lg rounded-t-none
+    shadow-lg
+    bg-white
+    ${display?'flex':'hidden'}
+    justify-center 
+    `}
+    >
+      No results
+      </div>
+    );
+  }
+
+  
 
   return (
     <div

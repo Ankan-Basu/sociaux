@@ -55,7 +55,9 @@ const SearchBox = () => {
           </button>
         </form>
         <ResultDropdown display={displayResults} setDisplay={setDisplayResults} results={searchQuery.data || []}
-        searchBoxRef={searchBoxRef} additionCss="w-11/12 left-2 mt-1" />
+        searchBoxRef={searchBoxRef}
+        searchQuery={searchQuery}
+        additionCss="w-11/12 left-2 mt-1" />
       </div>
     )
   }
