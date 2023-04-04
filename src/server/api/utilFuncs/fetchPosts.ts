@@ -4,7 +4,7 @@ import FriendListModel from "~/server/db/models/Friend";
 import PostModel, { IPost } from "~/server/db/models/Post";
 
 const fetchPosts = async (ctx: { session: Session | null }) => {
-  const posts: Array<HydratedDocument<IPost>> = await PostModel.find({});
+  const posts: Array<HydratedDocument<IPost>> = await PostModel.find({}).sort({time: 'desc'});
 
   if (!ctx.session) {
     // not logged in

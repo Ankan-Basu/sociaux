@@ -1,6 +1,6 @@
 import mongoose, {Schema, models, model} from "mongoose";
 
-interface IFriendReqItem {
+export interface IFriendReqItem {
     source: string;
     time?: Date;
 }

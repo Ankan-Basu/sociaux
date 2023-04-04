@@ -29,7 +29,8 @@ const replyCommentSchema: Schema = new Schema<IReplyComment>({
     time: {
         type: Date,
         required: true,
-        default: Date.now()
+        default: Date.now(),
+        index: true
     }
 });
 

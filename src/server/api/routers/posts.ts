@@ -51,9 +51,9 @@ export const postsRouter = createTRPCRouter({
         let posts: Array<HydratedDocument<IPost>> = [];
 
         if (isFriend) { 
-          posts = await PostModel.find({uname: input.uname})
+          posts = await PostModel.find({uname: input.uname}).sort({time: 'desc'});
         } else {
-          posts = await PostModel.find({uname: input.uname, privacy: 0})
+          posts = await PostModel.find({uname: input.uname, privacy: 0}).sort({time: 'desc'});
         }
                 
         return posts;

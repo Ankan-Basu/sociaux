@@ -18,12 +18,18 @@ export const replyCommentsRouter = createTRPCRouter({
   getComments: publicProcedure
     .input(z.object({ parenCommId: z.string() }))
     .query(async ({ input }) => {
-      dbConnect();
-
-      const replyComments: Array<HydratedDocument<IReplyComment>> =
-        await ReplyCommentModel.find({ parenCommId: input.parenCommId });
-
-      return replyComments;
+      try {
+        dbConnect();
+        
+        const replyComments: Array<HydratedDocument<IReplyComment>> =
+        await ReplyCommentModel.find({ parenCommId: input.parenCommId }).sort({time: 'desc'});
+        
+        return replyComments;
+      } catch(err) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR'
+        })
+      }
     }),
 
   postReplyComment: publicProcedure

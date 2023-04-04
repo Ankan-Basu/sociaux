@@ -1,6 +1,7 @@
 import { HydratedDocument } from "mongoose";
 import { useSession } from "next-auth/react";
 import { useEffect, useContext, FC } from "react";
+import { IFriendReqItem } from "~/server/db/models/FriendReq";
 import { INotifItem } from "~/server/db/models/Notification";
 import { api } from "~/utils/api";
 import FrenReq from "./friendReq";
@@ -71,12 +72,15 @@ const Notif: FC<INotifProps> = ({ display, type }) => {
 
       {type === "Notifications"
         ? notifList &&
-          notifList.map((notif: HydratedDocument<INotifItem>, indx: number) => {
+          notifList.map((notifItem: HydratedDocument<INotifItem>, indx: number, arr: Array<HydratedDocument<INotifItem>>) => {
             // console.log(notif);
-            return notif && <NotifItem key={indx} notif={notif} />;
+            // map in reverse order
+            return arr[arr.length - 1 -indx]? <NotifItem key={indx} notif={arr[arr.length - 1 -indx]!} />:<></>;
           })
-        : friendReqList?.map((friendReq: any, indx: number) => {
-            return friendReq && <FrenReq key={indx} friendReq={friendReq} />;
+        : friendReqList?.map((friendReq: HydratedDocument<IFriendReqItem>, indx: number, arr: Array<HydratedDocument<IFriendReqItem>>) => {
+
+
+            return arr[arr.length -1 - indx]?<FrenReq key={indx} friendReq={arr[arr.length -1 - indx]} />:<></>;
           })}
     </div>
   );

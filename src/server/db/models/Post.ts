@@ -22,7 +22,8 @@ const postSchema: Schema = new Schema<IPost> ({
     time: {
         type: Date,
         required: true,
-        default: Date.now()
+        default: Date.now(),
+        index: true
     },
     privacy: {
         type: Number,

@@ -19,7 +19,7 @@ export const commentsRouter = createTRPCRouter({
       dbConnect();
 
       const comments: Array<HydratedDocument<IComment>> =
-        await CommentModel.find({ postId: input.postId });
+        await CommentModel.find({ postId: input.postId }).sort({time: 'desc'});
 
       return comments;
     }),

@@ -27,7 +27,8 @@ const commentSchema: Schema = new Schema<IComment> ({
     time: {
         type: Date,
         required: true,
-        default: Date.now()
+        default: Date.now(),
+        index: true
     },
     likes: {
         type: [String],
