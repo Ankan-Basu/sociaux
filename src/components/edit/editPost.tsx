@@ -1,3 +1,5 @@
+import { TRPCClientError } from "@trpc/client";
+import { useSession } from "next-auth/react";
 import React, { FC, useContext, useEffect, useState } from "react";
 import {
   FiCornerUpRight,
@@ -7,6 +9,7 @@ import {
   FiVideo,
   FiX,
 } from "react-icons/fi";
+import { ErrorContext } from "~/contexts/errorContext";
 import { PostEditContext } from "~/contexts/postEditContext";
 import { api } from "~/utils/api";
 import Dropdown from "../dropdown/dropdown";
@@ -19,7 +22,9 @@ const EditPost: FC = ({}) => {
   const editPostMutation = api.posts.modifyPost.useMutation();
 
   const { showEditModal, setShowEditModal, currEditPost, setCurrEditPost, reload, setReload } =
-    useContext(PostEditContext)
+    useContext(PostEditContext);
+
+  const {setErrorDisplay, setErrorMessage, setErrorType} = useContext(ErrorContext);
 
   const [postMessage, setPostMessage] = useState(currEditPost?.message);
 
@@ -27,11 +32,11 @@ const EditPost: FC = ({}) => {
 
   const [privacy, setPrivacy] = useState<number>(currEditPost?.privacy || 0)
 
+  const session = useSession();
+
+
   useEffect(() => {
-    console.log("Edit post mounts");
-  }, []);
-  useEffect(() => {
-    console.log("use Effect", currEditPost);
+    // console.log("use Effect", currEditPost);
 
     setPostMessage(currEditPost?.message);
     setPrivacy(currEditPost?.privacy)
@@ -50,25 +55,49 @@ const EditPost: FC = ({}) => {
   };
 
   const handlePost = async () => {
+    if (session.status === 'unauthenticated') {
+      setErrorDisplay(true);
+      setErrorMessage('You need to login to edit');
+      setErrorType('simple');
+    }
+
     if (!currEditPost && !currEditPost._id) {
-      console.log("error");
+      // console.log("error");
+      setErrorDisplay(true);
+      setErrorMessage('BAD_REQUEST');
+      setErrorType('simple');
       return;
     }
 
     try {
 
-        // or better get uname from useSession
+        const uname = session.data?.user.uname;
+
+        if (!uname) {
+          setErrorDisplay(true);
+          setErrorMessage('You need to login to edit');
+          setErrorType('simple');
+          return;
+        }
+
         const x = await editPostMutation.mutateAsync({
             message: postMessage,
             postId: currEditPost._id,
-            uname: currEditPost.uname,
+            uname: uname,
             privacy: privacy,
         });
 
         setReload({ ...reload});
         handleClose();
     } catch (err) {
-        console.log(err);
+        // console.log(err);
+        setErrorDisplay(true);
+      let msg = 'An unknown error occured';
+      if (err instanceof TRPCClientError) {
+        msg = err.data.code;
+      }
+      setErrorMessage(msg);
+      setErrorType('simple');
         
     }
   };

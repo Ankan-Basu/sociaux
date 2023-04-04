@@ -30,6 +30,10 @@ const Dropdown: FC<IDropdownProps> = ({additionCSS='', display, setDisplay, opti
 
 
   const handleClickOutside = (e: MouseEvent) => {
+    if (dropDownRef.current === null) {
+    return;
+  }
+  //@ts-ignore
     if (!dropDownRef?.current.contains(e.target)) {
       console.log('CLICK OUTSIDE menu');
       setDisplay && setDisplay(false);

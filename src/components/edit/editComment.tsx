@@ -1,13 +1,13 @@
-import React, { FC, useContext, useEffect, useState } from "react";
+import { TRPCClientError } from "@trpc/client";
+import { useSession } from "next-auth/react";
+import { FC, useContext, useEffect, useState } from "react";
 import {
   FiCornerUpRight,
-  FiImage,
-  FiPenTool,
   FiTrash,
-  FiVideo,
   FiX,
 } from "react-icons/fi";
 import { EditCommentContext } from "~/contexts/editCommentContext";
+import { ErrorContext } from "~/contexts/errorContext";
 import { api } from "~/utils/api";
 import { Button } from "../modal/Modal";
 
@@ -36,10 +36,10 @@ const EditComment: FC = () => {
     currEditComment?.message
   );
 
+  const {setErrorDisplay, setErrorMessage, setErrorType} = useContext(ErrorContext);
+  const session = useSession();
   
   useEffect(() => {
-    // console.log("use Effect", currEditPost);
-
     setCommentMessage(currEditComment?.message);
 
     // return () => {
@@ -49,7 +49,7 @@ const EditComment: FC = () => {
   }, [currEditComment]);
 
   const handleClose = () => {
-    console.log("Close");
+    // console.log("Close");
     // setPostMessage("");
     // setCurrEditPost(null);
     setShowCommentEditModal(false);
@@ -58,19 +58,40 @@ const EditComment: FC = () => {
   };
 
   const handlePost = async () => {
+    if (session.status === 'unauthenticated') {
+      setErrorDisplay(true);
+      setErrorMessage('You need to login to edit');
+      setErrorType('simple');
+    }
+
     if (!currEditComment && !currEditComment._id) {
-      console.log("error");
+      // console.log("error");
+      setErrorDisplay(true);
+      setErrorMessage('BAD_REQUEST');
+      setErrorType('simple');
       return;
     }
+
+
+    const uname = session.data?.user.uname;
+
+        if (!uname) {
+          setErrorDisplay(true);
+          setErrorMessage('You need to login to edit');
+          setErrorType('simple');
+          return;
+        }
+
+
 
     try {
       if (isReplyComment) {
         const x = await editReplyCommentMutation.mutateAsync({
           message: commentMessage,
-          uname: currEditComment.uname,
+          uname: uname,
           replyCommId: currEditComment._id,
         });
-        console.log(x);
+        // console.log(x);
         setRefreshReplies((currState: Object) => {
           return { ...currState };
         });
@@ -79,7 +100,7 @@ const EditComment: FC = () => {
 
         const x = await editCommentMutation.mutateAsync({
           commentId: currEditComment._id,
-          uname: currEditComment.uname,
+          uname: uname,
           message: commentMessage,
         });
         // console.log(x);
@@ -87,10 +108,16 @@ const EditComment: FC = () => {
         setRefreshComments({ ...refreshComments });
       }
 
-      // or better get uname from useSession
       handleClose();
     } catch (err) {
-      console.log(err);
+      // console.log(err);
+      setErrorDisplay(true);
+      let msg = 'An unknown error occured';
+      if (err instanceof TRPCClientError) {
+        msg = err.data.code;
+      }
+      setErrorMessage(msg);
+      setErrorType('simple');
     }
   };
 
