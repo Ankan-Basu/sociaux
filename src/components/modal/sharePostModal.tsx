@@ -1,7 +1,9 @@
+import { TRPCClientError } from "@trpc/client";
 import { useSession } from "next-auth/react";
-import { FC, useEffect, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 
 import { FiTrash, FiCornerUpRight, FiX } from "react-icons/fi";
+import { ErrorContext } from "~/contexts/errorContext";
 import { api } from "~/utils/api";
 
 interface PostBody {
@@ -32,6 +34,8 @@ const SharePostModal: FC<IShareModalProps> = ({
 
   const sharePostMutation = api.posts.sharePost.useMutation();
 
+  const {setErrorDisplay, setErrorMessage, setErrorType} = useContext(ErrorContext);
+
   const handleClose = () => {
     setPostMessage('')
     setShowModal(false);
@@ -44,12 +48,18 @@ const SharePostModal: FC<IShareModalProps> = ({
     console.log(postMessage);
 
     if (!postId) {
-      console.log("BAD REQUEST");
+      // console.log("BAD REQUEST");
+      setErrorDisplay(true);
+      setErrorMessage('BAD_REQUEST');
+      setErrorType('simple');
       return;
     }
 
     if (!uname) {
-      console.log("error");
+      // console.log("error");
+      setErrorDisplay(true);
+      setErrorMessage('You need to login to perform this action');
+      setErrorType('simple');
       return;
     }
 
@@ -70,7 +80,15 @@ const SharePostModal: FC<IShareModalProps> = ({
       });
       handleClose();
     } catch (err) {
-      console.log(err);
+      // console.log(err);
+      setErrorDisplay(true);
+      let msg = 'An unknown error occured'
+      if (err instanceof TRPCClientError) {
+        msg = err.data.code;
+      }
+      setErrorMessage(msg);
+      setErrorType('simple');
+
     }
   };
 

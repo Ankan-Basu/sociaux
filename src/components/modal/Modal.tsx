@@ -1,7 +1,8 @@
+import { TRPCClientError } from "@trpc/client";
 import { useSession } from "next-auth/react";
 import { RESPONSE_LIMIT_DEFAULT } from "next/dist/server/api-utils";
-import React, { FC, useEffect, useState } from "react";
-// import { FaShare, FaLock, FaGlobe, FaEllipsisV, FaEllipsisH, FaTrash, FaRegTimesCircle, FaImage, FaVideo } from 'react-icons/fa';
+import React, { FC, useContext, useEffect, useState } from "react";
+
 import {
   FiTrash,
   FiArrowRight,
@@ -10,6 +11,7 @@ import {
   FiImage,
   FiVideo,
 } from "react-icons/fi";
+import { ErrorContext } from "~/contexts/errorContext";
 import { api } from "~/utils/api";
 import Dropdown from "../dropdown/dropdown";
 
@@ -39,6 +41,7 @@ const Modal: FC<IModalProps> = ({
   const [displayDropdown, setDisplayDropdown] = useState<boolean>(false);
 
   // console.log(mode);
+  const {setErrorDisplay, setErrorMessage, setErrorType} = useContext(ErrorContext);
 
   const session = useSession();
 
@@ -89,7 +92,10 @@ const Modal: FC<IModalProps> = ({
     console.log(postMessage);
 
     if (!uname) {
-      console.log("error");
+      // console.log("error");
+      setErrorDisplay(true);
+      setErrorMessage('You need to login to perform this action');
+      setErrorType('simple');
       return;
     }
 
@@ -103,7 +109,14 @@ const Modal: FC<IModalProps> = ({
       console.log(x);
       setPostMessage("");
     } catch (err) {
-      console.log(err);
+      // console.log(err);
+      setErrorDisplay(true);
+      let msg = 'An unknown error occured';
+      if (err instanceof TRPCClientError) {
+        msg = err.data.code;
+      }
+      setErrorMessage(msg);
+      setErrorType('simple');
     }
   };
 
