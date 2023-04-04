@@ -105,7 +105,6 @@ export const likesRouter = createTRPCRouter({
     .input(z.object({ uname: z.string(), commentId: z.string() }))
     .mutation(async ({ input }) => {
       try {
-
         dbConnect();
         try {
           const comment: HydratedDocument<IComment> | null =

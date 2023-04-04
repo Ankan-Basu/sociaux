@@ -8,24 +8,25 @@ const ErrorContextProvider: FC<ContextProviderProps> = ({
   children,
   additionVals = undefined,
 }) => {
-  const [display, setDisplay] = useState<boolean>(false);
-  const [message, setMessage] = useState<string>('');
-  const [type, setType] = useState<'simple' | 'redirect' | 'logout'>();
+  const [errorDisplay, setErrorDisplay] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>('');
+  const [errorType, setErrorType] = useState<'simple' | 'redirect' | 'logout'>();
 
   return (
     <ErrorContext.Provider
       value={{
-        display, setDisplay,
-        message, setMessage,
+        errorDisplay, setErrorDisplay,
+        errorMessage, setErrorMessage,
+        errorType, setErrorType,
         ...additionVals,
       }}
     >
       {children}
       <ErrorPopup 
-      display={display} 
-      setDisplay={setDisplay} 
-      message={message} 
-      type={type} 
+      display={errorDisplay} 
+      setDisplay={setErrorDisplay} 
+      message={errorMessage} 
+      type={errorType} 
       />
     </ErrorContext.Provider>
   );

@@ -38,7 +38,7 @@ const ErrorPopup: FC<IErrorPopupProps> = ({display, setDisplay, message, type}) 
         border-2 border-solid border-red-500
         '>
           {message}
-          ffhghgh
+          
         </div>
         <div className='
         

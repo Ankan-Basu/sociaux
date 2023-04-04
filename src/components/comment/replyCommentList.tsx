@@ -1,7 +1,9 @@
 import { HydrateOptions } from "@tanstack/react-query";
+import { TRPCClientError } from "@trpc/client";
 import { HydratedDocument } from "mongoose";
 import React, { FC, useContext, useEffect, useState } from "react";
 import { isNullOrUndefined } from "util";
+import { ErrorContext } from "~/contexts/errorContext";
 import { ReplyingContext } from "~/contexts/replyingContext";
 import { IReplyComment } from "~/server/db/models/ReplyComment";
 import { api } from "~/utils/api";
@@ -22,11 +24,13 @@ const ReplyCommentList: FC<IReplyCommentListProps> = ({
   const [replies, setReplies] = useState<Array<HydratedDocument<IReplyComment>>>([]);
   const { refreshReplies } = useContext(ReplyingContext);
 
+  const {setErrorDisplay, setErrorMessage, setErrorType} = useContext(ErrorContext);
+
   let { data, refetch, isLoading, isFetching } = api.replyComments.getComments.useQuery({
     parenCommId,
   });
 
-  // console.log('Co', isLoading)
+  
   
 
   useEffect(() => {
@@ -48,11 +52,22 @@ const ReplyCommentList: FC<IReplyCommentListProps> = ({
 
   const getReplyComments = async () => {
  
-    let data2 = await refetch();
-    console.log('REPLY', data2);
-    
-    if (data2) {
-      setReplies(data2.data!);
+    try {
+
+      let data2 = await refetch();
+      // console.log('REPLY', data2);
+      
+      if (data2) {
+        setReplies(data2.data!);
+      }
+    } catch(err) {
+      setErrorDisplay(true);
+      let msg = 'An unknown error occured';
+      if (err instanceof TRPCClientError) {
+        msg = err.data.code;
+      }
+      setErrorMessage(msg);
+      setErrorType('simple');
     }
   };
 

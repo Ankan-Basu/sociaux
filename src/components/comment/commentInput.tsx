@@ -1,7 +1,9 @@
+import { TRPCClientError } from "@trpc/client";
 import { useSession } from "next-auth/react";
 import { FC, FormEvent, useContext, useState } from "react";
 import { FiSend, FiX } from "react-icons/fi";
 import { CommentContext } from "~/contexts/commentContext";
+import { ErrorContext } from "~/contexts/errorContext";
 import { ReplyingContext } from "~/contexts/replyingContext";
 import { api } from "~/utils/api";
 
@@ -31,6 +33,8 @@ const CommentInput: FC<ICommentInputProps> = ({ postId, customCssClass }) => {
 
   const {data, isLoading, isError, refetch} = api.comments.getComments.useQuery({postId: postId});
 
+  const {setErrorDisplay, setErrorMessage, setErrorType} = useContext(ErrorContext);
+
   const session = useSession();
 
   // post comment
@@ -38,11 +42,19 @@ const CommentInput: FC<ICommentInputProps> = ({ postId, customCssClass }) => {
     e.preventDefault();
 
     if (session.status !== 'authenticated') {
-      console.log('UNAUTHORISED');
+      // console.log('UNAUTHORISED');
+      setErrorDisplay(true);
+      setErrorMessage('You need to Login to comment');
+      setErrorType('simple');
+      setInp('');
+
       return;
     }
 
     if (!postId) {
+      setErrorDisplay(true);
+      setErrorMessage('BAD_REQUEST\nNo post found');
+      setErrorType('simple');
       return;
     }
 
@@ -54,7 +66,10 @@ const CommentInput: FC<ICommentInputProps> = ({ postId, customCssClass }) => {
     const message = inp;
 
     if (!uname) {
-      console.log('UNauthorised');
+      // console.log('UNauthorised');
+      setErrorDisplay(true);
+      setErrorMessage('UNAUTHORISED');
+      setErrorType('logout');
       return;
     }
     
@@ -79,7 +94,11 @@ const CommentInput: FC<ICommentInputProps> = ({ postId, customCssClass }) => {
     e.preventDefault();
 
     if (session.status !== 'authenticated') {
-      console.log('UNAUThorised');
+      // console.log('UNAUThorised');
+      setErrorDisplay(true);
+      setErrorMessage('You need to Login to comment');
+      setErrorType('simple');
+      setInp('');
       return;
     }
     if (!inp) {
@@ -90,13 +109,28 @@ const CommentInput: FC<ICommentInputProps> = ({ postId, customCssClass }) => {
     const message = inp;
 
     if (!uname) {
-      console.log('Unauthorised');
+      // console.log('Unauthorised');
+      setErrorDisplay(true);
+      setErrorMessage('UNAUTHORISED');
+      setErrorType('logout');
       return;
     }
 
     setInp('');
-    
-    let x = await replyCommentMutation.mutateAsync({message, parenCommId: replyingTo._id, uname});
+
+    try {
+
+      
+      let x = await replyCommentMutation.mutateAsync({message, parenCommId: replyingTo._id, uname});
+    } catch(err) {
+      setErrorDisplay(true);
+      let msg = 'An unknown error occured'
+      if (err instanceof TRPCClientError) {
+        msg = err.data.code;
+      }
+      setErrorMessage(msg);
+      setErrorType('simple');
+    }
     
     // setReplyingTo(null);
     setRefreshReplies({ ...refreshReplies });

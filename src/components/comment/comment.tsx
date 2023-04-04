@@ -12,6 +12,8 @@ import Dropdown from '../dropdown/dropdown';
 import ReplyCommentList from './replyCommentList';
 import dayjs from "dayjs";
 import relativeTime from 'dayjs/plugin/relativeTime';
+import { ErrorContext } from '~/contexts/errorContext';
+import { TRPCClientError } from '@trpc/client';
 
 dayjs.extend(relativeTime);
 
@@ -52,6 +54,8 @@ const Comment: FC<ICommentProps> = (
 
     const {setShowExpanded} = useContext(PostFeedContext);
 
+    const {setErrorDisplay, setErrorMessage, setErrorType} = useContext(ErrorContext);
+
     const session = useSession();
 
     const reactorUname = session.data?.user.uname;
@@ -73,6 +77,9 @@ const Comment: FC<ICommentProps> = (
     // TODO: refresh comment
     const handleLike = async () => {
         if (!reactorUname) {
+            setErrorDisplay(true);
+            setErrorMessage('You need to login in to like');
+            setErrorType('simple');
             return;
         }
         
@@ -81,12 +88,22 @@ const Comment: FC<ICommentProps> = (
             setLiked(true);
             likes.push(reactorUname);
         } catch(err) {
-            console.log(err);
+            // console.log(err);
+            setErrorDisplay(true);
+            if (err instanceof TRPCClientError) {
+                setErrorMessage(err.data.code);
+            } else {
+                setErrorMessage('Unknown error occured')
+            }
+            setErrorType('simple')
         }
     }
 
     const handleUnLike = async () => {
         if (!reactorUname) {
+            setErrorDisplay(true);
+            setErrorMessage('You need to login in to unlike');
+            setErrorType('simple');
             return;
         }
 
@@ -101,7 +118,14 @@ const Comment: FC<ICommentProps> = (
                 }
             
         } catch(err) {
-            console.log(err);
+            // console.log(err);
+            setErrorDisplay(true);
+            if (err instanceof TRPCClientError) {
+                setErrorMessage(err.data.code);
+            } else {
+                setErrorMessage('Unknown error occured')
+            }
+            setErrorType('simple')
         }
 
     }
@@ -157,7 +181,14 @@ const Comment: FC<ICommentProps> = (
             await deleteCommentMutation.mutateAsync({uname: reactorUname, commentId: _id});
             setRefreshComments({...refreshComments});
         } catch(err) {
-            console.log(err);
+            // console.log(err);
+            setErrorDisplay(true);
+            if (err instanceof TRPCClientError) {
+                setErrorMessage(err.data.code);
+            } else {
+                setErrorMessage('Unknown error occured')
+            }
+            setErrorType('simple')
             
         }
     }

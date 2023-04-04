@@ -11,6 +11,8 @@ import Comment from "./comment";
 
 import dayjs from "dayjs";
 import relativeTime from 'dayjs/plugin/relativeTime';
+import { ErrorContext } from "~/contexts/errorContext";
+import { TRPCClientError } from "@trpc/client";
 
 dayjs.extend(relativeTime);
 
@@ -35,6 +37,8 @@ const ReplyComment: FC<IReplyCommentProps> = ({_id, parenCommId, uname, message,
       setRefreshReplies} = useContext(EditCommentContext);
 
       const {setShowExpanded} = useContext(PostFeedContext);
+
+      const {setErrorDisplay, setErrorMessage, setErrorType} = useContext(ErrorContext);
 
       const deleteReplyMutation = api.replyComments.deleteReplyComment.useMutation();
       const likeReplyMutation = api.likes.likeReplyComment.useMutation();
@@ -79,8 +83,8 @@ const ReplyComment: FC<IReplyCommentProps> = ({_id, parenCommId, uname, message,
             await deleteReplyMutation.mutateAsync({uname: reactorUname, parenCommId, replyCommId: _id});
             setRefreshReplies({...refreshReplies});
         } catch(err) {
-            console.log(err);
-            
+            // console.log(err);
+            showServerError(err);
         }
     }
 
@@ -90,7 +94,8 @@ const ReplyComment: FC<IReplyCommentProps> = ({_id, parenCommId, uname, message,
             const x = await unlikeReplyMutation.mutateAsync({replyCommentId: _id, uname: reactorUname});
             setLiked(false);
         } catch(err) {
-            console.log(err);
+            // console.log(err);
+            showServerError(err);
         }
     }
 
@@ -99,19 +104,26 @@ const ReplyComment: FC<IReplyCommentProps> = ({_id, parenCommId, uname, message,
             const x = await likeReplyMutation.mutateAsync({replyCommentId: _id, uname: reactorUname});
             setLiked(true);
         } catch(err) {
-            console.log(err);
+            // console.log(err);
+            showServerError(err);
         }
     }
   
     const toggleLike = () => {
         if (session.status !== 'authenticated') {
-            console.log('unAuthorised');
+            // console.log('unAuthorised');
+            setErrorDisplay(true);
+            setErrorMessage('You need to login to like');
+            setErrorType('simple');
             return;
         }
 
         // const reactorName = session.data.user.uname;
         if (!reactorUname) {
-            console.log('unAuthoRised');
+            // console.log('unAuthoRised');
+            setErrorDisplay(true);
+            setErrorMessage('UNAUTHORISED');
+            setErrorType('logout');
             return;
         }
 
@@ -126,6 +138,18 @@ const ReplyComment: FC<IReplyCommentProps> = ({_id, parenCommId, uname, message,
     const handleNavigate = () => {
         setShowExpanded(false);
         router.push(`/user/${uname}`)
+    }
+
+    const showServerError = (err: any) => {
+        setErrorDisplay(true);
+        let msg = 'An unknown error occured'
+        if (err instanceof TRPCClientError) {
+            msg = err.data.code;
+            // console.log(msg);
+            
+        }
+        setErrorMessage(msg);
+        setErrorType('simple');
     }
 
     return (
