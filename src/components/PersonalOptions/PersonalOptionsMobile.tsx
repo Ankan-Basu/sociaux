@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { type FC, useContext } from "react";
 import {
   FiEdit,
   FiSettings,
@@ -10,11 +10,12 @@ import {
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { ErrorContext, type ErrorContextType } from "~/contexts/errorContext";
 
 interface IPersonalOptionsMobileProps {
   toShow: boolean;
-  toggleToShow: Function;
-  setShowModal: Function;
+  toggleToShow: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const PersonalOptionsMobile: FC<IPersonalOptionsMobileProps> = ({
@@ -24,6 +25,7 @@ const PersonalOptionsMobile: FC<IPersonalOptionsMobileProps> = ({
 }) => {
   // console.log(toShow);
 
+  const {setErrorDisplay, setErrorMessage, setErrorType} = useContext(ErrorContext) as ErrorContextType;
   const router = useRouter();
   const session = useSession();
 
@@ -82,7 +84,14 @@ const PersonalOptionsMobile: FC<IPersonalOptionsMobileProps> = ({
         <div 
         onClick={() => {
           if (session.data) {
-              router.push(`/user/${session.data.user.uname}`);
+            if (!session.data.user.uname) {
+              setErrorDisplay(true);
+              setErrorMessage('You need to login to perform this action');
+              setErrorType('simple');
+              return;
+          }
+              router.push(`/user/${session.data.user.uname}`)
+              .then(()=>{}).catch(()=>{});
               toggleToShow(false);
           }
         }}
@@ -100,7 +109,8 @@ const PersonalOptionsMobile: FC<IPersonalOptionsMobileProps> = ({
           onClick={() => {
             signOut({
               callbackUrl: "/login",
-            });
+            })
+            .then(()=>{}).catch(()=>{});
           }}
           className="flex cursor-pointer items-center gap-1 rounded-lg p-2 hover:bg-primary"
         >

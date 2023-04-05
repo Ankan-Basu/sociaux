@@ -1,8 +1,9 @@
 import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React, { FC, useState } from 'react'
+import { type FC, useState, useContext } from 'react'
 import { FiEdit, FiSettings, FiLogOut, FiUser, FiX, FiLogIn } from "react-icons/fi";
+import { ErrorContext, type ErrorContextType } from '~/contexts/errorContext';
 import Modal from '../modal/Modal';
 
 const PersonalOptions: FC = () => {
@@ -11,6 +12,7 @@ const PersonalOptions: FC = () => {
 
     const {data, status} = useSession();
 
+    const {setErrorDisplay, setErrorMessage, setErrorType} = useContext(ErrorContext) as ErrorContextType;
     const router = useRouter();
     
   return (
@@ -75,7 +77,14 @@ const PersonalOptions: FC = () => {
         <div 
         onClick={() => {
             if (data) {
+            if (!data.user.uname) {
+                setErrorDisplay(true);
+                setErrorMessage('You need to login to perform this action');
+                setErrorType('simple');
+                return;
+            }
                 router.push(`/user/${data.user.uname}`)
+                .then(()=>{}).catch(()=>{});
             }
         }}
         className='p-2 flex gap-1 items-center 
@@ -93,7 +102,7 @@ const PersonalOptions: FC = () => {
         onClick={() => {
             signOut({
                 callbackUrl: '/login'
-            })
+            }).then(()=>{}).catch(()=>{});
         }}
         className='p-2 flex gap-1 items-center rounded-lg cursor-pointer hover:bg-primary'>
             <FiLogOut />

@@ -1,17 +1,17 @@
 import Link from 'next/link'
-import { ChangeEvent, FC, useState } from 'react'
-import { FiAtSign, FiUserCheck, FiEyeOff, FiEye, FiLogIn } from "react-icons/fi";
-import InputDataType from '../util/InputDataType';
+import { type ChangeEvent, type FC, useState } from 'react'
+import { FiEyeOff, FiEye, FiLogIn } from "react-icons/fi";
+import type InputDataType from '../util/InputDataType';
 import inputValidator from '../util/inputValidator';
-import ValidatedOutput from '../util/ValidatedOutput';
+import type ValidatedOutput from '../util/ValidatedOutput';
 
-import { useSession, signIn, signOut, SignInResponse } from "next-auth/react"
+import { useSession, signIn, type SignInResponse } from "next-auth/react"
 import { useRouter } from 'next/router';
 
 const LoginComponent: FC = () => {
 
   const session = useSession();
-  // console.log(session);
+
   const router = useRouter();
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -27,7 +27,8 @@ const LoginComponent: FC = () => {
   }
 
   if (session.status === "authenticated") {
-    router.push('/feed');
+    router.push('/feed')
+    .then(()=>{}).catch(()=>{});
     return <div className='m-auto'>You are logged in. Redirecting ...</div>
   }
   
@@ -100,7 +101,11 @@ const LoginComponent: FC = () => {
       </h2>
       <form
       className='flex flex-col gap-4 mt-4 relative'
-      onSubmit={handleLoginSubmit}
+      onSubmit={(e) => {
+        handleLoginSubmit(e)
+        .then(()=>{}).catch(()=>{});
+      }
+    }
       >
         <input
         className={`

@@ -1,20 +1,15 @@
 import Link from "next/link";
-import { ChangeEvent, FC, useState } from "react";
-import {
-  FiAtSign,
-  FiUserCheck,
-  FiEyeOff,
-  FiEye,
-  FiLogIn,
-} from "react-icons/fi";
+import { type ChangeEvent, type FC, useState, useContext } from "react";
+import { FiEye, FiEyeOff, FiUserCheck } from "react-icons/fi";
 
-import InputDataType from "../util/InputDataType";
+import type InputDataType from "../util/InputDataType";
 import inputValidator from "../util/inputValidator";
-import ValidatedOutput from "../util/ValidatedOutput";
+import type ValidatedOutput from "../util/ValidatedOutput";
 
-import { useSession, signIn, signOut } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import { api } from "~/utils/api";
+import { ErrorContext, type ErrorContextType } from "~/contexts/errorContext";
 
 const SignupComponent: FC = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -34,6 +29,8 @@ const SignupComponent: FC = () => {
 
   const [duplEmail, setDuplEmail] = useState<boolean>(false);
   const [duplUname, setDuplUname] = useState<boolean>(false);
+
+  const {setErrorDisplay, setErrorMessage, setErrorType} = useContext(ErrorContext) as ErrorContextType;
 
   const router = useRouter();
 
@@ -100,20 +97,27 @@ const SignupComponent: FC = () => {
       password: obj2.password,
     });
 
-    console.log("RESP TO SEND", resp);
 
     if (resp.status === 201) {
       //do login and redirect
 
-      const status: any = await signIn("credentials", {
+      const status = await signIn("credentials", {
         redirect: false,
         email: obj2.email,
         password: obj2.password,
         // callbackUrl: "/feed",
       });
 
+      if (!status) {
+        setErrorDisplay(true);
+        setErrorMessage('An unexpected error occured');
+        setErrorType('logout');
+        return;
+      }
+
       if (status.ok) {
-        router.push("/feed");
+        router.push("/feed")
+        .then(()=>{}).catch(()=>{});
       } else {
         // ERROR
       }
@@ -145,7 +149,10 @@ const SignupComponent: FC = () => {
       </h2>
       <form
         className="relative mt-4 flex flex-col gap-4"
-        onSubmit={handleLoginSubmit}
+        onSubmit={(e) => {
+          handleLoginSubmit(e)
+          .then(()=>{}).catch(()=>{});
+        }}
       >
         <input
           className={`
@@ -343,7 +350,7 @@ text-red-500
 
 `}
           >
-            Passwords don't match
+            Passwords don&apos;t match
           </div>
         </div>
 
