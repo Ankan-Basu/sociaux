@@ -1,7 +1,7 @@
 import { HydratedDocument } from 'mongoose';
 import { useRouter } from 'next/router';
-import React, { FC, useContext, useEffect, useState } from 'react'
-import { CommentContext } from '~/contexts/commentContext';
+import { type FC, useContext, useEffect } from 'react'
+import { CommentContext, type CommentContextType } from '~/contexts/commentContext';
 import { api } from '~/utils/api';
 import Loading from '../loading/loading';
 import Comment, { ICommentProps } from './comment'
@@ -21,7 +21,7 @@ const CommentList: FC<ICommentListProps> = ({ postId, refresh, customCssClass })
     //change Object to ICommentProps later
     // const [commentList, setCommentList] = useState<Array<Object>>();
 
-    const {commentList, setCommentList} = useContext(CommentContext);
+    const {commentList, setCommentList} = useContext(CommentContext) as CommentContextType;
    
     const {data, isLoading, isFetching, isError, refetch} = api.comments.getComments.useQuery({postId: postId});
 
@@ -60,6 +60,7 @@ const CommentList: FC<ICommentListProps> = ({ postId, refresh, customCssClass })
     >
 
         {
+            commentList &&
             commentList?.length>0?
             //change this any
             commentList?.map((comment: HydratedDocument<IComment>) => {

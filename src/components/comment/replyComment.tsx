@@ -1,18 +1,17 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { FC, useContext, useEffect, useState } from "react";
-import { FaEllipsisH } from "react-icons/fa";
+import { type FC, useContext, useEffect, useState } from "react";
 import { FiMoreHorizontal } from "react-icons/fi";
-import { EditCommentContext } from "~/contexts/editCommentContext";
-import { PostFeedContext } from "~/contexts/postFeedContext";
+import { EditCommentContext, type EditCommentContextType } from "~/contexts/editCommentContext";
+import { PostFeedContext, type PostFeedContextType } from "~/contexts/postFeedContext";
 import { api } from "~/utils/api";
 import Dropdown from "../dropdown/dropdown";
-import Comment from "./comment";
 
 import dayjs from "dayjs";
 import relativeTime from 'dayjs/plugin/relativeTime';
-import { ErrorContext } from "~/contexts/errorContext";
+import { ErrorContext, type ErrorContextType } from "~/contexts/errorContext";
 import { TRPCClientError } from "@trpc/client";
+import Image from "next/image";
 
 dayjs.extend(relativeTime);
 
@@ -33,12 +32,11 @@ const ReplyComment: FC<IReplyCommentProps> = ({_id, parenCommId, uname, message,
     setShowCommentEditModal,
         setCurrEditComment,
       setIsReplyComment,
-      refreshReplies,
-      setRefreshReplies} = useContext(EditCommentContext);
+      setRefreshReplies} = useContext(EditCommentContext) as EditCommentContextType;
 
-      const {setShowExpanded} = useContext(PostFeedContext);
+      const {setShowExpanded} = useContext(PostFeedContext) as PostFeedContextType;
 
-      const {setErrorDisplay, setErrorMessage, setErrorType} = useContext(ErrorContext);
+      const {setErrorDisplay, setErrorMessage, setErrorType} = useContext(ErrorContext) as ErrorContextType;
 
       const deleteReplyMutation = api.replyComments.deleteReplyComment.useMutation();
       const likeReplyMutation = api.likes.likeReplyComment.useMutation();
@@ -81,7 +79,15 @@ const ReplyComment: FC<IReplyCommentProps> = ({_id, parenCommId, uname, message,
         }
         try {
             await deleteReplyMutation.mutateAsync({uname: reactorUname, parenCommId, replyCommId: _id});
-            setRefreshReplies({...refreshReplies});
+            
+            if (!setRefreshReplies) {
+                setErrorDisplay(true);
+                setErrorMessage('An unexpexted error occured');
+                setErrorType('simple');
+                return;
+            }
+            
+            setRefreshReplies({ val: 1 });
         } catch(err) {
             // console.log(err);
             showServerError(err);
@@ -91,7 +97,7 @@ const ReplyComment: FC<IReplyCommentProps> = ({_id, parenCommId, uname, message,
 
     const handleUnlike = async (reactorUname: string) => {
         try {
-            const x = await unlikeReplyMutation.mutateAsync({replyCommentId: _id, uname: reactorUname});
+            await unlikeReplyMutation.mutateAsync({replyCommentId: _id, uname: reactorUname});
             setLiked(false);
         } catch(err) {
             // console.log(err);
@@ -101,7 +107,7 @@ const ReplyComment: FC<IReplyCommentProps> = ({_id, parenCommId, uname, message,
 
     const handleLike = async (reactorUname: string) => {
         try {
-            const x = await likeReplyMutation.mutateAsync({replyCommentId: _id, uname: reactorUname});
+            await likeReplyMutation.mutateAsync({replyCommentId: _id, uname: reactorUname});
             setLiked(true);
         } catch(err) {
             // console.log(err);
@@ -128,19 +134,28 @@ const ReplyComment: FC<IReplyCommentProps> = ({_id, parenCommId, uname, message,
         }
 
         if (liked) {
-            handleUnlike(reactorUname);
+            handleUnlike(reactorUname)
+            .then(()=>{}).catch(()=>{});
         } else {
-            handleLike(reactorUname);
+            handleLike(reactorUname)
+            .then(()=>{}).catch(()=>{});
         }
 
     }
 
     const handleNavigate = () => {
+        if (!setShowExpanded) {
+            setErrorDisplay(true);
+            setErrorMessage('An unexpexted error occured');
+            setErrorType('simple');
+            return;
+        }
         setShowExpanded(false);
         router.push(`/user/${uname}`)
+        .then(()=>{}).catch(()=>{});
     }
 
-    const showServerError = (err: any) => {
+    const showServerError = (err) => {
         setErrorDisplay(true);
         let msg = 'An unknown error occured'
         if (err instanceof TRPCClientError) {
@@ -158,7 +173,7 @@ const ReplyComment: FC<IReplyCommentProps> = ({_id, parenCommId, uname, message,
     lg:w-98'>
         <div className='w-16'>
         <div className='w-full'>
-            <img src={profileImgQuery.data?.img} height='60rem' width='60rem' className='rounded-full'/>
+            <Image src={profileImgQuery.data?.img} height='60' width='60' alt='photo' className='rounded-full'/>
         </div>
         </div>
         <div className='flex-1'>

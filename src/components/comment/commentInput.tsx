@@ -1,10 +1,10 @@
 import { TRPCClientError } from "@trpc/client";
 import { useSession } from "next-auth/react";
-import { FC, FormEvent, useContext, useState } from "react";
+import { type FC, type FormEvent, useContext, useState } from "react";
 import { FiSend, FiX } from "react-icons/fi";
-import { CommentContext } from "~/contexts/commentContext";
-import { ErrorContext } from "~/contexts/errorContext";
-import { ReplyingContext } from "~/contexts/replyingContext";
+import { CommentContext, type CommentContextType } from "~/contexts/commentContext";
+import { ErrorContext, type ErrorContextType } from "~/contexts/errorContext";
+import { ReplyingContext, type ReplyingContextType } from "~/contexts/replyingContext";
 import { api } from "~/utils/api";
 
 interface ICommentInputProps {
@@ -16,24 +16,23 @@ interface ICommentInputProps {
 const CommentInput: FC<ICommentInputProps> = ({ postId, customCssClass }) => {
   const [inp, setInp] = useState<string>("");
 
-  const { commentList, setCommentList } = useContext(CommentContext);
+  const { setCommentList } = useContext(CommentContext) as CommentContextType;
 
   const {
     setIsReplying,
     isReplying,
     replyingTo,
     setReplyingTo,
-    refreshReplies, setRefreshReplies
-  } = useContext(ReplyingContext);
+   setRefreshReplies
+  } = useContext(ReplyingContext) as ReplyingContextType;
 
-  console.log("Comment Input postId", postId);
 
-  let commentMutation = api.comments.postComment.useMutation();
-  let replyCommentMutation = api.replyComments.postReplyComment.useMutation();
+  const commentMutation = api.comments.postComment.useMutation();
+  const replyCommentMutation = api.replyComments.postReplyComment.useMutation();
 
-  const {data, isLoading, isError, refetch} = api.comments.getComments.useQuery({postId: postId});
+  const {refetch} = api.comments.getComments.useQuery({postId: postId});
 
-  const {setErrorDisplay, setErrorMessage, setErrorType} = useContext(ErrorContext);
+  const {setErrorDisplay, setErrorMessage, setErrorType} = useContext(ErrorContext) as ErrorContextType;
 
   const session = useSession();
 
@@ -75,10 +74,10 @@ const CommentInput: FC<ICommentInputProps> = ({ postId, customCssClass }) => {
     
     setInp('');
 
-    let data = await commentMutation.mutateAsync({message,postId,uname});
+    const data = await commentMutation.mutateAsync({message,postId,uname});
     console.log(data);
 
-    let {data: data2} = await refetch();
+    const {data: data2} = await refetch();
     setCommentList(data2);
     
   };
@@ -120,8 +119,14 @@ const CommentInput: FC<ICommentInputProps> = ({ postId, customCssClass }) => {
 
     try {
 
+      if (!replyingTo) {
+        setErrorDisplay(true);
+        setErrorMessage('BAD_REQUEST. No comment selected to reply');
+        setErrorType('simple');
+        return;
+      }
       
-      let x = await replyCommentMutation.mutateAsync({message, parenCommId: replyingTo._id, uname});
+      const x = await replyCommentMutation.mutateAsync({message, parenCommId: replyingTo._id, uname});
     } catch(err) {
       setErrorDisplay(true);
       let msg = 'An unknown error occured'
@@ -133,23 +138,29 @@ const CommentInput: FC<ICommentInputProps> = ({ postId, customCssClass }) => {
     }
     
     // setReplyingTo(null);
-    setRefreshReplies({ ...refreshReplies });
-
-
+    if (!setRefreshReplies) {
+      setErrorDisplay(true);
+      setErrorMessage('An unexpected error occured');
+      setErrorType('simple');
+      return;
+    }
+    setRefreshReplies({ val: 1 });
   };
 
   const handleClick = (e: FormEvent<HTMLFormElement>) => {
     if (isReplying) {
-      handleReply(e);
+      handleReply(e)
+      .then(()=>{}).catch(()=>{});
     } else {
-      handleSubmit(e);
+      handleSubmit(e)
+      .then(()=>{}).catch(()=>{});
     }
   };
 
   return (
     <div
       className={`
-        ${customCssClass + " "}
+        ${customCssClass || '' + " "}
         //sticky //top-0
         -left-1 -right-1 m-auto
         flex w-full flex-col
@@ -166,7 +177,7 @@ const CommentInput: FC<ICommentInputProps> = ({ postId, customCssClass }) => {
       >
         <span>
           Replying to
-          {" " + replyingTo?.uname}
+          {" " + replyingTo?.uname || 'undefined'}
           ...
         </span>
         <span
