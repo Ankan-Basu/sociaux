@@ -1,27 +1,30 @@
-import { HydratedDocument } from "mongoose";
+import { type HydratedDocument } from "mongoose";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { FC, useContext, useEffect } from "react";
-import { INotifItem } from "~/server/db/models/Notification";
+import { type FC, useContext } from "react";
+import { type INotifItem } from "~/server/db/models/Notification";
 import { api } from "~/utils/api";
-import { NotifContext } from "./navbar";
 
 import dayjs from "dayjs";
 import relativeTime from 'dayjs/plugin/relativeTime';
+import { type INotifItemHydrated, NotifContext, type NotifContextType } from "~/contexts/notifContext";
+import { ErrorContext, type ErrorContextType } from "~/contexts/errorContext";
+import Image from "next/image";
 
 dayjs.extend(relativeTime);
 
 interface INotifProps {
-  notif: HydratedDocument<INotifItem>;
+  notif: HydratedDocument<INotifItem> | INotifItemHydrated;
 }
 
 const NotifItem: FC<INotifProps> = ({ notif }) => {
   const {
     setNotifList,
     setNotifSelected,
-    setFriendReqSelected,
     setMobileNotifSelected,
-  } = useContext(NotifContext);
+  } = useContext(NotifContext) as NotifContextType;
+
+  const {setErrorDisplay, setErrorMessage, setErrorType} = useContext(ErrorContext) as ErrorContextType;
 
   const imgQuery = api.users.getProfileImage.useQuery({ uname: notif.source });
 
@@ -43,22 +46,46 @@ const NotifItem: FC<INotifProps> = ({ notif }) => {
       return;
     }
 
+    if (!notif._id) {
+      setErrorDisplay(true);
+      setErrorMessage('An unexpexted error occured');
+      setErrorType('simple');
+      return;
+    }
+
     const x = await readNotifMutation.mutateAsync({
       uname,
       notifId: notif._id.toString(),
     });
     // console.log('Notif', x);
 
+    if (!setNotifList) {
+      // won't happen
+      return;
+    }
+
     setNotifList(x.notifs);
   };
 
   const handleRedirect = () => {
-    handleReadNotif();
+    handleReadNotif()
+    .then(()=>{}).catch(()=>{});
+
+    if (!setNotifSelected) {
+      // won't happen
+      return;
+    }
     setNotifSelected(false);
+
+    if (!setMobileNotifSelected) {
+      // won't happen
+      return;
+    }
     setMobileNotifSelected(false);
     switch (notif.type) {
       case "acceptReq":
-        router.push(`/user/${notif.source}`);
+        router.push(`/user/${notif.source}`)
+        .then(()=>{}).catch(()=>{});
         break;
 
       case "comment":
@@ -66,7 +93,11 @@ const NotifItem: FC<INotifProps> = ({ notif }) => {
       case "likePost":
       case "likeReplyComment":
       case "replyToComment":
-        router.push(`/post/${notif.postId}`);
+        if (!notif.postId) {
+          return;
+        }
+        router.push(`/post/${notif.postId}`)
+        .then(()=>{}).catch(()=>{});
         break;
       default:
         break;
@@ -75,13 +106,25 @@ const NotifItem: FC<INotifProps> = ({ notif }) => {
 
   return (
     <div className="mb-4 flex gap-1 rounded-lg p-1 shadow-lg">
-      <img 
+      <Image
+      alt='photo' 
+      width={100} height={100}
       onClick={() => {
+        if (!setNotifSelected) {
+          // won't happen
+          return;
+        }
         setNotifSelected(false);
+
+        if (!setMobileNotifSelected) {
+          // won't happen
+          return;
+        }
     setMobileNotifSelected(false);
         router.push(`/user/${notif.source}`)
+        .then(()=>{}).catch(()=>{});
       }}
-      src={imgQuery.data?.img} className="h-12 w-12 rounded-full" />
+      src={imgQuery.data?.img || ''} className="h-12 w-12 rounded-full" />
       <div className="w-100 flex-1">
         <div
           onClick={handleRedirect}
@@ -107,7 +150,11 @@ const NotifItem: FC<INotifProps> = ({ notif }) => {
           <div className="text-xs">({dayjs(notif.time).fromNow()})</div>
         </div>
         <div
-          onClick={handleReadNotif}
+          onClick={() => {
+            handleReadNotif()
+            .then(()=>{}).catch(()=>{});
+          }
+        }
           className="cursor-pointer text-xs font-medium hover:text-primary active:text-primary2"
         >
           Mark as read

@@ -1,14 +1,13 @@
-import { createContext, FC, useEffect, useState } from 'react'
-import { FiSearch, FiBell, FiUsers, FiMenu, FiX } from "react-icons/fi";
+import { type FC, useEffect, useState } from 'react'
+import { FiBell, FiUsers, FiMenu } from "react-icons/fi";
 import Notif from './notif';
 import NotifScreenMobile from './notifScreenMobile';
 import SearchBox from './searchBox';
 
-import { useRouter } from 'next/router';
 import { api } from '~/utils/api';
 import { useSession } from 'next-auth/react';
-
-export const NotifContext = createContext<any>(null);
+import NotifContextProvider, { type IFriendReqItemHydrated, type INotifItemHydrated } from '~/contexts/notifContext';
+import { type INotifItem } from '~/server/db/models/Notification';
 
 const Navbar: FC = () => {
 
@@ -19,11 +18,11 @@ const Navbar: FC = () => {
     const [friendReqSelected, setFriendReqSelected] = useState<boolean>(false)
     const [mobileNotifSelected, setMobileNotifSelected] = useState<boolean>(false)
 
-    const [notifList, setNotifList] = useState<Array<Object>>();
-    const [friendReqList, setFriendReqList] = useState<Array<Object>>();
+    const [notifList, setNotifList] = useState< Array<INotifItemHydrated | INotifItem>>();
+    const [friendReqList, setFriendReqList] = useState<Array<IFriendReqItemHydrated>>();
 
-    const notifQuery = api.notifs.getNotifs.useQuery({uname: `${session.data?.user.uname}`});
-    const friendReqQuery = api.friends.getFriendReqList.useQuery({uname: `${session.data?.user.uname}`});
+    const notifQuery = api.notifs.getNotifs.useQuery({uname: `${session.data?.user.uname || ''}`});
+    const friendReqQuery = api.friends.getFriendReqList.useQuery({uname: `${session.data?.user.uname || ''}`});
 
     useEffect(() => {
       console.log('Navbar mounted');
@@ -36,12 +35,14 @@ const Navbar: FC = () => {
         (async () => {
           const notifData = await notifQuery.refetch();
           setNotifList(notifData.data?.notifs)
-        })();
+        })()
+        .then(()=>{}).catch(()=>{});
 
         (async () => {
           const friendReqData = await friendReqQuery.refetch();
           setFriendReqList(friendReqData.data?.reqs)
-        })();
+        })()
+        .then(()=>{}).catch(()=>{});
         
       }
     }, [session])
@@ -52,7 +53,8 @@ const Navbar: FC = () => {
           (async () => {
             const notifData = await notifQuery.refetch();
             setNotifList(notifData.data?.notifs)
-          })();
+          })()
+          .then(()=>{}).catch(()=>{});
         }
       }
 
@@ -64,7 +66,8 @@ const Navbar: FC = () => {
           (async () => {
             const friendReqData = await friendReqQuery.refetch();
             setFriendReqList(friendReqData.data?.reqs)
-          })();
+          })()
+          .then(()=>{}).catch(()=>{});
         }
       }
     }, [friendReqSelected, mobileNotifSelected])
@@ -119,7 +122,7 @@ const Navbar: FC = () => {
         </nav>
 
 
-        <NotifContext.Provider value={{
+        <NotifContextProvider additionVals={{
           notifList, setNotifList,
           friendReqList, setFriendReqList,
           notifSelected, setNotifSelected,
@@ -141,7 +144,7 @@ const Navbar: FC = () => {
         selfDisplayState={mobileNotifSelected}
         selfDisplayStateToggler={setMobileNotifSelected}
         />
-</NotifContext.Provider>
+</NotifContextProvider>
         </>
     
   )

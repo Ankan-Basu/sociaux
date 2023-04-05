@@ -1,5 +1,5 @@
-import InputDataType from "./InputDataType";
-import ValidatedOutput from "./ValidatedOutput";
+import type InputDataType from "./InputDataType";
+import type ValidatedOutput from "./ValidatedOutput";
 
 
 const containsInvalidChars = (str: string): boolean => {

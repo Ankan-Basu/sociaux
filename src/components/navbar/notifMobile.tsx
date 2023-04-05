@@ -1,22 +1,20 @@
-import { HydratedDocument } from "mongoose";
 import { useSession } from "next-auth/react";
-import { FC, useContext } from "react";
-import { INotifItem } from "~/server/db/models/Notification";
+import { type FC, useContext } from "react";
+import { type IFriendReqItemHydrated, type INotifItemHydrated, NotifContext, type NotifContextType } from "~/contexts/notifContext";
 import { api } from "~/utils/api";
 import FrenReq from "./friendReq";
-import { NotifContext } from "./navbar";
 import NotifItem from "./notifItem";
 
 interface INotifMobileProps {
-  notifs: Array<HydratedDocument<INotifItem>>; 
-  friendReqs: Array<Object>; 
+  notifs: Array<INotifItemHydrated>; 
+  friendReqs: Array<IFriendReqItemHydrated>; 
   display: boolean; 
   type: string;
 }
 
 const NotifMobile: FC<INotifMobileProps> = ({notifs, friendReqs, display, type}) => {
 
-    const {setNotifList} = useContext(NotifContext);
+    const {setNotifList} = useContext(NotifContext) as NotifContextType;
 
     const readNotifMutation = api.notifs.readNotifs.useMutation();
 
@@ -39,6 +37,10 @@ const NotifMobile: FC<INotifMobileProps> = ({notifs, friendReqs, display, type})
       const x = await readNotifMutation.mutateAsync({ uname, notifId: "0" });
       // console.log('Notif', x);
   
+      if (!setNotifList){
+        //won't happen
+        return;
+      }
       setNotifList(x.notifs);
     };
 
@@ -53,7 +55,11 @@ const NotifMobile: FC<INotifMobileProps> = ({notifs, friendReqs, display, type})
         <div className='mb-4'>
           {type==='Notifications'?
           <span 
-          onClick={handleReadAll}
+          onClick={() => {
+            handleReadAll()
+            .then(()=>{}).catch(()=>{});
+          }
+          }
           className='cursor-pointer hover:text-primary active:text-primary2'>
               Mark all as read</span>
           :
@@ -71,7 +77,7 @@ const NotifMobile: FC<INotifMobileProps> = ({notifs, friendReqs, display, type})
           (
             
                 notifs &&
-                notifs.map((notif: HydratedDocument<INotifItem>, indx, arr) => {
+                notifs.map((notif: INotifItemHydrated, indx: number, arr: Array<INotifItemHydrated>) => {
                     return (
                         <NotifItem key={indx} notif={arr[arr.length -1 -indx]!}/>
                     )
@@ -81,9 +87,9 @@ const NotifMobile: FC<INotifMobileProps> = ({notifs, friendReqs, display, type})
           (
 
             friendReqs && 
-            friendReqs.map((friendReq,indx, arr) => {
+            friendReqs.map((friendReq: IFriendReqItemHydrated, indx: number, arr: Array<IFriendReqItemHydrated>) => {
                 return (
-                    <FrenReq key={indx} friendReq={arr[arr.length -1 -indx]} />
+                    <FrenReq key={indx} friendReq={arr[arr.length -1 -indx]!} />
                 )
             })
           )

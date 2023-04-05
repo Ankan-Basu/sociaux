@@ -1,6 +1,6 @@
-import React, { createContext, FC, useState } from "react";
+import { createContext, type FC, useState } from "react";
 import ErrorPopup from "~/components/modal/errorPopup";
-import ContextProviderProps from "./contextProps";
+import type ContextProviderProps from "./contextProps";
 
 export type ErrorContextType = {
   errorDisplay: boolean,

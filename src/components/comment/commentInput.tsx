@@ -82,11 +82,11 @@ const CommentInput: FC<ICommentInputProps> = ({ postId, customCssClass }) => {
     
   };
 
-  interface IReplyBody {
-    uname: string;
-    parenCommId: string;
-    message: string;
-  }
+  // interface IReplyBody {
+  //   uname: string;
+  //   parenCommId: string;
+  //   message: string;
+  // }
 
   // reply to comment
   const handleReply = async (e: FormEvent<HTMLFormElement>) => {
@@ -126,7 +126,7 @@ const CommentInput: FC<ICommentInputProps> = ({ postId, customCssClass }) => {
         return;
       }
       
-      const x = await replyCommentMutation.mutateAsync({message, parenCommId: replyingTo._id, uname});
+      await replyCommentMutation.mutateAsync({message, parenCommId: replyingTo._id, uname});
     } catch(err) {
       setErrorDisplay(true);
       let msg = 'An unknown error occured'
@@ -177,7 +177,7 @@ const CommentInput: FC<ICommentInputProps> = ({ postId, customCssClass }) => {
       >
         <span>
           Replying to
-          {" " + replyingTo?.uname || 'undefined'}
+          {" " + (replyingTo?.uname || 'undefined')}
           ...
         </span>
         <span

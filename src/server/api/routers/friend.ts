@@ -7,7 +7,7 @@ import {
   protectedProcedure,
 } from "~/server/api/trpc";
 import FriendListModel from "~/server/db/models/Friend";
-import FriendReqModel from "~/server/db/models/FriendReq";
+import FriendReqModel, { IFriendReqItem } from "~/server/db/models/FriendReq";
 
 import dbConnect from "~/server/db/mongo";
 import sendNotification from "../utilFuncs/sendNotification";
@@ -21,7 +21,8 @@ export const friendsRouter = createTRPCRouter({
         const friendReqs = await FriendReqModel.findOne({ uname: input.uname });
 
         if (!friendReqs) {
-          return {reqs: []}
+          let arr: Array<IFriendReqItem> = []
+          return {reqs: arr}
         }
       
         return friendReqs;

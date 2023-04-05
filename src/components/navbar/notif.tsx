@@ -1,11 +1,8 @@
-import { HydratedDocument } from "mongoose";
 import { useSession } from "next-auth/react";
-import { useEffect, useContext, FC } from "react";
-import { IFriendReqItem } from "~/server/db/models/FriendReq";
-import { INotifItem } from "~/server/db/models/Notification";
+import { useContext, type FC } from "react";
+import { type IFriendReqItemHydrated, type INotifItemHydrated, NotifContext, type NotifContextType } from "~/contexts/notifContext";
 import { api } from "~/utils/api";
 import FrenReq from "./friendReq";
-import { NotifContext } from "./navbar";
 import NotifItem from "./notifItem";
 
 interface INotifProps {
@@ -14,7 +11,7 @@ interface INotifProps {
 }
 
 const Notif: FC<INotifProps> = ({ display, type }) => {
-  const { notifList, friendReqList, setNotifList } = useContext(NotifContext);
+  const { notifList, friendReqList, setNotifList } = useContext(NotifContext) as NotifContextType;
 
   const readNotifMutation = api.notifs.readNotifs.useMutation();
 
@@ -36,6 +33,10 @@ const Notif: FC<INotifProps> = ({ display, type }) => {
     const x = await readNotifMutation.mutateAsync({ uname, notifId: "0" });
     // console.log('Notif', x);
 
+    if (!setNotifList) {
+      //err //maybe ignore coz i know i didn't do error while writing the code
+      return;
+    }
     setNotifList(x.notifs);
   };
 
@@ -53,7 +54,11 @@ const Notif: FC<INotifProps> = ({ display, type }) => {
       <div className="mb-4">
         {type === "Notifications" ? (
           <span
-            onClick={handleReadAll}
+            onClick={() => {
+              handleReadAll()
+              .then(()=>{}).catch(()=>{});
+            }
+          }
             className="cursor-pointer hover:text-primary active:text-primary2"
           >
             Mark all as read
@@ -72,15 +77,15 @@ const Notif: FC<INotifProps> = ({ display, type }) => {
 
       {type === "Notifications"
         ? notifList &&
-          notifList.map((notifItem: HydratedDocument<INotifItem>, indx: number, arr: Array<HydratedDocument<INotifItem>>) => {
+          notifList.map((notifItem: INotifItemHydrated, indx: number, arr: Array<INotifItemHydrated>) => {
             // console.log(notif);
             // map in reverse order
             return arr[arr.length - 1 -indx]? <NotifItem key={indx} notif={arr[arr.length - 1 -indx]!} />:<></>;
           })
-        : friendReqList?.map((friendReq: HydratedDocument<IFriendReqItem>, indx: number, arr: Array<HydratedDocument<IFriendReqItem>>) => {
+        : friendReqList?.map((friendReq: IFriendReqItemHydrated, indx: number, arr: Array<IFriendReqItemHydrated>) => {
 
 
-            return arr[arr.length -1 - indx]?<FrenReq key={indx} friendReq={arr[arr.length -1 - indx]} />:<></>;
+            return arr[arr.length -1 - indx]?<FrenReq key={indx} friendReq={arr[arr.length -1 - indx]!} />:<></>;
           })}
     </div>
   );

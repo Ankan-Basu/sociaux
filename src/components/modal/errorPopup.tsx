@@ -1,5 +1,5 @@
-import { FC } from "react";
-import { signOut, useSession } from 'next-auth/react';
+import { type FC } from "react";
+import { signOut } from 'next-auth/react';
 
 interface IErrorPopupProps {
   display: boolean;

@@ -1,32 +1,29 @@
 import { TRPCClientError } from "@trpc/client";
 import { useSession } from "next-auth/react";
-import { RESPONSE_LIMIT_DEFAULT } from "next/dist/server/api-utils";
 import Image from "next/image";
-import React, { FC, useContext, useEffect, useRef, useState } from "react";
+import React, { type FC, useContext, useRef, useState } from "react";
 
 import {
   FiTrash,
-  FiArrowRight,
   FiCornerUpRight,
   FiX,
   FiImage,
-  FiVideo,
 } from "react-icons/fi";
-import { ErrorContext } from "~/contexts/errorContext";
+import { ErrorContext, type ErrorContextType } from "~/contexts/errorContext";
 import { api } from "~/utils/api";
 import Dropdown from "../dropdown/dropdown";
 
-interface PostBody {
-  uname: string;
-  privacy: number;
-  message: string;
-  shares?: number;
-}
+// interface PostBody {
+//   uname: string;
+//   privacy: number;
+//   message: string;
+//   shares?: number;
+// }
 
 interface IModalProps {
   display: boolean;
   customCss?: string;
-  setShowModal: Function;
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
   mode?: string;
 }
 
@@ -42,7 +39,7 @@ const Modal: FC<IModalProps> = ({
   const [displayDropdown, setDisplayDropdown] = useState<boolean>(false);
 
   // console.log(mode);
-  const {setErrorDisplay, setErrorMessage, setErrorType} = useContext(ErrorContext);
+  const {setErrorDisplay, setErrorMessage, setErrorType} = useContext(ErrorContext) as ErrorContextType;
 
   const session = useSession();
 
@@ -133,7 +130,7 @@ const Modal: FC<IModalProps> = ({
     <div
       className={`
         ${!display ? "hidden" : ""}
-        ${customCss + " "}
+        ${(customCss || '') + " "}
         fixed z-40 h-screen
         w-screen rounded-lg bg-white p-2 pt-1 lg:h-auto lg:w-100`}
     >
@@ -242,7 +239,12 @@ const Modal: FC<IModalProps> = ({
               Discard
             </Button>
           </span>
-          <span onClick={handlePost} className="flex-1">
+          <span onClick={() => 
+            {
+              handlePost()
+              .then(()=>{}).catch(()=>{});
+            }
+            } className="flex-1">
             <Button type="normal">
               <FiCornerUpRight />
               Post

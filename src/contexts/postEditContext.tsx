@@ -1,7 +1,5 @@
-import React, { createContext, FC, SetStateAction, useState } from "react";
-import { IPostProps } from "~/components/posts/Post";
-import { IPost } from "~/server/db/models/Post";
-import ContextProviderProps from "./contextProps";
+import { createContext, type FC, useState } from "react";
+import type ContextProviderProps from "./contextProps";
 
 interface PostUnderEdit {
   uname: string;

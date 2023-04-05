@@ -1,7 +1,7 @@
-import { HydratedDocument } from "mongoose";
-import React, { createContext, FC, useState } from "react";
-import { IComment } from "~/server/db/models/Comment";
-import ContextProviderProps from "./contextProps";
+import { type HydratedDocument } from "mongoose";
+import { createContext, type FC, useState } from "react";
+import { type IComment } from "~/server/db/models/Comment";
+import type ContextProviderProps from "./contextProps";
 
 export type CommentContextType = {
   commentList: Array<HydratedDocument<IComment>> | undefined, 
@@ -16,7 +16,7 @@ const CommentContextProvider: FC<ContextProviderProps> = ({
   const [commentList, setCommentList] = useState<Array<HydratedDocument<IComment>> | undefined>([]);
 
   return (
-    <CommentContext.Provider value={{ commentList, setCommentList }}>
+    <CommentContext.Provider value={{ commentList, setCommentList, ...additionVals}}>
       {children}
     </CommentContext.Provider>
   );

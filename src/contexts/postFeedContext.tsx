@@ -1,6 +1,6 @@
-import React, { createContext, FC, useState } from "react";
-import { IPostProps } from "~/components/posts/Post";
-import ContextProviderProps from "./contextProps";
+import { createContext, type FC, useState } from "react";
+import { type IPostProps } from "~/components/posts/Post";
+import type ContextProviderProps from "./contextProps";
 
 export type PostFeedContextType = {
   currPost: IPostProps | null,
@@ -8,7 +8,7 @@ export type PostFeedContextType = {
   showExpanded?: boolean,
   setShowExpanded?: React.Dispatch<React.SetStateAction<boolean>>
 }
-export const PostFeedContext = createContext<any>(null);
+export const PostFeedContext = createContext<PostFeedContextType | null>(null);
 
 const PostFeedContextProvider: FC<ContextProviderProps> = ({
   children,

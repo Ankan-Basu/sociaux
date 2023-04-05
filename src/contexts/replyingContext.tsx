@@ -1,5 +1,5 @@
-import React, { createContext, FC, useState } from "react";
-import ContextProviderProps from "./contextProps";
+import { createContext, type FC, useState } from "react";
+import type ContextProviderProps from "./contextProps";
 
 interface IReplyingTo {
   _id: string;

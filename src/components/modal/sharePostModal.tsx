@@ -1,22 +1,23 @@
 import { TRPCClientError } from "@trpc/client";
 import { useSession } from "next-auth/react";
-import { FC, useContext, useEffect, useState } from "react";
+import React, { type FC, useContext, useState } from "react";
 
 import { FiTrash, FiCornerUpRight, FiX } from "react-icons/fi";
-import { ErrorContext } from "~/contexts/errorContext";
+import { ErrorContext, type ErrorContextType } from "~/contexts/errorContext";
 import { api } from "~/utils/api";
+import Dropdown from "../dropdown/dropdown";
 
-interface PostBody {
-  uname: string;
-  privacy: number;
-  message: string;
-  shares?: number;
-}
+// interface PostBody {
+//   uname: string;
+//   privacy: number;
+//   message: string;
+//   shares?: number;
+// }
 
 interface IShareModalProps {
   display: boolean;
   customCss?: string;
-  setShowModal: Function;
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
   postId: string;
   mode?: string;
 }
@@ -30,11 +31,14 @@ const SharePostModal: FC<IShareModalProps> = ({
 }) => {
   const [postMessage, setPostMessage] = useState<string>("");
 
+  const [displayDropdown, setDisplayDropdown] = useState<boolean>(false);
+  const [privacy, setPrivacy] = useState<number>(0);
+
   const session = useSession();
 
   const sharePostMutation = api.posts.sharePost.useMutation();
 
-  const {setErrorDisplay, setErrorMessage, setErrorType} = useContext(ErrorContext);
+  const {setErrorDisplay, setErrorMessage, setErrorType} = useContext(ErrorContext) as ErrorContextType;
 
   const handleClose = () => {
     setPostMessage('')
@@ -42,7 +46,7 @@ const SharePostModal: FC<IShareModalProps> = ({
   };
 
   const uname = session.data?.user?.uname;
-  const privacy = 0;
+  // const privacy = 0;
 
   const handleShare = async () => {
     console.log(postMessage);
@@ -72,7 +76,7 @@ const SharePostModal: FC<IShareModalProps> = ({
       // });
       // console.log(x);
       // setPostMessage("");
-      const x = await sharePostMutation.mutateAsync({
+      await sharePostMutation.mutateAsync({
         uname,
         message: postMessage,
         privacy,
@@ -96,7 +100,7 @@ const SharePostModal: FC<IShareModalProps> = ({
     <div
       className={`
         ${!display ? "hidden" : ""}
-        ${customCss + " "}
+        ${(customCss || '') + " "}
         fixed top-0 left-0
         z-40 flex h-screen w-screen items-center
         justify-center bg-gray-500/50 backdrop-blur-lg
@@ -139,9 +143,25 @@ const SharePostModal: FC<IShareModalProps> = ({
               <FiX />
             </span>
           </div>
-          <div className="flex py-1 pt-0">
-            Privacy:
-            <DropDown />
+          <div className="flex py-1 pt-0 relative gap-1">
+          <span className="font-medium">Privacy: </span>
+          <span
+          className="border-2 border-solid border-black cursor-pointer"
+          onClick={() => {setDisplayDropdown(currState => !currState)}}
+          >
+            {privacy?'Friends':'Public'}
+          </span>
+            <Dropdown 
+            display={displayDropdown} 
+          options={
+            [
+              {optionName: 'Public', callback: () => {setPrivacy(0)}},
+              {optionName: 'Friends', callback: () => {setPrivacy(1)}}
+            ]
+          }
+          additionCSS='top-6 left-14'
+          setDisplay={setDisplayDropdown} 
+          />
           </div>
           <div className="">
             <label htmlFor="textarea" className="py-1">
@@ -172,7 +192,11 @@ const SharePostModal: FC<IShareModalProps> = ({
                 Discard
               </Button>
             </span>
-            <span onClick={handleShare} className="flex-1">
+            <span onClick={() => {
+              handleShare()
+              .then(()=>{}).catch(()=>{});
+            }
+            } className="flex-1">
               <Button type="normal">
                 <FiCornerUpRight />
                 Share
@@ -185,18 +209,18 @@ const SharePostModal: FC<IShareModalProps> = ({
   );
 };
 
-function DropDown() {
-  const choiceArr = {};
-  return (
-    <div>
-      <select>
-        <option value="public"> Public</option>
-        <option value="friends">Friends</option>
-        <option value="onlyMe"> Only Me</option>
-      </select>
-    </div>
-  );
-}
+// function DropDown() {
+//   // const choiceArr = {};
+//   return (
+//     <div>
+//       <select>
+//         <option value="public"> Public</option>
+//         <option value="friends">Friends</option>
+//         <option value="onlyMe"> Only Me</option>
+//       </select>
+//     </div>
+//   );
+// }
 
 export interface IButtonProps {
   children: React.ReactNode;

@@ -1,13 +1,14 @@
+import { type HydratedDocument } from "mongoose"
 import { useSession } from "next-auth/react"
+import Image from "next/image"
 import { useRouter } from "next/router"
-import { FC, useContext } from "react"
+import { type FC, useContext } from "react"
+import { type IFriendReqItemHydrated, NotifContext, type NotifContextType } from "~/contexts/notifContext"
+import { type IFriendReqItem } from "~/server/db/models/FriendReq"
 import { api } from "~/utils/api"
-import { NotifContext } from "./navbar"
 
 interface IFrenReqProps {
-    friendReq: {
-        source: string
-    } | any
+    friendReq: IFriendReqItemHydrated | HydratedDocument<IFriendReqItem>
 }
 
 const FrenReq: FC<IFrenReqProps> = ({friendReq}) => {
@@ -15,7 +16,7 @@ const FrenReq: FC<IFrenReqProps> = ({friendReq}) => {
     const session = useSession();
     const router = useRouter();
 
-    const {setFriendReqList, setFriendReqSelected, setMobileNotifSelected} = useContext(NotifContext);
+    const {setFriendReqList, setFriendReqSelected, setMobileNotifSelected} = useContext(NotifContext) as NotifContextType;
 
     const acceptFriendMutation = api.friends.acceptFriendReq.useMutation();
     const rejectFriendMutation = api.friends.rejectFriendReq.useMutation();
@@ -38,6 +39,11 @@ const FrenReq: FC<IFrenReqProps> = ({friendReq}) => {
 
             const resp = await acceptFriendMutation.mutateAsync({acceptorUname, targetUname});
             // console.log(resp);
+
+            if (!setFriendReqList) {
+                //won't happen
+                return;
+            }
             setFriendReqList(resp.reqs);
         } catch(err) {
             console.log(err);
@@ -62,6 +68,11 @@ const FrenReq: FC<IFrenReqProps> = ({friendReq}) => {
 
             const resp = await rejectFriendMutation.mutateAsync({rejectorUname, targetUname});
             // console.log(resp);
+
+            if (!setFriendReqList) {
+                // won't happen
+                return;
+            }
             setFriendReqList(resp.reqs)
         } catch(err) {
             console.log(err);
@@ -71,17 +82,29 @@ const FrenReq: FC<IFrenReqProps> = ({friendReq}) => {
     }
 
     const handleRedirect = () => {
+        if (!setFriendReqSelected) {
+            // won't happen
+            return;
+        }
         setFriendReqSelected(false);
+
+        if (!setMobileNotifSelected) {
+            // won't happen
+            return;
+        }
         setMobileNotifSelected(false);
         router.push(`/user/${friendReq.source}`)
+        .then(()=>{}).catch(()=>{});
     }
 
 
     return (
         <div className='mb-4 shadow-lg rounded-lg p-1 flex gap-1'>
-            <img 
+            <Image 
+            alt='photo'
+            width={100} height={100}
             onClick={handleRedirect}
-            src={imgQuery.data?.img} className='w-12 h-12 rounded-full' />
+            src={imgQuery.data?.img || ''} className='w-12 h-12 rounded-full' />
             <div className='flex-1 w-100'>
                 <div 
                 onClick={handleRedirect}
@@ -98,11 +121,19 @@ const FrenReq: FC<IFrenReqProps> = ({friendReq}) => {
                     </div>
                     <div className='flex justify-between pl-1 pr-2'>
                 <span
-                onClick={() => handleAccept(friendReq.source)} 
+                onClick={() => {
+                    handleAccept(friendReq.source)
+                    .then(()=>{}).catch(()=>{});
+                }
+            } 
                 className='text-xs font-medium cursor-pointer hover:text-primary active:text-primary2'>
                     Accept</span>
                 <span 
-                onClick={() => handleReject(friendReq.source)}
+                onClick={() => {
+                    handleReject(friendReq.source)
+                    .then(()=>{}).catch(()=>{});
+                }
+                }
                 className='text-xs font-medium cursor-pointer hover:text-primary active:text-primary2'>
                     Reject</span>
                     </div>

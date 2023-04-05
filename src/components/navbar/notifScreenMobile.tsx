@@ -1,18 +1,18 @@
-import { FC, useContext } from "react";
+import React, { type FC, useContext } from "react";
 import { FiX } from "react-icons/fi";
-import { NotifContext } from "./navbar";
+import { NotifContext, type NotifContextType } from "~/contexts/notifContext";
 import NotifMobile from "./notifMobile";
 
 interface INotifScreenMobileProps {
   display: boolean; 
   type: string;
   notifState: boolean;
-  notifStateToggler: Function;
+  notifStateToggler: React.Dispatch<React.SetStateAction<boolean>>;
   friendReqState: boolean;
-  friendReqStateToggler: Function;
+  friendReqStateToggler: React.Dispatch<React.SetStateAction<boolean>>;
   selfDisplayState: boolean;
-  selfDisplayStateToggler: Function
-};
+  selfDisplayStateToggler: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
 const NotifScreenMobile: FC<INotifScreenMobileProps> = (
     {
@@ -27,7 +27,7 @@ const NotifScreenMobile: FC<INotifScreenMobileProps> = (
     }) => {
 
 
-      const {notifList, friendReqList} = useContext(NotifContext);
+      const {notifList, friendReqList} = useContext(NotifContext) as NotifContextType;
     return (
       <div className={`
       ${display?'block':'hidden'}
@@ -101,8 +101,8 @@ const NotifScreenMobile: FC<INotifScreenMobileProps> = (
         <NotifMobile 
         type={type} 
         display={display} 
-        notifs={notifList} 
-        friendReqs={friendReqList}/>
+        notifs={notifList || []} 
+        friendReqs={friendReqList || []}/>
       </div>
     )
   }
