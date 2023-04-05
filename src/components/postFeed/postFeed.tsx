@@ -11,7 +11,7 @@ import PostScreen from "../posts/postScreen";
 const PostFeed: FC = () => {
   const [posts, setPosts] = useState<Array<Object>>([]);
   const [showExpanded, setShowExpanded] = useState<boolean>(false);
-  const [reload, setReload] = useState({ reolad: 1 });
+  const [reload, setReload] = useState({ reload: 1 });
 
   const router = useRouter();
 
@@ -62,7 +62,7 @@ const PostFeed: FC = () => {
     <div className="m-auto rounded-lg p-2 lg:w-101">
       Posts:
       <PostFeedContextProvider additionVals={{ showExpanded, setShowExpanded }}>
-        <PostEditContextProvider additionVals={{ setReload }}>
+        <PostEditContextProvider additionVals={{ reload, setReload }}>
           {posts.map((post: any) => {
             return (
               <Post

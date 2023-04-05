@@ -1,6 +1,7 @@
-import { AnyArray, HydratedDocument } from 'mongoose';
+import type { HydratedDocument } from 'mongoose';
 import { useRouter } from 'next/router';
-import React, { FC, useEffect, useLayoutEffect, useRef } from 'react'
+import { useEffect, useLayoutEffect, useRef } from 'react'
+import type {FC} from 'react';
 import { IUser } from '~/server/db/models/User';
 import { api } from '~/utils/api';
 import Loading from '../loading/loading';

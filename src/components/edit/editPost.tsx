@@ -1,30 +1,29 @@
 import { TRPCClientError } from "@trpc/client";
 import { useSession } from "next-auth/react";
-import React, { FC, useContext, useEffect, useState } from "react";
+import{ useContext, useEffect, useState } from "react";
+import type {FC} from 'react';
 import {
   FiCornerUpRight,
   FiImage,
-  FiPenTool,
   FiTrash,
-  FiVideo,
   FiX,
 } from "react-icons/fi";
-import { ErrorContext } from "~/contexts/errorContext";
-import { PostEditContext } from "~/contexts/postEditContext";
+import { ErrorContext, type ErrorContextType } from "~/contexts/errorContext";
+import { PostEditContext, type PostEditContextType } from "~/contexts/postEditContext";
 import { api } from "~/utils/api";
 import Dropdown from "../dropdown/dropdown";
 import { Button } from "../modal/Modal";
 
 
 const EditPost: FC = ({}) => {
-  let mode = ""; //change later
+  const mode = ""; //change later
 
   const editPostMutation = api.posts.modifyPost.useMutation();
 
   const { showEditModal, setShowEditModal, currEditPost, setCurrEditPost, reload, setReload } =
-    useContext(PostEditContext);
+    useContext(PostEditContext) as PostEditContextType;
 
-  const {setErrorDisplay, setErrorMessage, setErrorType} = useContext(ErrorContext);
+  const {setErrorDisplay, setErrorMessage, setErrorType} = useContext(ErrorContext) as ErrorContextType;
 
   const [postMessage, setPostMessage] = useState(currEditPost?.message);
 
@@ -38,7 +37,13 @@ const EditPost: FC = ({}) => {
   useEffect(() => {
     // console.log("use Effect", currEditPost);
 
+    if (!currEditPost) {
+      //err
+      return;
+    }
+
     setPostMessage(currEditPost?.message);
+
     setPrivacy(currEditPost?.privacy)
 
     // return () => {
@@ -61,11 +66,21 @@ const EditPost: FC = ({}) => {
       setErrorType('simple');
     }
 
-    if (!currEditPost && !currEditPost._id) {
+    if (!currEditPost) {
+      //unkn
+      setErrorDisplay(true);
+      setErrorMessage('An unexpected error occured');
+      setErrorType('redirect');
+      setShowEditModal(false);
+      return;
+    }
+
+    if (!(currEditPost._id)) {
       // console.log("error");
       setErrorDisplay(true);
       setErrorMessage('BAD_REQUEST');
       setErrorType('simple');
+      setShowEditModal(false);
       return;
     }
 
@@ -81,20 +96,23 @@ const EditPost: FC = ({}) => {
         }
 
         const x = await editPostMutation.mutateAsync({
-            message: postMessage,
+            message: postMessage || '',
             postId: currEditPost._id,
             uname: uname,
             privacy: privacy,
         });
 
-        setReload({ ...reload});
+        if (!setReload) {
+          return;
+        }
+        setReload({reload: 1});
         handleClose();
     } catch (err) {
         // console.log(err);
         setErrorDisplay(true);
       let msg = 'An unknown error occured';
       if (err instanceof TRPCClientError) {
-        msg = err.data.code;
+          msg = err.data.code;
       }
       setErrorMessage(msg);
       setErrorType('simple');
@@ -122,8 +140,8 @@ const EditPost: FC = ({}) => {
         <div
           className={`
             flex justify-end 
-            ${mode === "mobile" ? "mt-4" : "mt-1"} 
             `}
+            // ${mode === "mobile" ? "mt-4" : "mt-1"} 
         >
           <span onClick={handleClose} className="cursor-pointer text-primary">
             <FiX />
@@ -177,7 +195,12 @@ const EditPost: FC = ({}) => {
               Discard
             </Button>
           </span>
-          <span onClick={handlePost} className="flex-1">
+          <span onClick={() => {
+            handlePost()
+            .then(()=>{}).catch(()=>{})
+            }} 
+            className="flex-1"
+            >
             <Button type="normal">
               <FiCornerUpRight />
               Post

@@ -12,7 +12,7 @@ import {
   FiMessageSquare,
   FiMoreHorizontal
 } from "react-icons/fi";
-import { PostEditContext } from "~/contexts/postEditContext";
+import { PostEditContext, PostEditContextType } from "~/contexts/postEditContext";
 import { PostFeedContext } from "~/contexts/postFeedContext";
 import { api } from "~/utils/api";
 import Dropdown from "../dropdown/dropdown";
@@ -21,7 +21,7 @@ import SharePostModal from "../modal/sharePostModal";
 
 
 
-interface IPostProps {
+export interface IPostProps {
   expanded: boolean;
   uname: string | undefined;
   message: string | undefined;
@@ -67,8 +67,8 @@ const Post: FC<IPostProps> =({
     setShowEditModal,
     currEditPost,
     setCurrEditPost,
-    reload, setReload
-  } = useContext(PostEditContext);
+    setReload
+  } = useContext(PostEditContext) as PostEditContextType;
 
   const session = useSession();
 
@@ -149,7 +149,7 @@ const Post: FC<IPostProps> =({
     }
   };
 
-  let handleExpanded = undefined;
+  let handleExpanded: (() => void) | undefined = undefined;
   // let handleEdit = undefined;
 
   try {
@@ -185,7 +185,13 @@ const Post: FC<IPostProps> =({
 
   const handleEdit = () => {
     setShowEditModal(true);
-    console.log(message);
+    // console.log(message);
+
+    if (!uname || privacy === undefined || !_id || message === undefined) {
+      //err
+      
+      return;
+    }
     
     setCurrEditPost({
       uname,
@@ -206,7 +212,10 @@ const Post: FC<IPostProps> =({
     
     try {
       await deleteMutation.mutateAsync({postId: _id});
-      setReload({...reload});
+      if (!setReload) {
+        return;
+      }
+      setReload({reload: 1});
     } catch(err) {
       console.log(err);
       

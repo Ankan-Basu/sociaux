@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import React, { FC } from 'react';
+import type { FC } from 'react';
 import loadingGif from './loading.gif';
 
 interface ILoadingProps {

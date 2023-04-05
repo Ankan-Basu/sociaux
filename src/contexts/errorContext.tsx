@@ -1,8 +1,16 @@
-import { createContext, FC, useState } from "react";
+import React, { createContext, FC, useState } from "react";
 import ErrorPopup from "~/components/modal/errorPopup";
 import ContextProviderProps from "./contextProps";
 
-export const ErrorContext = createContext<any>(null);
+export type ErrorContextType = {
+  errorDisplay: boolean,
+  setErrorDisplay: React.Dispatch<React.SetStateAction<boolean>>,
+        errorMessage: string, 
+        setErrorMessage: React.Dispatch<React.SetStateAction<string>>,
+        errorType: 'simple' | 'redirect' | 'logout' | undefined, 
+        setErrorType: React.Dispatch<React.SetStateAction<'simple' | 'redirect' | 'logout' | undefined>>,
+}
+export const ErrorContext = createContext<ErrorContextType | null>(null);
 
 const ErrorContextProvider: FC<ContextProviderProps> = ({
   children,
