@@ -1,5 +1,4 @@
 import { TRPCClientError } from "@trpc/client";
-import { router } from "@trpc/server";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -10,9 +9,9 @@ import { api } from "~/utils/api";
 
 interface IFileUploadModalProps {
   display: boolean;
-  setDisplay: React.Dispatch<React.SetStateAction<boolean>>
-  uname: string
-  setProfileImg: React.Dispatch<React.SetStateAction<string | undefined>>
+  setDisplay: React.Dispatch<React.SetStateAction<boolean>>;
+  uname: string;
+  setProfileImg: React.Dispatch<React.SetStateAction<string | undefined>>;
 }
 const FileUploadModal: FC<IFileUploadModalProps> = ({display, setDisplay, uname, setProfileImg}) => {
 

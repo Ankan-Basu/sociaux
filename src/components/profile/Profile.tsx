@@ -38,7 +38,7 @@ const Profile: FC = () => {
 
         imgQuery.refetch().then((resp) => {
           // console.log('IMAGE', resp);
-          setImg(resp.data.img);
+          setImg(resp.data?.img);
         });
       })();
     }
@@ -118,7 +118,7 @@ const Profile: FC = () => {
         <FileUploadModal
           display={showUploadModal}
           setDisplay={setShowUploadModal}
-          uname={userName}
+          uname={userName || ''}
           setProfileImg={setImg}
         />
       ) : (

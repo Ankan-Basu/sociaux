@@ -23,15 +23,15 @@ import SharePostModal from "../modal/sharePostModal";
 
 interface IPostProps {
   expanded: boolean;
-  uname: string;
-  message: string;
-  time: Date;
-  privacy: number;
-  imageId: string;
+  uname: string | undefined;
+  message: string | undefined;
+  time: Date | undefined;
+  privacy: number | undefined;
+  imageId: string | undefined;
   shareId: string | undefined;
   comments?: Array<string>;
   likes?: Array<string>;
-  _id: string;
+  _id: string | undefined;
   isModalMode?: boolean;
   isSharedPost?: boolean;
 }
@@ -100,6 +100,11 @@ const Post: FC<IPostProps> =({
       return;
     }
 
+    if (!_id) {
+      //err
+      return;
+    }
+
     try {
       const x = await likeMutation.mutateAsync({postId: _id, uname: reactorUname})
       console.log(x);
@@ -114,6 +119,11 @@ const Post: FC<IPostProps> =({
   const handleUnlike = async () => {
     if (session.status!=='authenticated' || !reactorUname) {
       console.log('UnAuthenticated');     
+      return;
+    }
+
+    if (!_id) {
+      //err
       return;
     }
 
@@ -189,6 +199,11 @@ const Post: FC<IPostProps> =({
   }
 
   const handleDelete = async () => {
+    if (!_id) {
+      //err
+      return;
+    }
+    
     try {
       await deleteMutation.mutateAsync({postId: _id});
       setReload({...reload});
@@ -286,19 +301,17 @@ const Post: FC<IPostProps> =({
       <div>
         {
           shareId && sharedPostQuery.isFetched &&
-          //@ts-ignore
-          <Post 
-          expanded={true}
+          <Post expanded={true} 
           isSharedPost={true}
-        uname={sharedPostQuery.data?.uname}
-        message={sharedPostQuery.data?.message}
-        privacy={sharedPostQuery.data?.privacy}
+        uname={sharedPostQuery.data?.uname} 
+        message={sharedPostQuery.data?.message} 
+        privacy={sharedPostQuery.data?.privacy} 
         imageId={sharedPostQuery.data?.imageId}
         shareId={undefined}
         time={sharedPostQuery.data?.time}
         likes={sharedPostQuery.data?.likes}
         comments={sharedPostQuery.data?.comments}
-        _id={sharedPostQuery.data?._id}
+        _id={sharedPostQuery.data?._id?.toString()}
         />
         }
       </div>

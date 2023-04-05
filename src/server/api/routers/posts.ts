@@ -68,52 +68,61 @@ export const postsRouter = createTRPCRouter({
   getOnePost: publicProcedure
     .input(z.object({ postId: z.string() }))
     .query(async ({ ctx, input }) => {
+      const invPost = {
+        uname: undefined,
+        message: undefined,
+        privacy: undefined,
+        imageId: undefined,
+        shareId: undefined,
+        time: undefined,
+        likes: undefined,
+        comments: undefined,
+        _id: undefined,
+      };
+
       try {
         if (!input.postId || input.postId === "undefined") {
           // console.log('Get One Post IGNORING');
-          return {
-            uname: undefined,
-            message: undefined,
-            privacy: undefined,
-            imageId: undefined,
-            shareId: undefined,
-            likes: undefined,
-            comments: undefined,
-            _id: undefined,
-          };
+          return invPost;
         }
-
         dbConnect();
 
-        const post: HydratedDocument<IPost> | null = await PostModel.findOne({
-          _id: input.postId,
-        });
+        try {
+          const post: HydratedDocument<IPost> | null = await PostModel.findOne({
+            _id: input.postId,
+          });
 
-        if (!post) {
-          // throw new TRPCError({
-          //   code: "NOT_FOUND",
-          //   message: "Not found"
-          // })
-          return {};
-        }
-
-        if (post.privacy === 0) {
-          // public post;
-          return post;
-        } else {
-          const targetUname = post.uname;
-          const isFriend: boolean = await detectFriendship(ctx, targetUname);
-
-          if (isFriend) {
-            return post;
-          } else {
-            return {};
+          if (!post) {
+            // throw new TRPCError({
+              //   code: "NOT_FOUND",
+              //   message: "Not found"
+              // })
+              return invPost;
+            }
+            
+            if (post.privacy === 0) {
+              // public post;
+              return post;
+            } else {
+              const targetUname = post.uname;
+              const isFriend: boolean = await detectFriendship(ctx, targetUname);
+              
+              if (isFriend) {
+                return post;
+              } else {
+                return invPost;
+              }
+            }
+            
+          } catch(err) {
+            throw new TRPCError({
+              code: 'BAD_REQUEST',
+              message: 'Invalid ID'
+            })
           }
-        }
-
-        ///////////////////////////
-
-        // return post;
+            ///////////////////////////
+            
+            // return post;
       } catch (err) {
         console.log(err);
 
