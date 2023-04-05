@@ -18,7 +18,7 @@ const ErrorPopup: FC<IErrorPopupProps> = ({display, setDisplay, message, type}) 
         // write here
         break;
       case "logout":
-        signOut({callbackUrl: '/login'});
+        signOut({callbackUrl: '/login'}).then(()=>{}).catch(()=>{});
         break;
     }
   }

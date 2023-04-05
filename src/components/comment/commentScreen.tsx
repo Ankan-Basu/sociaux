@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { type FC, useState } from "react";
 import CommentContextProvider from "~/contexts/commentContext";
 import EditCommentContextProvider from "~/contexts/editCommentContext";
 import ReplyingContextProvider from "~/contexts/replyingContext";

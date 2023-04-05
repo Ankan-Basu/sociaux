@@ -1,10 +1,8 @@
-import { HydrateOptions } from "@tanstack/react-query";
 import { TRPCClientError } from "@trpc/client";
 import { HydratedDocument } from "mongoose";
-import React, { FC, useContext, useEffect, useState } from "react";
-import { isNullOrUndefined } from "util";
-import { ErrorContext } from "~/contexts/errorContext";
-import { ReplyingContext } from "~/contexts/replyingContext";
+import { type FC, useContext, useEffect, useState } from "react";
+import { ErrorContext, ErrorContextType } from "~/contexts/errorContext";
+import { ReplyingContext, ReplyingContextType } from "~/contexts/replyingContext";
 import { IReplyComment } from "~/server/db/models/ReplyComment";
 import { api } from "~/utils/api";
 import Loading from "../loading/loading";
@@ -22,11 +20,11 @@ const ReplyCommentList: FC<IReplyCommentListProps> = ({
   // console.log('Reply to', parenCommId);
 
   const [replies, setReplies] = useState<Array<HydratedDocument<IReplyComment>>>([]);
-  const { refreshReplies } = useContext(ReplyingContext);
+  const { refreshReplies } = useContext(ReplyingContext) as ReplyingContextType;
 
-  const {setErrorDisplay, setErrorMessage, setErrorType} = useContext(ErrorContext);
+  const {setErrorDisplay, setErrorMessage, setErrorType} = useContext(ErrorContext) as ErrorContextType;
 
-  let { data, refetch, isLoading, isFetching } = api.replyComments.getComments.useQuery({
+  const { data, refetch, isLoading, isFetching } = api.replyComments.getComments.useQuery({
     parenCommId,
   });
 
@@ -34,12 +32,11 @@ const ReplyCommentList: FC<IReplyCommentListProps> = ({
   
 
   useEffect(() => {
-    console.log('reply comment list');
     // runs when 'display' prop changes
     if (display) {
       //do api call
       // data = await refetch();
-      getReplyComments();
+      getReplyComments().then(()=>{}).catch(()=>{});
     } else {
       // setReplies([]);
     }
@@ -54,7 +51,7 @@ const ReplyCommentList: FC<IReplyCommentListProps> = ({
  
     try {
 
-      let data2 = await refetch();
+      const data2 = await refetch();
       // console.log('REPLY', data2);
       
       if (data2) {

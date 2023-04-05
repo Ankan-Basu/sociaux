@@ -2,7 +2,7 @@ import { FC, useEffect, useLayoutEffect, useRef } from 'react'
 
 interface IOptionsObject {
   optionName: string;
-  callback: Function;
+  callback: (() => void) | (() => Promise<void>);
 }
 
 interface IDropdownProps {

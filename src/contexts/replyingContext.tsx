@@ -1,21 +1,23 @@
 import React, { createContext, FC, useState } from "react";
 import ContextProviderProps from "./contextProps";
 
-export const ReplyingContext = createContext<any>(null);
-
 interface IReplyingTo {
   _id: string;
   uname: string;
 }
 
-// type x = ReturnType<typeof ReplyingContextProvider>
-
-type x = {
+export type ReplyingContextType = {
   isReplying: boolean,
   setIsReplying: React.Dispatch<React.SetStateAction<boolean>>
   replyingTo: IReplyingTo | null,
-  setReplyingTo: React.Dispatch<React.SetStateAction<IReplyingTo | null>>
+  setReplyingTo: React.Dispatch<React.SetStateAction<IReplyingTo | null>>,
+  refreshReplies?: {val: number},
+  setRefreshComments?: React.Dispatch<React.SetStateAction<{val: number}>>,
+  setRefreshReplies?: React.Dispatch<React.SetStateAction<{val: number}>>,
 }
+
+export const ReplyingContext = createContext<ReplyingContextType | null>(null);
+
 
 const ReplyingContextProvider: FC<ContextProviderProps> = ({
   children,

@@ -1,4 +1,5 @@
-import React, { FC } from 'react'
+import Image from 'next/image'
+import React, { type FC } from 'react'
 
 const DefaultHeader: FC = () => {
   return (
@@ -12,7 +13,7 @@ const DefaultHeader: FC = () => {
 
     <div 
     className='flex flex-col gap-3 lg:gap-0 relative items-center lg:items-baseline'>
-        <img src='../cat.jpg' 
+        <Image src='./logo.jpg' alt='logo'
         className='h-24 w-24 lg:h-56 lg:w-56 rounded-full shadow-lg'/>
        
     <div className='block lg:hidden'>

@@ -6,8 +6,8 @@ import {
   FiTrash,
   FiX,
 } from "react-icons/fi";
-import { EditCommentContext, EditCommentContextType } from "~/contexts/editCommentContext";
-import { ErrorContext, ErrorContextType } from "~/contexts/errorContext";
+import { EditCommentContext, type EditCommentContextType } from "~/contexts/editCommentContext";
+import { ErrorContext, type ErrorContextType } from "~/contexts/errorContext";
 import { api } from "~/utils/api";
 import { Button } from "../modal/Modal";
 
@@ -194,7 +194,11 @@ const EditComment: FC = () => {
               Discard
             </Button>
           </span>
-          <span onClick={handlePost} className="flex-1">
+          <span onClick={() => {
+            handlePost()
+            .then(()=>{}).catch(()=>{});
+          }
+          } className="flex-1">
             <Button type="normal">
               <FiCornerUpRight />
               Submit
