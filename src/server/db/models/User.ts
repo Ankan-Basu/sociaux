@@ -1,5 +1,5 @@
 import mongoose, {Schema, models, model} from "mongoose";
-const bcrypt = require('bcrypt');
+import bcrypt from 'bcrypt';
 
 export interface IUser {
     name: string,

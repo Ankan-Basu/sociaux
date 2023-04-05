@@ -27,7 +27,7 @@ export const usersRouter = createTRPCRouter({
           };
         }
 
-        dbConnect();
+        await dbConnect();
         // console.log('Context', ctx);
         
         const res: IUser | null = await UserModel.findOne({uname: input.uname});
@@ -47,7 +47,7 @@ export const usersRouter = createTRPCRouter({
       try {
 
         
-        dbConnect();
+        await dbConnect();
         // console.log('Img upload', input);
         const dbResp = await ProfileImageModel.findOneAndUpdate({uname: input.uname}, {uname: input.uname, img: input.image}, {upsert: true});
         
@@ -69,7 +69,7 @@ export const usersRouter = createTRPCRouter({
           return {img: ''}
         }
         
-        dbConnect();
+        await dbConnect();
         // console.log('Img upload', input);
         const dbResp = await ProfileImageModel.findOne({uname: input.uname});
         
@@ -94,7 +94,7 @@ export const usersRouter = createTRPCRouter({
 
       try {
 
-        dbConnect();
+        await dbConnect();
         const dbResp = await UserModel.findOneAndUpdate({uname: input.uname}, {uname: input.uname, bio: input.bio}, {upsert: false});
         
         return {
@@ -113,7 +113,7 @@ export const usersRouter = createTRPCRouter({
 
       try {
 
-        dbConnect();
+        await dbConnect();
         const dbResp = await UserModel.findOneAndUpdate({uname: input.uname}, {uname: input.uname, name: input.fName}, {upsert: false});
         
         return {
@@ -132,7 +132,7 @@ export const usersRouter = createTRPCRouter({
     .mutation(async ({ input }) => {
 
       try {
-        dbConnect();
+        await dbConnect();
         const dbResp = await UserModel.findOneAndUpdate({uname: input.uname}, {uname: input.uname, email: input.email}, {upsert: false});
         
         return {

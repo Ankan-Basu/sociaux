@@ -17,7 +17,7 @@ export const commentsRouter = createTRPCRouter({
     .input(z.object({ postId: z.string() }))
     .query(async ({ input }) => {
       try {
-        dbConnect();
+        await dbConnect();
         
         const comments: Array<HydratedDocument<IComment>> =
         await CommentModel.find({ postId: input.postId }).sort({time: 'desc'});
@@ -36,7 +36,7 @@ export const commentsRouter = createTRPCRouter({
     )
     .mutation(async ({ input }) => {
       try {
-        dbConnect();
+        await dbConnect();
         const dbResp: HydratedDocument<IComment> = await CommentModel.create({
           ...input, time: Date.now()
         });
@@ -51,13 +51,15 @@ export const commentsRouter = createTRPCRouter({
                 //ignore
                 return;
               } else {
-                sendNotification({uname: post.uname, source: input.uname, type: "comment", postId: input.postId, commentId: dbResp._id.toString()});
+                sendNotification({uname: post.uname, source: input.uname, type: "comment", postId: input.postId, commentId: dbResp._id.toString()})
+                .then(()=>{}).catch(()=>{});
 
               }
             } catch(err) {
               //ignore
             }
-          })();
+          })()
+          .then(()=>{}).catch(()=>{});
 
           return dbResp;
         } else {
@@ -80,7 +82,7 @@ export const commentsRouter = createTRPCRouter({
     )
     .mutation(async ({ input }) => {
       try {
-        dbConnect();
+       await dbConnect();
         const comment: HydratedDocument<IComment> | null = await CommentModel.findOne(
           {_id: input.commentId}
         );
@@ -116,7 +118,7 @@ export const commentsRouter = createTRPCRouter({
     .input(z.object({ uname: z.string(), commentId: z.string() }))
     .mutation(async ({ input }) => {
       try {
-        dbConnect();
+        await dbConnect();
         const dbResp = await CommentModel.findOneAndDelete({ _id: input.commentId });
 
         // console.log('DELETE COMMENT', dbResp);
@@ -137,13 +139,15 @@ export const commentsRouter = createTRPCRouter({
               //ignore
               return;
             } else {
-              removeNotification({uname: post.uname, source: input.uname, type: "comment", postId: post._id.toString(), commentId: dbResp._id.toString()});
+              removeNotification({uname: post.uname, source: input.uname, type: "comment", postId: post._id.toString(), commentId: dbResp._id.toString()})
+              .then(()=>{}).catch(()=>{});
 
             }
           } catch(err) {
             //ignore
           }
-        })();
+        })()
+        .then(()=>{}).catch(()=>{});
 
 
         return dbResp;

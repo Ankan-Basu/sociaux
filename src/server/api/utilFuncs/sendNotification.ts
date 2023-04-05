@@ -46,7 +46,7 @@ const sendNotification = async ({
     NotificationModel.create({
       uname: uname,
       notifs: [obj]
-    })
+    }).then(()=>{}).catch(()=>{})
 
   } else {    
     notifListTarget.notifs.push(obj);
