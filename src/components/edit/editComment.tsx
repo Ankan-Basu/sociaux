@@ -1,18 +1,18 @@
 import { TRPCClientError } from "@trpc/client";
 import { useSession } from "next-auth/react";
-import { FC, useContext, useEffect, useState } from "react";
+import { type FC, useContext, useEffect, useState } from "react";
 import {
   FiCornerUpRight,
   FiTrash,
   FiX,
 } from "react-icons/fi";
-import { EditCommentContext } from "~/contexts/editCommentContext";
-import { ErrorContext } from "~/contexts/errorContext";
+import { EditCommentContext, EditCommentContextType } from "~/contexts/editCommentContext";
+import { ErrorContext, ErrorContextType } from "~/contexts/errorContext";
 import { api } from "~/utils/api";
 import { Button } from "../modal/Modal";
 
 const EditComment: FC = () => {
-  let mode = ""; //change later
+  const mode = ""; //change later
 
   const editCommentMutation = api.comments.editComment.useMutation();
 
@@ -30,13 +30,13 @@ const EditComment: FC = () => {
     setIsReplyComment,
     refreshReplies,
     setRefreshReplies,
-  } = useContext(EditCommentContext);
+  } = useContext(EditCommentContext) as EditCommentContextType;
 
   const [commentMessage, setCommentMessage] = useState(
     currEditComment?.message
   );
 
-  const {setErrorDisplay, setErrorMessage, setErrorType} = useContext(ErrorContext);
+  const {setErrorDisplay, setErrorMessage, setErrorType} = useContext(ErrorContext) as ErrorContextType;
   const session = useSession();
   
   useEffect(() => {
@@ -64,7 +64,15 @@ const EditComment: FC = () => {
       setErrorType('simple');
     }
 
-    if (!currEditComment && !currEditComment._id) {
+    if (!currEditComment) {
+      setErrorDisplay(true);
+      setErrorMessage('An unexpected error occured');
+      setErrorType('redirect');
+      setShowCommentEditModal(false);
+      return;
+    }
+
+    if (!currEditComment._id) {
       // console.log("error");
       setErrorDisplay(true);
       setErrorMessage('BAD_REQUEST');
@@ -87,25 +95,38 @@ const EditComment: FC = () => {
     try {
       if (isReplyComment) {
         const x = await editReplyCommentMutation.mutateAsync({
-          message: commentMessage,
+          message: commentMessage || '',
           uname: uname,
           replyCommId: currEditComment._id,
         });
-        // console.log(x);
-        setRefreshReplies((currState: Object) => {
-          return { ...currState };
-        });
+        
+        if (!setRefreshReplies) {
+          setErrorDisplay(true);
+           setErrorMessage('An unexpected error occured');
+          setErrorType('simple');
+            return;
+        }
+        setRefreshReplies({val: 1});
       } else {
         console.log(currEditComment.uname);
 
         const x = await editCommentMutation.mutateAsync({
           commentId: currEditComment._id,
           uname: uname,
-          message: commentMessage,
+          message: commentMessage || '',
         });
         // console.log(x);
 
-        setRefreshComments({ ...refreshComments });
+
+
+        if (!setRefreshComments) {
+          setErrorDisplay(true);
+           setErrorMessage('An unexpected error occured');
+          setErrorType('simple');
+            return;
+        }
+
+        setRefreshComments({ val: 1 });
       }
 
       handleClose();
@@ -141,8 +162,8 @@ const EditComment: FC = () => {
         <div
           className={`
             flex justify-end 
-            ${mode === "mobile" ? "mt-4" : "mt-1"} 
             `}
+            // ${mode === "mobile" ? "mt-4" : "mt-1"} 
         >
           <span
             onClick={handleClose}

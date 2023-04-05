@@ -1,10 +1,7 @@
 import { useSession } from 'next-auth/react';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React, { createContext, FC, useContext, useEffect, useState } from 'react'
-import {FaEllipsisV, FaEllipsisH} from 'react-icons/fa';
-import { FiMoreHorizontal } from 'react-icons/fi';
-import { EditCommentContext } from '~/contexts/editCommentContext';
+import { type FC, useContext, useEffect, useState } from 'react'
+import { EditCommentContext, type EditCommentContextType} from '~/contexts/editCommentContext';
 import { PostFeedContext } from '~/contexts/postFeedContext';
 import { ReplyingContext } from '~/contexts/replyingContext';
 import { api } from '~/utils/api';
@@ -12,8 +9,9 @@ import Dropdown from '../dropdown/dropdown';
 import ReplyCommentList from './replyCommentList';
 import dayjs from "dayjs";
 import relativeTime from 'dayjs/plugin/relativeTime';
-import { ErrorContext } from '~/contexts/errorContext';
+import { ErrorContext, ErrorContextType } from '~/contexts/errorContext';
 import { TRPCClientError } from '@trpc/client';
+import { FiMoreHorizontal } from 'react-icons/fi';
 
 dayjs.extend(relativeTime);
 
@@ -50,11 +48,11 @@ const Comment: FC<ICommentProps> = (
 
     const {setIsReplying, setReplyingTo, replyingTo} = useContext(ReplyingContext);
 
-    const {setShowCommentEditModal, setCurrEditComment, setIsReplyComment, setRefreshComments, refreshComments} = useContext(EditCommentContext);
+    const {setShowCommentEditModal, setCurrEditComment, setIsReplyComment, setRefreshComments, refreshComments} = useContext(EditCommentContext) as EditCommentContextType;
 
     const {setShowExpanded} = useContext(PostFeedContext);
 
-    const {setErrorDisplay, setErrorMessage, setErrorType} = useContext(ErrorContext);
+    const {setErrorDisplay, setErrorMessage, setErrorType} = useContext(ErrorContext) as ErrorContextType;
 
     const session = useSession();
 
@@ -179,7 +177,13 @@ const Comment: FC<ICommentProps> = (
         
         try {
             await deleteCommentMutation.mutateAsync({uname: reactorUname, commentId: _id});
-            setRefreshComments({...refreshComments});
+            if (!setRefreshComments) {
+                setErrorDisplay(true);
+                setErrorMessage('An unexpected error occured');
+                setErrorType('simple');
+                return;
+            }
+            setRefreshComments({val: 1});
         } catch(err) {
             // console.log(err);
             setErrorDisplay(true);

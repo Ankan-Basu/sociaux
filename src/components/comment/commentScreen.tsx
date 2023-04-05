@@ -11,8 +11,8 @@ interface ICommentScreenProps {
 }
 
 const CommentScreen: FC<ICommentScreenProps> = ({ postId }) => {
-  const [refreshReplies, setRefreshReplies] = useState<Object>({ val: 1 });
-  const [refreshComments, setRefreshComments] = useState({ val: 1 });
+  const [refreshReplies, setRefreshReplies] = useState<{val: number}>({ val: 1 });
+  const [refreshComments, setRefreshComments] = useState<{val: number}>({ val: 1 });
 
   // console.log('comment screen here', postId);
 
@@ -30,6 +30,7 @@ const CommentScreen: FC<ICommentScreenProps> = ({ postId }) => {
             additionVals={{
               refreshReplies,
               setRefreshReplies,
+              refreshComments,
               setRefreshComments,
             }}
           >
