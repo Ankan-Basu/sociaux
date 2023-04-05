@@ -1,4 +1,4 @@
-import { FC, useEffect, useLayoutEffect, useRef } from 'react'
+import { type FC, useLayoutEffect, useRef } from 'react'
 
 interface IOptionsObject {
   optionName: string;
@@ -61,7 +61,11 @@ const Dropdown: FC<IDropdownProps> = ({additionCSS='', display, setDisplay, opti
         return (
           <div key={indx}
           onClick={() => {
-            option.callback();
+            const x = option.callback();
+
+            if (x instanceof Promise<void>) {
+              x.then(()=>{}).catch(()=>{});
+            }
             setDisplay(false);
           }}
           >

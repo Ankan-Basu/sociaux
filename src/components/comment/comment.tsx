@@ -2,16 +2,17 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { type FC, useContext, useEffect, useState } from 'react'
 import { EditCommentContext, type EditCommentContextType} from '~/contexts/editCommentContext';
-import { PostFeedContext } from '~/contexts/postFeedContext';
-import { ReplyingContext } from '~/contexts/replyingContext';
+import { PostFeedContext, type PostFeedContextType } from '~/contexts/postFeedContext';
+import { ReplyingContext, type ReplyingContextType } from '~/contexts/replyingContext';
 import { api } from '~/utils/api';
 import Dropdown from '../dropdown/dropdown';
 import ReplyCommentList from './replyCommentList';
 import dayjs from "dayjs";
 import relativeTime from 'dayjs/plugin/relativeTime';
-import { ErrorContext, ErrorContextType } from '~/contexts/errorContext';
+import { ErrorContext, type ErrorContextType } from '~/contexts/errorContext';
 import { TRPCClientError } from '@trpc/client';
 import { FiMoreHorizontal } from 'react-icons/fi';
+import Image from 'next/image';
 
 dayjs.extend(relativeTime);
 
@@ -42,15 +43,15 @@ const Comment: FC<ICommentProps> = (
     const [liked, setLiked] = useState<boolean>(false);
     const [showReplies, setShowReplies] = useState<boolean>(false);
 
-    const [img, setImg] = useState<string>();
+    // const [img, setImg] = useState<string>();
 
     const [displayDropdown, setDisplayDropdown] = useState<boolean>(false);
 
-    const {setIsReplying, setReplyingTo, replyingTo} = useContext(ReplyingContext);
+    const {setIsReplying, setReplyingTo, replyingTo} = useContext(ReplyingContext) as ReplyingContextType;
 
     const {setShowCommentEditModal, setCurrEditComment, setIsReplyComment, setRefreshComments, refreshComments} = useContext(EditCommentContext) as EditCommentContextType;
 
-    const {setShowExpanded} = useContext(PostFeedContext);
+    const {setShowExpanded} = useContext(PostFeedContext) as PostFeedContextType;
 
     const {setErrorDisplay, setErrorMessage, setErrorType} = useContext(ErrorContext) as ErrorContextType;
 
@@ -131,9 +132,11 @@ const Comment: FC<ICommentProps> = (
     const toggleLike = () => {
         // console.log(_id);
         if (liked) {
-            handleUnLike();
+            handleUnLike()
+            .then(()=>{}).catch(()=>{});
         } else {
-            handleLike();
+            handleLike()
+            .then(()=>{}).catch(()=>{});
         }
     }
 
@@ -198,8 +201,15 @@ const Comment: FC<ICommentProps> = (
     }
 
     const handleNavigate = () => {
+        if (!setShowExpanded) {
+            setErrorDisplay(true);
+            setErrorMessage('An unexpected error occured');
+            setErrorType('simple');
+            return;
+        }
         setShowExpanded(false);
         router.push(`/user/${uname}`)
+        .then(()=>{}).catch(()=>{});
     }
 
   return (
@@ -210,7 +220,7 @@ const Comment: FC<ICommentProps> = (
     //lg:w-98`}>
         <div className='w-16'>
         <div className='w-full'>
-            <img src={profileImgQuery.data?.img} height='60rem' width='60rem' className='rounded-full'/>
+            <Image src={profileImgQuery.data?.img || ''} height='60' width='60' alt='photo' className='rounded-full'/>
         </div>
         </div>
         <div className='flex-1'>

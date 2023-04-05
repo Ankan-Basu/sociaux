@@ -13,17 +13,8 @@ const PostScreen: FC<IPostScreenProps> = ({ display }) => {
   const { setShowExpanded, currPost, setCurrPost } =
     useContext(PostFeedContext);
 
-  console.log("screen", currPost);
+  // console.log("screen", currPost);
 
-  useEffect(() => {
-    console.log("Post screen renders");
-  }, [currPost]);
-
-  useEffect(() => {
-    console.log("Post screen mounts");
-    // console.log('imgid', currPost.imageId);
-    
-  }, []);
 
   return (
     <div

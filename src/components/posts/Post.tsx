@@ -22,7 +22,7 @@ import SharePostModal from "../modal/sharePostModal";
 
 
 export interface IPostProps {
-  expanded: boolean;
+  expanded?: boolean;
   uname: string | undefined;
   message: string | undefined;
   time: Date | undefined;

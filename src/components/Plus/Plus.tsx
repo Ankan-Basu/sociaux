@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { type FC, useState } from 'react'
 import { FiPlus } from 'react-icons/fi';
 import Modal from '../modal/Modal';
 import PersonalOptionsMobile from '../PersonalOptions/PersonalOptionsMobile';
