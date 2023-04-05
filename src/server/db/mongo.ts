@@ -13,7 +13,6 @@ declare global {
 const { MONGODB_URI } = process.env;
 
 if (!MONGODB_URI) throw new Error("MONGODB_URI not defined");
-// if (!MONGODB_DB) throw new Error('MONGODB_DB not defined');
 
 let cached = global.mongoose;
 
@@ -27,7 +26,7 @@ async function dbConnect() {
   if (!cached.promise) {
     console.log("connecting to db");
     cached.promise = mongoose
-      .connect(`${MONGODB_URI}`)
+      .connect(`${MONGODB_URI}`!)
       .then((mongoose) => mongoose);
   }
 

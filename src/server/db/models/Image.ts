@@ -12,7 +12,7 @@ const imageSchema: Schema = new Schema<IImage>({
     }
 });
 
-var ImageModel = (models.image as Model<IImage>) || 
+const ImageModel = (models.image as Model<IImage>) || 
     model<IImage>('image', imageSchema);
 
     export default ImageModel;

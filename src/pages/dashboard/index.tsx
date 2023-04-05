@@ -185,7 +185,12 @@ const DataField: FC<IDataFieldProps> = ({mode, data}) => {
     }
 
     const uname = session.data.user.uname;
-    console.log(editedText);
+    // console.log(editedText);
+
+    if (!uname) {
+      //err
+      return;
+    }
     
     let resp = undefined;
 
@@ -326,7 +331,7 @@ const Bio: FC<IBioProps> = ({bio}) => {
       setEditedText('');
       setEditMode(false);
       
-    } catch(err: TRPCClientError<AppRouter>) {
+    } catch(err) {
       console.log(err);
       return;
     }

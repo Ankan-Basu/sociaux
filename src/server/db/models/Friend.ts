@@ -19,7 +19,7 @@ const friendListSchema: Schema = new Schema<IFriendList>({
     }
 });
 
-var FriendListModel = (models.friendList as Model<IFriendList>) || 
+const FriendListModel = (models.friendList as Model<IFriendList>) || 
     model<IFriendList>('friendList', friendListSchema);
 
     export default FriendListModel;

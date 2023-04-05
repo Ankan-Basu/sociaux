@@ -47,5 +47,5 @@ userSchema.pre('save', async function(next) {
     next();
 })
 
-var UserModel = (models.user as mongoose.Model<IUser>) || model<IUser>('user', userSchema);
+const UserModel = (models.user as mongoose.Model<IUser>) || model<IUser>('user', userSchema);
 export default UserModel;

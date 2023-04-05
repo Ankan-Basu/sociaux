@@ -36,6 +36,6 @@ const friendReqListSchema: Schema = new Schema<IFriendReqs>({
     }
 });
 
-var FriendReqModel = (models.friendReq as mongoose.Model<IFriendReqs>) || 
+const FriendReqModel = (models.friendReq as mongoose.Model<IFriendReqs>) || 
     model<IFriendReqs>('friendReq', friendReqListSchema);
 export default FriendReqModel;

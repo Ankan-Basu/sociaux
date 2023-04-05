@@ -12,7 +12,7 @@ const postImageSchema: Schema = new Schema<IPostImage>({
     }
 });
 
-var PostImageModel = (models.postImage as Model<IPostImage>) || 
+const PostImageModel = (models.postImage as Model<IPostImage>) || 
     model<IPostImage>('postImage', postImageSchema);
 
-    export default PostImageModel;
+export default PostImageModel;

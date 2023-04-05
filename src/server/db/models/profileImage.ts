@@ -18,7 +18,7 @@ const profileImageSchema: Schema = new Schema<IProfileImage>({
     }
 });
 
-var ProfileImageModel = (models.profileImage as Model<IProfileImage>) || 
+const ProfileImageModel = (models.profileImage as Model<IProfileImage>) || 
     model<IProfileImage>('profileImage', profileImageSchema);
 
-    export default ProfileImageModel;
+export default ProfileImageModel;
