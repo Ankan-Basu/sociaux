@@ -1,4 +1,4 @@
-import {Schema, models, model, Model} from "mongoose";
+import {Schema, models, model, type Model} from "mongoose";
 
 interface IImage {
     img: string;

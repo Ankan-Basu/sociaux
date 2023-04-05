@@ -1,4 +1,4 @@
-import { Session } from "next-auth";
+import { type Session } from "next-auth";
 import FriendListModel from "~/server/db/models/Friend";
 
 const detectFriendship = async (

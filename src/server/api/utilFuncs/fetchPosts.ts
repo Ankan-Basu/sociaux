@@ -1,7 +1,7 @@
-import { HydratedDocument } from "mongoose";
-import { Session } from "next-auth";
+import { type HydratedDocument } from "mongoose";
+import { type Session } from "next-auth";
 import FriendListModel from "~/server/db/models/Friend";
-import PostModel, { IPost } from "~/server/db/models/Post";
+import PostModel, { type IPost } from "~/server/db/models/Post";
 
 const fetchPosts = async (ctx: { session: Session | null }) => {
   const posts: Array<HydratedDocument<IPost>> = await PostModel.find({}).sort({time: 'desc'});

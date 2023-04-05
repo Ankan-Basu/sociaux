@@ -1,4 +1,4 @@
-import NotificationModel, { INotifItem } from "~/server/db/models/Notification";
+import NotificationModel, { type INotifItem } from "~/server/db/models/Notification";
 
 interface x {
   uname: string;

@@ -1,4 +1,4 @@
-import mongoose, {Schema, models, model} from "mongoose";
+import {Schema, models, model, type Model} from "mongoose";
 
 export interface IFriendReqItem {
     source: string;
@@ -36,6 +36,6 @@ const friendReqListSchema: Schema = new Schema<IFriendReqs>({
     }
 });
 
-const FriendReqModel = (models.friendReq as mongoose.Model<IFriendReqs>) || 
+const FriendReqModel = (models.friendReq as Model<IFriendReqs>) || 
     model<IFriendReqs>('friendReq', friendReqListSchema);
 export default FriendReqModel;
