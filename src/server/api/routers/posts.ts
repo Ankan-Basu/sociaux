@@ -18,7 +18,7 @@ import fetchPosts from "../utilFuncs/fetchPosts";
 export const postsRouter = createTRPCRouter({
   getAllPosts: publicProcedure.query(async ({ ctx }) => {
     try {
-      dbConnect();
+      await dbConnect();
 
       const resArr = await fetchPosts(ctx);
 
@@ -39,7 +39,7 @@ export const postsRouter = createTRPCRouter({
           return [];
         }
 
-        dbConnect();
+        await dbConnect();
 
         ///////////////////////////////////////
         const isFriend = await detectFriendship(ctx, input.uname);
@@ -85,7 +85,7 @@ export const postsRouter = createTRPCRouter({
           // console.log('Get One Post IGNORING');
           return invPost;
         }
-        dbConnect();
+        await dbConnect();
 
         try {
           const post: HydratedDocument<IPost> | null = await PostModel.findOne({
@@ -143,7 +143,7 @@ export const postsRouter = createTRPCRouter({
     )
     .mutation(async ({ input }) => {
       try {
-        dbConnect();
+        await dbConnect();
         // console.log(input);
         const post = input;
 
@@ -195,7 +195,7 @@ export const postsRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ input }) => {
-      dbConnect();
+      await dbConnect();
       // console.log(input);
 
       const post = await PostModel.findOne({ _id: input.postId });
@@ -233,7 +233,7 @@ export const postsRouter = createTRPCRouter({
           return { img: "" };
         }
 
-        dbConnect();
+        await dbConnect();
 
         try {
           const dbResp = await PostImageModel.findOne({ _id: input.imageId });
@@ -259,7 +259,7 @@ export const postsRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ input }) => {
-      dbConnect();
+      await dbConnect();
       // console.log(input);
 
       const dbResp = await PostModel.deleteOne({ _id: input.postId });
@@ -278,7 +278,7 @@ export const postsRouter = createTRPCRouter({
     )
     .mutation(async ({ input }) => {
       try {
-        dbConnect();
+        await dbConnect();
         // console.log(input);
         const dbResp = await PostModel.create({
           uname: input.uname,

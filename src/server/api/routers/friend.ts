@@ -17,7 +17,7 @@ export const friendsRouter = createTRPCRouter({
     .input(z.object({uname: z.string()}))
     .query(async ({ input }) => {
       try {
-        dbConnect();
+        await dbConnect();
         const friendReqs = await FriendReqModel.findOne({ uname: input.uname });
 
         if (!friendReqs) {
@@ -36,7 +36,7 @@ export const friendsRouter = createTRPCRouter({
     .input(z.object({targetUname: z.string(), requesterUname: z.string()}))
     .mutation(async ({ input }) => {
       try {
-        dbConnect();
+        await dbConnect();
         const targetUser = await FriendReqModel.findOne({uname: input.targetUname});
 
         if (!targetUser) {
@@ -70,7 +70,7 @@ export const friendsRouter = createTRPCRouter({
     .input(z.object({targetUname: z.string(), acceptorUname: z.string()}))
     .mutation(async ({ input }) => {
       try {
-        dbConnect();
+        await dbConnect();
 
         const friendReqList = await FriendReqModel.findOne({uname: input.acceptorUname});
         if (!friendReqList) {
@@ -139,7 +139,7 @@ export const friendsRouter = createTRPCRouter({
             return req.source !== input.targetUname;
           });
           
-          //@ts-ignore
+  
           friendReqList.reqs = newReqs;
          
   
@@ -149,6 +149,7 @@ export const friendsRouter = createTRPCRouter({
 
 
           sendNotification({source: input.acceptorUname, uname: input.targetUname, type: "acceptReq"})
+          .then(()=>{}).catch(()=>{});
   
           return dbResp1;
         }
@@ -165,7 +166,7 @@ export const friendsRouter = createTRPCRouter({
     .input(z.object({cancellerUname: z.string(), targetUname: z.string()}))
     .mutation(async ({ input }) => {
       try {
-        dbConnect();
+        await dbConnect();
 
         // friend req has gone to the target.
         // canceller had sent the req. (Now he is canceller)
@@ -182,7 +183,7 @@ export const friendsRouter = createTRPCRouter({
           return req.source !== input.cancellerUname;
         });
 
-        //@ts-ignore
+  
         friendReqList.reqs = newReqs;
 
         const dbResp = await friendReqList.save();
@@ -202,7 +203,7 @@ export const friendsRouter = createTRPCRouter({
     .input(z.object({rejectorUname: z.string(), targetUname: z.string()}))
     .mutation(async ({ input }) => {
       try {
-        dbConnect();
+        await dbConnect();
 
         const friendReqList = await FriendReqModel.findOne({uname: input.rejectorUname});
 
@@ -215,7 +216,7 @@ export const friendsRouter = createTRPCRouter({
           return req.source !== input.targetUname;
         });
 
-        //@ts-ignore
+  
         friendReqList.reqs = newReqs;
 
         const dbResp = await friendReqList.save();
@@ -235,7 +236,7 @@ export const friendsRouter = createTRPCRouter({
     .input(z.object({unFrienderUname: z.string(), targetUname: z.string()}))
     .mutation(async ({ input }) => {
       try {
-        dbConnect();
+        await dbConnect();
 
         const friendListUnFriender = await FriendListModel.findOne({uname: input.unFrienderUname});
 

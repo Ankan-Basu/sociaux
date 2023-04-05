@@ -7,7 +7,7 @@ export interface IFriendReqItem {
 
 interface IFriendReqs {
     uname: string;
-    reqs: [IFriendReqItem];
+    reqs: IFriendReqItem[];
 }
 
 const friendReqItemSchema: Schema = new Schema<IFriendReqItem> ({

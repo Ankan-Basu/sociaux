@@ -14,7 +14,7 @@ export const imageRouter = createTRPCRouter({
     .input(z.object({image: z.string()}))
     .mutation(async ({ input }) => {
       try {
-        dbConnect();
+        await dbConnect();
         // console.log('Img upload', input);
         const dbResp = await ImageModel.create({img: input.image});
         
@@ -32,7 +32,7 @@ export const imageRouter = createTRPCRouter({
     .input(z.object({imageId: z.string()}))
     .query(async ({ input }) => {
       try {
-        dbConnect();
+        await dbConnect();
         // console.log('Img upload', input);
         const dbResp = await ImageModel.findOne({_id: input.imageId});
         

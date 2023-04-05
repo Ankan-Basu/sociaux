@@ -18,7 +18,7 @@ export const searchRouter = createTRPCRouter({
           return []
         }
 
-        dbConnect();
+        await dbConnect();
 
         // const queryString = '^' + input.searchName;
         const queryString = '^' + input.searchName + '|' + '\\s' + input.searchName;

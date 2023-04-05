@@ -19,7 +19,7 @@ export const replyCommentsRouter = createTRPCRouter({
     .input(z.object({ parenCommId: z.string() }))
     .query(async ({ input }) => {
       try {
-        dbConnect();
+        await dbConnect();
 
         const replyComments: Array<HydratedDocument<IReplyComment>> =
           await ReplyCommentModel.find({ parenCommId: input.parenCommId }).sort(
@@ -44,7 +44,7 @@ export const replyCommentsRouter = createTRPCRouter({
     )
     .mutation(async ({ input }) => {
       try {
-        dbConnect();
+        await dbConnect();
 
         const parenComm = await CommentModel.findOne({
           _id: input.parenCommId,
@@ -85,7 +85,8 @@ export const replyCommentsRouter = createTRPCRouter({
               postId: parenComm.postId,
               commentId: parenComm._id.toString(),
               replyCommentId: replyComm._id.toString(),
-            });
+            })
+            .then(()=>{}).catch(()=>{});
 
             return dbResp;
           }
@@ -108,7 +109,7 @@ export const replyCommentsRouter = createTRPCRouter({
     )
     .mutation(async ({ input }) => {
       try {
-        dbConnect();
+        await dbConnect();
 
         const comment = await ReplyCommentModel.findOne({
           _id: input.replyCommId,
@@ -144,7 +145,7 @@ export const replyCommentsRouter = createTRPCRouter({
     )
     .mutation(async ({ input }) => {
       try {
-        dbConnect();
+        await dbConnect();
         const parenComm: HydratedDocument<IComment> | null =
           await CommentModel.findOne({ _id: input.parenCommId });
 
@@ -201,7 +202,8 @@ export const replyCommentsRouter = createTRPCRouter({
               postId: parenComm.postId,
               commentId: parenComm._id.toString(),
               replyCommentId: input.replyCommId,
-            });
+            })
+            .then(()=>{}).catch(()=>{});
 
             return dbResp1;
           }

@@ -20,7 +20,7 @@ export const likesRouter = createTRPCRouter({
     .mutation(async ({ input }) => {
       try {
 
-        dbConnect();
+        await dbConnect();
         
         const post: HydratedDocument<IPost> | null = await PostModel.findOne({
         _id: input.postId,
@@ -37,7 +37,8 @@ export const likesRouter = createTRPCRouter({
           const dbResp = await post.save();
 
           //change
-          sendNotification({uname: post.uname, source: input.uname, type: 'likePost', postId: post._id.toString()});
+          sendNotification({uname: post.uname, source: input.uname, type: 'likePost', postId: post._id.toString()})
+          .then(()=>{}).catch(()=>{});
 
           
           return dbResp;
@@ -62,7 +63,7 @@ export const likesRouter = createTRPCRouter({
     .mutation(async ({ input }) => {
       try {
 
-        dbConnect();
+        await dbConnect();
         const post: HydratedDocument<IPost> | null = await PostModel.findOne({
           _id: input.postId,
         });
@@ -83,7 +84,8 @@ export const likesRouter = createTRPCRouter({
 
 
           //// remove notif
-          removeNotification({source: input.uname, uname: post.uname, type: 'likePost', postId: post._id.toString()});
+          removeNotification({source: input.uname, uname: post.uname, type: 'likePost', postId: post._id.toString()})
+          .then(()=>{}).catch(()=>{});
 
           
           return dbResp;
@@ -105,7 +107,7 @@ export const likesRouter = createTRPCRouter({
     .input(z.object({ uname: z.string(), commentId: z.string() }))
     .mutation(async ({ input }) => {
       try {
-        dbConnect();
+        await dbConnect();
         try {
           const comment: HydratedDocument<IComment> | null =
           await CommentModel.findOne({ _id: input.commentId });
@@ -127,6 +129,7 @@ export const likesRouter = createTRPCRouter({
             const dbResp = await comment.save();
 
             sendNotification({source: input.uname, uname: comment.uname, type: "likeComment", commentId: comment._id.toString(), postId: comment.postId})
+            .then(()=>{}).catch(()=>{});
 
             return dbResp;
           }
@@ -155,7 +158,7 @@ export const likesRouter = createTRPCRouter({
     .mutation(async ({ input }) => {
       try {
 
-        dbConnect();
+        await dbConnect();
         try {
           const comment: HydratedDocument<IComment> | null =
           await CommentModel.findOne({ _id: input.commentId });
@@ -178,7 +181,8 @@ export const likesRouter = createTRPCRouter({
 
             const dbResp = await comment.save();
 
-            removeNotification({source: input.uname, uname: comment.uname, type: "likeComment", commentId: comment._id.toString(), postId: comment.postId});
+            removeNotification({source: input.uname, uname: comment.uname, type: "likeComment", commentId: comment._id.toString(), postId: comment.postId})
+            .then(()=>{}).catch(()=>{});
 
             return dbResp;
           }
@@ -204,8 +208,8 @@ export const likesRouter = createTRPCRouter({
     likeReplyComment: publicProcedure
     .input(z.object({ uname: z.string(), replyCommentId: z.string() }))
     .mutation(async ({ input }) => {
-      dbConnect();
       try {
+        await dbConnect();
         const replyComment: HydratedDocument<IReplyComment> | null =
           await ReplyCommentModel.findOne({ _id: input.replyCommentId });
         // console.log(comment);
@@ -235,9 +239,10 @@ export const likesRouter = createTRPCRouter({
               if (!parenComm) {
                 return;
               } else {              
-                sendNotification({uname: replyComment.uname, source: input.uname, type: "likeReplyComment", commentId: replyComment.parenCommId, replyCommentId: replyComment._id.toString(), postId: parenComm.postId});   
+                sendNotification({uname: replyComment.uname, source: input.uname, type: "likeReplyComment", commentId: replyComment.parenCommId, replyCommentId: replyComment._id.toString(), postId: parenComm.postId})
+                .then(()=>{}).catch(()=>{});   
               }
-            })();
+            })().then(()=>{}).catch(()=>{});
 
 
 
@@ -261,8 +266,8 @@ export const likesRouter = createTRPCRouter({
     unlikeReplyComment: publicProcedure
     .input(z.object({ uname: z.string(), replyCommentId: z.string() }))
     .mutation(async ({ input }) => {
-      dbConnect();
       try {
+        await dbConnect();
         const replyComment: HydratedDocument<IReplyComment> | null =
           await ReplyCommentModel.findOne({ _id: input.replyCommentId });
 
@@ -294,9 +299,12 @@ export const likesRouter = createTRPCRouter({
               if (!parenComm) {
                 return;
               } else {              
-                removeNotification({uname: replyComment.uname, source: input.uname, type: "likeReplyComment", commentId: replyComment.parenCommId, replyCommentId: replyComment._id.toString(), postId: parenComm.postId});   
+                removeNotification({uname: replyComment.uname, source: input.uname, type: "likeReplyComment", commentId: replyComment.parenCommId, replyCommentId: replyComment._id.toString(), postId: parenComm.postId})
+                .then(() => console.log('Then of remove unlike')).catch(()=>{});   
+                console.log('After promise');
+                
               }
-            })();
+            })().then(()=>{}).catch(()=>{});
 
             return dbResp;
           }

@@ -1,5 +1,5 @@
 import { TRPCError } from "@trpc/server";
-import { HydratedDocument } from "mongoose";
+import { HydratedDocument, ObjectId } from "mongoose";
 import { z } from "zod";
 import {
   createTRPCRouter,
@@ -17,7 +17,7 @@ export const notifsRouter = createTRPCRouter({
     .query(async ({ input }) => {
       try {
 
-        dbConnect();
+        await dbConnect();
         
         const notif: HydratedDocument<INotification> | null =
         await NotificationModel.findOne({ uname: input.uname });
@@ -43,7 +43,7 @@ export const notifsRouter = createTRPCRouter({
     .mutation(async ({ input }) => {
       try {
 
-        dbConnect();
+        await dbConnect();
         
         const dbRes = await NotificationModel.findOne({ uname: input.uname });
 
@@ -54,15 +54,19 @@ export const notifsRouter = createTRPCRouter({
           })
         }
 
-        let notifs2: Array<INotifItem>;
+        let notifs2: Array<INotifItemHydrated>;
+
+        interface INotifItemHydrated extends INotifItem {
+          _id?: ObjectId;
+        }
 
         if (input.notifId === "0") {
           //delete all
           notifs2 = [];
         } else {
-          notifs2 = dbRes.notifs.filter((notif: any) => {
+          notifs2 = dbRes.notifs.filter((notif: INotifItemHydrated) => {
             // console.log(notif._id, notifId, notif._id == notifId);
-            return notif._id.toString() != input.notifId;
+            return notif._id?.toString() != input.notifId;
             // !=. !== won't work coz comaparing objectID with string
           });
         }
