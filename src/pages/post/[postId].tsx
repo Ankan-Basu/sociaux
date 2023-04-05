@@ -1,22 +1,45 @@
-import { FC, useEffect, useState } from "react";
+import { type FC, useEffect, useState, useContext } from "react";
 import { useRouter } from "next/router";
 import Post from "~/components/posts/Post";
 import CommentScreen from "~/components/comment/commentScreen";
 import { api } from "~/utils/api";
 import PostFeedContextProvider from "~/contexts/postFeedContext";
 import PostEditContextProvider from "~/contexts/postEditContext";
+import { type IPost } from "~/server/db/models/Post";
+import { type HydratedDocument } from "mongoose";
+import { ErrorContext, type ErrorContextType } from "~/contexts/errorContext";
 
 const PostPage: FC = () => {
   const router = useRouter();
-  const { postId } = router.query;
-  const [post, setPost] = useState<any>();
-  const [notFound, setNotFound] = useState<boolean>(false);
-  const [serverErr, setServerErr] = useState<boolean>(false);
+  let { postId } = router.query;
+  const [post, setPost] = useState<HydratedDocument<IPost>| IinvPost>();
 
   const [showExpanded, setShowExpanded] = useState<boolean>(false);
   const [reload, setReload] = useState({ reolad: 1 });
 
+  const {setErrorDisplay, setErrorMessage, setErrorType} = useContext(ErrorContext) as ErrorContextType;
+  
+  if (Array.isArray(postId)) {
+    setErrorDisplay(true);
+    setErrorMessage('INVALID URL');
+    setErrorType('redirect');
+
+    postId = undefined;
+  }
   const getPostQuery = api.posts.getOnePost.useQuery({postId: `${postId || ''}`})
+
+
+  interface IinvPost {
+    uname: undefined,
+    message: undefined,
+    privacy: undefined,
+    imageId: undefined,
+    shareId: undefined,
+    time: undefined,
+    likes: undefined,
+    comments: undefined,
+    _id: undefined,
+  }
 
   useEffect(() => {
     if(postId) {
@@ -26,33 +49,14 @@ const PostPage: FC = () => {
         if (x.status === 'success') {
           setPost(x.data);
         }
-      })();
+      })()
+      .then(()=>{}).catch(()=>{});
     }
   }, [postId]);
 
 
   console.log(postId);
   
-
-  const getIndividualPost = async () => {
-    const url = `/api/posts/post/${postId}`;
-
-    const resp = await fetch(url);
-
-    if (resp.status === 200) {
-      const data = await resp.json();
-      console.log(data);
-      setPost(data);
-    } else if (resp.status === 404) {
-      console.log('Not found');
-      setNotFound(true);
-      // TODO
-    } else {
-      console.log('Internal server error');
-      setServerErr(true);
-      // todo
-    }
-  }
 
   return (
     <PostFeedContextProvider additionVals={{ showExpanded, setShowExpanded }}>
@@ -70,8 +74,7 @@ const PostPage: FC = () => {
     ">
     
       <div>
-        <Post 
-        key={post?._id}
+        <Post
         expanded={true}
         uname={post?.uname}
         message={post?.message}
@@ -81,8 +84,7 @@ const PostPage: FC = () => {
         time={post?.time}
         likes={post?.likes}
         comments={post?.comments}
-        _id={post?._id}
-        
+        _id={post?._id?.toString() || undefined}
         />
 
       </div>
@@ -91,7 +93,7 @@ const PostPage: FC = () => {
         
       </div>
      
-      <CommentScreen postId={post?._id} />
+      <CommentScreen postId={post?._id?.toString() || undefined} />
     </div>
   }
     </div>

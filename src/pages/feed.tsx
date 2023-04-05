@@ -1,12 +1,8 @@
 import DefaultHeader from '~/components/defaultHeader/defaultHeader'
 import PersonalOptions from '~/components/PersonalOptions/PersonalOptions'
 import Plus from '~/components/Plus/Plus'
-import PostFeed from '~/components/postFeed/postFeed'
-import Post from '~/components/posts/Post'
-import Profile from '~/components/profile/Profile'
 import { useSession } from 'next-auth/react'
-import React, { FC } from 'react'
-import Link from 'next/link'
+import React, { type FC } from 'react'
 import NewsFeed from '~/components/postFeed/newsFeed'
 
 const Feed: FC = () => {

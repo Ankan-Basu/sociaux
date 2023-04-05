@@ -7,7 +7,7 @@ import CommentInput from "./commentInput";
 import CommentList from "./commentList";
 
 interface ICommentScreenProps {
-  postId: string;
+  postId: string | undefined;
 }
 
 const CommentScreen: FC<ICommentScreenProps> = ({ postId }) => {
@@ -15,6 +15,14 @@ const CommentScreen: FC<ICommentScreenProps> = ({ postId }) => {
   const [refreshComments, setRefreshComments] = useState<{val: number}>({ val: 1 });
 
   // console.log('comment screen here', postId);
+
+  if (!postId) {
+    return (
+      <>
+      Error
+      </>
+    )
+  }
 
   return (
     <div className="//overflow-x-hidden">
