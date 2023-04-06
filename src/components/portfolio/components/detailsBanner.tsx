@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useEffect, useRef, useState } from 'react'
 import { projectType } from '../infos/projects'
 import works, { workType } from '../infos/work'
 
@@ -8,11 +8,34 @@ interface IDetailsBannerProps {
 }
 
 const DetailsBanner: FC<IDetailsBannerProps> = ({data}) => {
+  const detailsBannerRef = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState<boolean>(false);
+  
+  useEffect(() => {
+    // console.log('REf', detailsBannerRef.current);
+    const observer = new IntersectionObserver((entries) => {
+      // console.log('ENTRY', data.name, entries[0]);
+      const entry = entries[0];
+      setIsVisible(entry?.isIntersecting || false);
+    });
+    if (detailsBannerRef.current === null) {
+      return
+    }
+    observer.observe(detailsBannerRef.current);
+    
+    return () => {
+      observer.disconnect();
+    }
+  }, [])
+  
   return (
     <div
-    className='border-2 border-solid border-black rounded-lg 
+    ref={detailsBannerRef}
+    className={`border-2 border-solid border-black rounded-lg 
     w-700px flex gap-2 p-2
-    '
+    ${isVisible?'animate-scrollAppear':''}
+    transition-all delay-500 mx-auto
+    `}
     >
       
     <div

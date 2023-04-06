@@ -6,6 +6,9 @@ import languages from './infos/lang'
 import DetailsBanner from './components/detailsBanner'
 import works from './infos/work'
 import projects from './infos/projects'
+import WorksBanner from './components/worksBanner'
+import ProjectsBanner from './components/projectsBanner'
+import AboutMe from './components/aboutMe'
 
 const Portfolio = () => {
   return (
@@ -15,21 +18,12 @@ const Portfolio = () => {
       <Skills arr={skills}/>
       <Skills arr={languages} />
 
-      {
-        works.map((work) => {
-          return (
-            <DetailsBanner key={work._id} data={work}/>
-          )
-        })
-      }
+      
 
-      {
-        projects.map((project) => {
-          return (
-            <DetailsBanner key={project._id} data={project}/>
-          )
-        })
-      }
+      <WorksBanner />
+      <ProjectsBanner />
+
+      <AboutMe />
     </div>
   )
 }

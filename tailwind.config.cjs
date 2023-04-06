@@ -35,6 +35,27 @@ module.exports = {
         60: '60',
         70: '70',
         80: '80'
+      },
+
+      animation: {
+        scrollAppear: "scrollAppear 1.5s linear 1"
+      },
+
+      keyframes: {
+        scrollAppear: {
+          "0%": {
+            opacity: 0,
+            transform: "scale(0.75)" 
+          },
+          "50%": {
+            opacity: 50,
+            transform: "scale(0.875)"
+          },
+          "100%": {
+            opacity: 100,
+            transform: "scale(1.00)"
+          }
+        }
       }
     },
     
