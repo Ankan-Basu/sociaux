@@ -42,7 +42,7 @@ const projects = [
     LORLink: undefined
   },
   {
-    _id: 4,
+    _id: 3,
     name: 'Predicting Heat Capacity of Nanofluids',
     ongoing: true,
     title: 'Research (Machine Learning)',

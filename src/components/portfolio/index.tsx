@@ -15,9 +15,11 @@ const Portfolio = () => {
     <div>
 
       <Banner />
-      <Skills arr={skills}/>
-      <Skills arr={languages} />
 
+      <div className='flex flex-col gap-12'>
+      <Skills type='skills' arr={skills}/>
+      <Skills type='languages' arr={languages} />
+      </div>
       
 
       <WorksBanner />

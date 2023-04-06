@@ -4,19 +4,20 @@ import tail from '../img/tailwind.svg'
 import skills, { type skillType } from '../infos/skills'
 
 interface ISkillsProps {
+  type: 'skills' | 'languages'
   arr:  Array<skillType>
 }
 
-const Skills: FC<ISkillsProps> = ({arr}) => {
+const Skills: FC<ISkillsProps> = ({type, arr}) => {
   return (
-    <div>
+    <div className='md:w-700px mx-auto flex flex-col gap-4'>
 
-
+      <h1 className='text-4xl'>{type==='skills'?'My Skills':'Progrmming Languages'}</h1>
       <div
-      className='
+      className={`
       border-2 border-solid border-black 
-      rounded-lg w-700px m-auto p-2 flex gap-2 flex-wrap
-      '
+      rounded-lg w-700px m-auto p-2 flex ${type==='skills'?'gap-6':'gap-4'} flex-wrap justify-between
+      `}
       >
         {
           arr &&

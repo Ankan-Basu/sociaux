@@ -12,9 +12,7 @@ const DetailsBanner: FC<IDetailsBannerProps> = ({data}) => {
   const [isVisible, setIsVisible] = useState<boolean>(false);
   
   useEffect(() => {
-    // console.log('REf', detailsBannerRef.current);
     const observer = new IntersectionObserver((entries) => {
-      // console.log('ENTRY', data.name, entries[0]);
       const entry = entries[0];
       setIsVisible(entry?.isIntersecting || false);
     });
@@ -31,15 +29,16 @@ const DetailsBanner: FC<IDetailsBannerProps> = ({data}) => {
   return (
     <div
     ref={detailsBannerRef}
-    className={`border-2 border-solid border-black rounded-lg 
-    w-700px flex gap-2 p-2
+    className={`border-2 border-solid border-primary2 rounded-lg 
+    md:w-700px flex gap-2 p-2 shadow-lg lg:hover:bg-secondary2
     ${isVisible?'animate-scrollAppear':''}
-    transition-all delay-500 mx-auto
+    transition-all /delay-500 mx-auto duration-500
     `}
     >
       
     <div
-      className='border-2 border-solid border-red-500 flex-1'
+      className={`border-2 border-solid border-red-500 flex-1
+      ${data._id%2===0?'':'order-2'}`}
     >
       Image  
     </div>
@@ -63,7 +62,7 @@ const DetailsBanner: FC<IDetailsBannerProps> = ({data}) => {
       </div>
       
 
-      <div className='font-medium'>    
+      <div className='font-medium text-primary2'>    
         <h3>{data?.title}</h3>
       </div>
         
@@ -73,8 +72,8 @@ const DetailsBanner: FC<IDetailsBannerProps> = ({data}) => {
       </div>  
         
         
-      <div className='border-2 border-solid border-red-500'>
-        <span className='font-medium'>Technologies used:</span><br />
+      <div className='bg-secondary my-3 p-2 rounded-lg'>
+        <span className='font-medium text-sm'>Technologies used:</span><br />
         <div className='text-sm'>
           {data &&
           data.techStack.map((tech, indx, arr) => {
@@ -93,7 +92,7 @@ const DetailsBanner: FC<IDetailsBannerProps> = ({data}) => {
       {/* LINKS SECTION */}
           
         <div
-        className='border-2 border-solid flex flex-col gap-2 items-start'
+        className='flex flex-col gap-2 items-start'
         >
           {data?.liveLink?
           // <div> Live Link:
@@ -114,7 +113,7 @@ const DetailsBanner: FC<IDetailsBannerProps> = ({data}) => {
         
     
           <div 
-        className='border-2 border-solid flex flex-col gap-2 items-start'
+        className='flex flex-col gap-2 items-start'
         >
           {data?.certificateLink?<BannerButton>Certificate</BannerButton>:<></> }
           {data?.LORLink?<BannerButton>LOR</BannerButton>:<></> }
@@ -134,7 +133,11 @@ interface IBannerButtonProps {
 
 const BannerButton: FC<IBannerButtonProps> = ({children}) => {
   return (
-    <button className='p-1 w-40 rounded-lg border-2 border-solid border-black'>
+    <button 
+    className='
+    p-1 w-40 rounded-lg 
+    lg:hover:bg-primary lg:active:bg-primary2 lg:active:text-white
+    border-2 border-solid border-primary2'>
       {children}
     </button>
   )
