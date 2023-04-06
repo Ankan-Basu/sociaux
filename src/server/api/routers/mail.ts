@@ -6,6 +6,7 @@ import {
   publicProcedure,
   protectedProcedure,
 } from "~/server/api/trpc";
+import OtpModel from "~/server/db/models/Otp";
 import UserModel from "~/server/db/models/User";
 import dbConnect from "~/server/db/mongo";
 import otpGenerator from "../utilFuncs/otpGenerator";
@@ -39,7 +40,8 @@ export const mailRouter = createTRPCRouter({
           text: `OTP is ${otp}`
         });
 
-        console.log('MAIL', resp);
+        const dbResp = await OtpModel.findOneAndUpdate({uname: 'testOTP'}, {uname: 'testOTP', otp: otp, expireAt: Date.now()}, {upsert: true});
+        // console.log('MAIL', resp);
 
         return {
           status: 200,
