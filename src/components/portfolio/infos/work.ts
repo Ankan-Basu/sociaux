@@ -1,3 +1,6 @@
+import shoptopImg from '../img/shoptop.png'
+import tourcirkitImg from '../img/tourcirkit2.webp'
+
 const works = [
   {
     _id: 0,
@@ -8,6 +11,7 @@ const works = [
     techStack: [
       'NodeJs', 'Express', 'MongoDb'
     ],
+    img: shoptopImg,
     link: '',
     certificateLink: 'bv',
     LORLink: 'vnn',
@@ -23,6 +27,7 @@ const works = [
     techStack: [
       'NodeJs', 'Express', 'Puppeteer', 'AWS', 'MongoDb', 'ReactJs'
     ],
+    img: tourcirkitImg,
     link: '',
     liveLink: '',
     gitHubLink: ''

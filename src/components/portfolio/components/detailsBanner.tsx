@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import React, { FC, useEffect, useRef, useState } from 'react'
 import { projectType } from '../infos/projects'
 import works, { workType } from '../infos/work'
@@ -38,10 +39,10 @@ const DetailsBanner: FC<IDetailsBannerProps> = ({data}) => {
     >
       
     <div
-      className={`border-2 border-solid border-red-500 flex-1
+      className={`flex-1 flex justify-center items-center relative
       ${data._id%2===0?'':'order-2'}`}
     >
-      Image  
+      <Image src={data.img} alt='logo' />  
     </div>
       
       
@@ -137,8 +138,9 @@ const BannerButton: FC<IBannerButtonProps> = ({children}) => {
     <button 
     className='
     p-1 w-32 md:w-40 rounded-lg 
+    active:bg-primary2 duration-150
     lg:hover:bg-primary lg:active:bg-primary2 lg:active:text-white
-    border-2 border-solid border-primary2 duration-700'>
+    border-2 border-solid border-primary2 lg:duration-700'>
       {children}
     </button>
   )

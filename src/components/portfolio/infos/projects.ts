@@ -1,3 +1,5 @@
+import newsappImg from '../img/newsapp.webp'
+
 const projects = [
   {
     _id: 0,
@@ -8,6 +10,7 @@ const projects = [
     techStack: [
       't3 Stack', 'NextJs', 'React', 'MongoDb', 'tRPC', 'Tailwind', 'Typescript', 'AWS'
     ],
+    img: '',
     liveLink: '..',
     gitHubLink: '..',
     certificateLink: undefined,
@@ -22,6 +25,7 @@ const projects = [
     techStack: [
       'ReactJs', 'Tailwind', 'Javascript'
     ],
+    img: newsappImg,
     liveLink: '',
     gitHubLink: '..',
     certificateLink: undefined,
@@ -36,6 +40,7 @@ const projects = [
     techStack: [
       'R (Programming Language)'
     ],
+    img: '',
     liveLink: '',
     gitHubLink: '..',
     certificateLink: undefined,
@@ -50,6 +55,7 @@ const projects = [
     techStack: [
       'Python',
     ],
+    img: '',
     liveLink: '',
     gitHubLink: '..',
     certificateLink: undefined,
