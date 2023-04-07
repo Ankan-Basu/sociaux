@@ -1,0 +1,86 @@
+/* :heading {
+  --no-of-chars: 2
+} */
+
+.heading {
+  /* color: red; */
+  position: relative;
+  font-family: "Source Code Pro", monospace;
+  width: max-content;
+  font-weight: 500;
+  /* visibility: hidden; */
+}
+
+.heading::before,
+.heading::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.heading::before {
+  background-color: #ffe3b3;;
+  animation: typewriter 2s steps(8) 1s forwards;
+}
+
+.heading::after {
+  width: 0.1em;
+  background: #0ab68b;
+  /* visibility: hidden; */
+  animation: typewriter 2s steps(8) 1s forwards,
+  blink 1000ms steps(8) infinite;
+}
+
+.heading2 {
+  opacity: 0;
+  /* transform: translateY(3rem); */
+  animation: appear 2s ease 3s forwards;
+}
+
+.jobTitle {
+  opacity: 0;
+  /* transform: translateY(3rem); */
+  animation: appear 2s ease 4s forwards;
+}
+
+.welcome {
+  opacity: 0;
+  transform: translateY(3rem);
+  animation: slide 2s ease 5s forwards;
+}
+
+@keyframes typewriter {
+  to {
+    left: 100%
+  }
+}
+
+@keyframes blink {
+  0% {opacity: 1;}
+  50% {opacity: 1;}
+  50.1% {opacity: 0;}
+  100% {opacity: 0;}
+}
+
+@keyframes appear {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+    /* transform: translateY(0); */
+  }
+}
+
+@keyframes slide {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
