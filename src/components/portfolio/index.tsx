@@ -16,8 +16,13 @@ const Portfolio = () => {
 
       <Banner />
 
-      <div className='flex flex-col gap-12 min-h-screen snap-start'>
+      <div className='flex flex-col justify-center gap-12 min-h-screen snap-start py-12'>
       <Skills type='skills' arr={skills}/>
+      {/* <Skills type='languages' arr={languages} /> */}
+      </div>
+
+      <div className='flex flex-col justify-center gap-12 min-h-screen snap-start py-12'>
+      {/* <Skills type='skills' arr={skills}/> */}
       <Skills type='languages' arr={languages} />
       </div>
       

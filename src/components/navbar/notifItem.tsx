@@ -35,14 +35,20 @@ const NotifItem: FC<INotifProps> = ({ notif }) => {
 
   const handleReadNotif = async () => {
     if (session.status !== "authenticated") {
-      console.log("UNAUTH");
+      // console.log("UNAUTH");
+      setErrorDisplay(true);
+      setErrorMessage('UNAUTHENTICATED');
+      setErrorType('logout');
       return;
     }
 
     const uname = session.data.user.uname;
 
     if (!uname) {
-      console.log("UNAUTH");
+      // console.log("UNAUTH");
+      setErrorDisplay(true);
+      setErrorMessage('UNAUTHENTICATED');
+      setErrorType('logout');
       return;
     }
 
@@ -84,7 +90,7 @@ const NotifItem: FC<INotifProps> = ({ notif }) => {
     setMobileNotifSelected(false);
     switch (notif.type) {
       case "acceptReq":
-        router.push(`/user/${notif.source}`)
+        router.push(`/app/user/${notif.source}`)
         .then(()=>{}).catch(()=>{});
         break;
 
@@ -96,7 +102,7 @@ const NotifItem: FC<INotifProps> = ({ notif }) => {
         if (!notif.postId) {
           return;
         }
-        router.push(`/post/${notif.postId}`)
+        router.push(`/app/post/${notif.postId}`)
         .then(()=>{}).catch(()=>{});
         break;
       default:
@@ -121,7 +127,7 @@ const NotifItem: FC<INotifProps> = ({ notif }) => {
           return;
         }
     setMobileNotifSelected(false);
-        router.push(`/user/${notif.source}`)
+        router.push(`/app/user/${notif.source}`)
         .then(()=>{}).catch(()=>{});
       }}
       src={imgQuery.data?.img || ''} className="h-12 w-12 rounded-full" />

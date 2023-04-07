@@ -23,6 +23,7 @@ const NewsFeed: FC = () => {
       
     // })();
     postsQuery.refetch();
+    setShowExpanded(false)
   }, [reload])
 
   if (postsQuery.isFetching && postsQuery.data === undefined) {

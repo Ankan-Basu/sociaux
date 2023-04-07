@@ -1,8 +1,10 @@
+import { TRPCClientError } from "@trpc/client"
 import { type HydratedDocument } from "mongoose"
 import { useSession } from "next-auth/react"
 import Image from "next/image"
 import { useRouter } from "next/router"
 import { type FC, useContext } from "react"
+import { ErrorContext, ErrorContextType } from "~/contexts/errorContext"
 import { type IFriendReqItemHydrated, NotifContext, type NotifContextType } from "~/contexts/notifContext"
 import { type IFriendReqItem } from "~/server/db/models/FriendReq"
 import { api } from "~/utils/api"
@@ -18,6 +20,8 @@ const FrenReq: FC<IFrenReqProps> = ({friendReq}) => {
 
     const {setFriendReqList, setFriendReqSelected, setMobileNotifSelected} = useContext(NotifContext) as NotifContextType;
 
+    const {setErrorDisplay, setErrorMessage, setErrorType} = useContext(ErrorContext) as ErrorContextType
+
     const acceptFriendMutation = api.friends.acceptFriendReq.useMutation();
     const rejectFriendMutation = api.friends.rejectFriendReq.useMutation();
 
@@ -25,13 +29,19 @@ const FrenReq: FC<IFrenReqProps> = ({friendReq}) => {
 
     const handleAccept = async (targetUname: string) => {
         if (session.status !== 'authenticated'){
-            console.log('UnauThen');
+            // console.log('UnauThen');
+            setErrorDisplay(true);
+      setErrorMessage('UNAUTHENTICATED');
+      setErrorType('logout');
             return;
         }
 
         const acceptorUname = session.data.user.uname;
         if (!acceptorUname || !targetUname) {
-            console.log('BAD REQ');
+            // console.log('BAD REQ');
+            setErrorDisplay(true);
+      setErrorMessage('BAD_REQUEST');
+      setErrorType('simple')
             return;
         }
 
@@ -46,7 +56,14 @@ const FrenReq: FC<IFrenReqProps> = ({friendReq}) => {
             }
             setFriendReqList(resp.reqs);
         } catch(err) {
-            console.log(err);
+            // console.log(err);
+            setErrorDisplay(true);
+            let msg = 'An unknown error occured';
+            if (err instanceof TRPCClientError) {
+                msg = err.data.code;
+            }
+      setErrorMessage(msg);
+      setErrorType('simple');
             
         }
         
@@ -54,13 +71,19 @@ const FrenReq: FC<IFrenReqProps> = ({friendReq}) => {
 
     const handleReject = async (targetUname: string) => {
         if (session.status !== 'authenticated'){
-            console.log('UnauThen');
+            // console.log('UnauThen');
+            setErrorDisplay(true);
+      setErrorMessage('UNAUTHENTICATED');
+      setErrorType('logout');
             return;
         }
 
         const rejectorUname = session.data.user.uname;
         if (!rejectorUname || !targetUname) {
-            console.log('BAD REQ');
+            // console.log('BAD REQ');
+            setErrorDisplay(true);
+      setErrorMessage('BAD_REQUEST');
+      setErrorType('simple')
             return;
         }
 
@@ -75,7 +98,14 @@ const FrenReq: FC<IFrenReqProps> = ({friendReq}) => {
             }
             setFriendReqList(resp.reqs)
         } catch(err) {
-            console.log(err);
+            // console.log(err);
+            setErrorDisplay(true);
+            let msg = 'An unknown error occured';
+            if (err instanceof TRPCClientError) {
+                msg = err.data.code;
+            }
+      setErrorMessage(msg);
+      setErrorType('simple');
             
         }
         
@@ -93,7 +123,7 @@ const FrenReq: FC<IFrenReqProps> = ({friendReq}) => {
             return;
         }
         setMobileNotifSelected(false);
-        router.push(`/user/${friendReq.source}`)
+        router.push(`/app/user/${friendReq.source}`)
         .then(()=>{}).catch(()=>{});
     }
 

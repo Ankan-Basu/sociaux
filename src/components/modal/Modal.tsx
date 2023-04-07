@@ -12,6 +12,7 @@ import {
 import { ErrorContext, type ErrorContextType } from "~/contexts/errorContext";
 import { api } from "~/utils/api";
 import Dropdown from "../dropdown/dropdown";
+import Loading from "../loading/loading";
 
 // interface PostBody {
 //   uname: string;
@@ -145,9 +146,9 @@ const Modal: FC<IModalProps> = ({
       <div
         className={`
             ${session.status === "loading" ? "block" : "hidden"}
-            `}
+            mx-auto `} 
       >
-        LOADING
+        <Loading height={40} width={40} />
       </div>
 
       <div

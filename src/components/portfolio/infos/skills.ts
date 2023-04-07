@@ -6,7 +6,9 @@ import expressLogo from '../img/express.svg';
 import mongoLogo from '../img/mongodb.svg';
 import linuxLogo from '../img/linux.svg';
 import tfLogo from '../img/tensorflow.svg';
-
+import trpcLogo from '../img/trpc.svg';
+import sqlLogo from '../img/sql.svg';
+import tailwindLogo from '../img/tailwind.svg';
 
 const skills = [
   {
@@ -32,33 +34,39 @@ const skills = [
   {
     _id: 4,
     name: 'tRPC',
-    img: ''
+    img: trpcLogo
   },
   {
     _id: 5,
     name: 'MongoDb',
     img: mongoLogo
-  },{
+  },
+  {
     _id: 6,
-    name: 'SQL',
-    img: ''
-  },{
+    name: 'Tailwind',
+    img: tailwindLogo
+  },
+  {
     _id: 7,
+    name: 'SQL',
+    img: sqlLogo
+  },{
+    _id: 8,
     name: 'Keras',
     img: ''
   },
   {
-    _id: 8,
+    _id: 9,
     name: 'Tensorflow',
     img: tfLogo
   },
   {
-    _id: 9,
+    _id: 10,
     name: 'Git',
     img: gitLogo
   },
   {
-    _id: 10,
+    _id: 11,
     name: 'Linux',
     img: linuxLogo
   },

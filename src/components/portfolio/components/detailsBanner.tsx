@@ -30,8 +30,9 @@ const DetailsBanner: FC<IDetailsBannerProps> = ({data}) => {
     <div
     ref={detailsBannerRef}
     className={`border-2 border-solid border-primary2 rounded-lg 
-    md:w-700px flex gap-2 p-2 shadow-lg lg:hover:bg-secondary2
-    ${isVisible?'animate-scrollAppear':''}
+    w-10/12 md:w-700px flex gap-2 p-2 shadow-lg lg:hover:bg-secondary2
+    opacity-0
+    ${isVisible?'animate-scrollAppear opacity-100':''}
     transition-all /delay-500 mx-auto duration-500
     `}
     >
@@ -44,11 +45,11 @@ const DetailsBanner: FC<IDetailsBannerProps> = ({data}) => {
     </div>
       
       
-    <div className='flex flex-col gap-1 flex-2 w-99'>
+    <div className='flex flex-col gap-1 flex-2 w-1/2 md:w-99'>
         {/*DATA  */}
         
       <div
-        className='text-3xl'
+        className='text-2xl md:text-3xl'
       >
         <h2>{data?.name}</h2>
       </div>
@@ -68,7 +69,7 @@ const DetailsBanner: FC<IDetailsBannerProps> = ({data}) => {
         
         
       <div>
-        <p>{data?.desc}</p>
+        <p className='text-sm md:text-base'>{data?.desc}</p>
       </div>  
         
         
@@ -135,9 +136,9 @@ const BannerButton: FC<IBannerButtonProps> = ({children}) => {
   return (
     <button 
     className='
-    p-1 w-40 rounded-lg 
+    p-1 w-32 md:w-40 rounded-lg 
     lg:hover:bg-primary lg:active:bg-primary2 lg:active:text-white
-    border-2 border-solid border-primary2'>
+    border-2 border-solid border-primary2 duration-700'>
       {children}
     </button>
   )

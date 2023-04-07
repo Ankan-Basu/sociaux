@@ -12,11 +12,11 @@ const Skills: FC<ISkillsProps> = ({type, arr}) => {
   return (
     <div className='md:w-700px mx-auto flex flex-col gap-4'>
 
-      <h1 className='text-4xl'>{type==='skills'?'My Skills':'Progrmming Languages'}</h1>
+      <h1 className='text-4xl px-2 md:p-0'>{type==='skills'?'My Skills':'Progrmming Languages'}</h1>
       <div
       className={`
       border-2 border-solid border-black 
-      rounded-lg w-700px m-auto p-2 flex ${type==='skills'?'gap-6':'gap-4'} flex-wrap justify-between
+      rounded-lg w-10/12 md:w-700px m-auto p-4 flex ${type==='skills'?'gap-6':'gap-4'} flex-wrap justify-between  shadow-lg
       `}
       >
         {
@@ -37,13 +37,13 @@ const Skills: FC<ISkillsProps> = ({type, arr}) => {
 
 const X: FC<skillType> = ({_id, name, img}) => {
   return (
-    <div className='border-2 border-solid border-green-500 w-20
-    flex flex-col justify-center items-center p-1
+    <div className=' w-20
+    flex flex-col justify-center items-center p-1 gap-2
     '>
-    <div className='relative h-16 w-16 border-2 border-solid border-red-500'>
-    <Image src={img || tail} alt='logo' fill={true} className='border-2 border-solid border-black' />
+    <div className='relative h-16 w-16'>
+    <Image src={img || tail} alt='logo' fill={true} />
     </div>
-    <div className='text-sm'>
+    <div className='text-sm font-medium'>
       {name}
     </div>
     </div>

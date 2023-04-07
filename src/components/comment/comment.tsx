@@ -208,7 +208,7 @@ const Comment: FC<ICommentProps> = (
             return;
         }
         setShowExpanded(false);
-        router.push(`/user/${uname}`)
+        router.push(`/app/user/${uname}`)
         .then(()=>{}).catch(()=>{});
     }
 

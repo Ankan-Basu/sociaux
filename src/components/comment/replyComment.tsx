@@ -151,7 +151,7 @@ const ReplyComment: FC<IReplyCommentProps> = ({_id, parenCommId, uname, message,
             return;
         }
         setShowExpanded(false);
-        router.push(`/user/${uname}`)
+        router.push(`/app/user/${uname}`)
         .then(()=>{}).catch(()=>{});
     }
 
