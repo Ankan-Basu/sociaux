@@ -1,6 +1,6 @@
 import React, { FC, useContext, useEffect } from "react";
 import { FiX } from "react-icons/fi";
-import { PostFeedContext } from "~/contexts/postFeedContext";
+import { PostFeedContext, PostFeedContextType } from "~/contexts/postFeedContext";
 import CommentScreen from "../comment/commentScreen";
 import Post from "./Post";
 
@@ -11,7 +11,7 @@ interface IPostScreenProps {
 
 const PostScreen: FC<IPostScreenProps> = ({ display }) => {
   const { setShowExpanded, currPost, setCurrPost } =
-    useContext(PostFeedContext);
+    useContext(PostFeedContext) as PostFeedContextType;
 
   // console.log("screen", currPost);
 
@@ -47,6 +47,10 @@ const PostScreen: FC<IPostScreenProps> = ({ display }) => {
           <span
             onClick={() => {
               setCurrPost(null);
+              if (!setShowExpanded) {
+                return;
+                //wont happen
+              }
               setShowExpanded(false);
             }}
             className="

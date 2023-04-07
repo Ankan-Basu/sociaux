@@ -8,11 +8,10 @@ import { api } from '~/utils/api';
 import { useSession } from 'next-auth/react';
 import NotifContextProvider, { type IFriendReqItemHydrated, type INotifItemHydrated } from '~/contexts/notifContext';
 import { type INotifItem } from '~/server/db/models/Notification';
+import { useRouter } from 'next/router';
 
 const Navbar: FC = () => {
-
   const session = useSession();
-  // console.log(session);
   
     const [notifSelected, setNotifSelected] = useState<boolean>(false)
     const [friendReqSelected, setFriendReqSelected] = useState<boolean>(false)
@@ -24,11 +23,6 @@ const Navbar: FC = () => {
     const notifQuery = api.notifs.getNotifs.useQuery({uname: `${session.data?.user.uname || ''}`});
     const friendReqQuery = api.friends.getFriendReqList.useQuery({uname: `${session.data?.user.uname || ''}`});
 
-    useEffect(() => {
-      console.log('Navbar mounted');
-      // getNotifList();
-      // getFriendReqList();
-    }, []);
 
     useEffect(() => {
       if (session.status === 'authenticated') {
@@ -71,10 +65,35 @@ const Navbar: FC = () => {
         }
       }
     }, [friendReqSelected, mobileNotifSelected])
+
+    const router = useRouter();
+    // console.log(router);
+
+    const [showNavbar, setShowNavbar] = useState<boolean>(false);
+    
+    useEffect(() => {
+      if (router.pathname.startsWith('/app/')) {
+        setShowNavbar(true);
+      } else {
+        setShowNavbar(false);
+      }
+    }, [router])
+
+
+    useEffect(() => {
+      console.log('Navbar MOUNTS');
+
+      return () => {
+        console.log('Navbar Unmounts');
+        
+      }
+    }, [])
     
   return (
     <>
-    <nav className='z-10 mb-2 shadow-lg backdrop-blur-md py-2 px-2 flex items-center gap-1 sticky top-0'>
+    <nav className={`z-10 mb-2 shadow-lg backdrop-blur-md py-2 px-2 flex items-center gap-1 sticky top-0
+    ${showNavbar?'block':'hidden'}
+    `}>
       <span className='flex-1'>Navbar</span>
       <span className='flex-1'><SearchBox /></span>
 

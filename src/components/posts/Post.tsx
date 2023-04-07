@@ -3,7 +3,8 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 dayjs.extend(relativeTime);
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { FC, useContext, useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import React, { FC, useContext, useEffect, useState } from "react";
 
 
 import {
@@ -13,7 +14,7 @@ import {
   FiMoreHorizontal
 } from "react-icons/fi";
 import { PostEditContext, PostEditContextType } from "~/contexts/postEditContext";
-import { PostFeedContext } from "~/contexts/postFeedContext";
+import { PostFeedContext, PostFeedContextType } from "~/contexts/postFeedContext";
 import { api } from "~/utils/api";
 import Dropdown from "../dropdown/dropdown";
 import Modal from "../modal/Modal";
@@ -150,18 +151,21 @@ const Post: FC<IPostProps> =({
   };
 
   let handleExpanded: (() => void) | undefined = undefined;
-  // let handleEdit = undefined;
-
+  // let setShowExpanded: React.Dispatch<React.SetStateAction<boolean>> | undefined = undefined;
+  
   try {
     // when opened in post feed has access to context
-    const { showExpanded, setShowExpanded, setCurrPost } =
-      useContext(PostFeedContext);
+    let { showExpanded, setShowExpanded, setCurrPost } =
+      useContext(PostFeedContext) as PostFeedContextType;
 
       
 
       //shows the comments
     handleExpanded = () => {
       if (!showExpanded) {
+        if (!setShowExpanded) {
+          return;
+        }
         setShowExpanded(true);
         setCurrPost({
           expanded,
@@ -292,9 +296,8 @@ const Post: FC<IPostProps> =({
           </h3>
         </div> */}
         <div>
-          <h3 
-          className="//font-light //text-sm font-medium text-lg">
-          <Link href={`/user/${uname}`}>
+          <h3 className="//font-light //text-sm font-medium text-lg">
+          <Link href={`/app/user/${uname}`}>
             {/* @aether_simp */}
             {uname? `@${uname}` : "Loading ..."}
           </Link>

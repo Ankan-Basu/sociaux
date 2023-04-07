@@ -16,9 +16,9 @@ const MyApp: AppType<{ session: Session | null }> = ({
   return (
     <SessionProvider session={session}>
       <ErrorContextProvider>
-      {/* <Layout> */}
+      <Layout>
       <Component {...pageProps} />
-      {/* </Layout> */}
+      </Layout>
       </ErrorContextProvider>
     </SessionProvider>
   );

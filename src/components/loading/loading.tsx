@@ -7,9 +7,7 @@ interface ILoadingProps {
   width: number;
 }
 
-const Loading: FC<ILoadingProps> = ({height, width}) => {
-  console.log('LOADING', loadingGif);
-  
+const Loading: FC<ILoadingProps> = ({height, width}) => {  
   return (
     <div>      
       <Image src={loadingGif} height={height} width={width} alt='Loading ...' />

@@ -34,6 +34,7 @@ const PostFeed: FC = () => {
   useEffect(() => {
     if (router.query.uname) {
       refetchData();
+      setShowExpanded(false);
     }
 
     return () => {

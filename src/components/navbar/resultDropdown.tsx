@@ -139,7 +139,7 @@ const Result: FC<IResultProps> = ({result, setDisplay}) => {
   return (
     <div 
     onClick={() => {
-      router.push(`/user/${result.uname}`);
+      router.push(`/app/user/${result.uname}`);
       setDisplay(false);
     }}
     className='
