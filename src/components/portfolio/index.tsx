@@ -12,11 +12,11 @@ import AboutMe from './components/aboutMe'
 
 const Portfolio = () => {
   return (
-    <div>
+    <div className='snap-y snap-mandatory h-screen overflow-y-scroll //overflow-x-hidden'>
 
       <Banner />
 
-      <div className='flex flex-col gap-12'>
+      <div className='flex flex-col gap-12 min-h-screen snap-start'>
       <Skills type='skills' arr={skills}/>
       <Skills type='languages' arr={languages} />
       </div>

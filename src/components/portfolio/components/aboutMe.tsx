@@ -2,7 +2,7 @@ import React from 'react'
 
 const AboutMe = () => {
   return (
-    <div className='min-h-screen pt-28 bg-secondary2'>
+    <div className='min-h-screen pt-28 bg-secondary2 snap-start'>
       <div className='md:w-700px border-2 border-solid border-black mx-auto'>
       <h1 className='text-4xl font-medium'>AboutMe</h1>
       <p>Hi, <br/>
