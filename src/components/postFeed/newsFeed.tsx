@@ -28,18 +28,35 @@ const NewsFeed: FC = () => {
 
   if (postsQuery.isFetching && postsQuery.data === undefined) {
     return (
-      <>
-      <div className="mx-auto rounded-lg p-2 lg:w-101 flex justify-center
-      ">
+      <div className="mx-auto rounded-lg p-2 lg:w-101">
+        <div className="w-80">
+      <span className="text-2xl font-medium pb-4">Posts:</span>
+      </div>
+        <div className=" flex justify-center">
       <Loading height={100} width={100}/>
       </div>
-      </>
+      </div>
+    );
+  }
+
+  if (postsQuery.isFetched && postsQuery.data?.length === 0) {
+    return (
+      <div className="mx-auto rounded-lg p-2 lg:w-101">
+        <div className="w-80">
+      <span className="text-2xl font-medium pb-4">Posts:</span>
+      </div>
+        <div className=" flex justify-center">
+      No posts found
+      </div>
+      </div>
     );
   }
 
   return (
     <div className="m-auto rounded-lg p-2 lg:w-101">
-      Posts:
+      <div className="w-80">
+      <span className="text-2xl font-medium pb-4">Posts:</span>
+      </div>
       <PostFeedContextProvider additionVals={{ showExpanded, setShowExpanded }}>
         <PostEditContextProvider additionVals={{ setReload }}>
           {postsQuery.data?.map((post: any) => {

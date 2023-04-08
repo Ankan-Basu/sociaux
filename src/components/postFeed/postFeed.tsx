@@ -15,7 +15,7 @@ const PostFeed: FC = () => {
 
   const router = useRouter();
 
-  const { data, refetch, isFetching } = api.posts.getUserPosts.useQuery(
+  const { data, refetch, isFetching, isFetched, isLoading } = api.posts.getUserPosts.useQuery(
     { uname: `${router.query.uname || ''}` },
     {}
   );
@@ -52,16 +52,38 @@ const PostFeed: FC = () => {
 
   if (isFetching && posts.length === 0) {
     return (
-      <div className="mx-auto rounded-lg p-2 lg:w-101 flex justify-center
-      ">
+      <div className="mx-auto rounded-lg p-2 lg:w-101">
+        <div className="w-80">
+      <span className="text-2xl font-medium pb-4">Posts:</span>
+      </div>
+        <div className=" flex justify-center">
       <Loading height={100} width={100}/>
+      </div>
+      </div>
+    );
+  }
+
+  if (isFetched && posts.length === 0) {
+    return (
+      <div className="mx-auto rounded-lg p-2 lg:w-101">
+        <div className="w-80">
+      <span className="text-2xl font-medium pb-4">Posts:</span>
+      </div>
+        <div className=" flex justify-center">
+      No posts found
+      </div>
       </div>
     );
   }
 
   return (
-    <div className="m-auto rounded-lg p-2 lg:w-101">
-      Posts:
+    <div className="mx-auto rounded-lg p-2 lg:w-101">
+      <div className="w-80">
+      <span className="text-2xl font-medium pb-4">Posts:</span>
+      </div>
+      <div>
+
+      </div>
       <PostFeedContextProvider additionVals={{ showExpanded, setShowExpanded }}>
         <PostEditContextProvider additionVals={{ reload, setReload }}>
           {posts.map((post: any) => {
