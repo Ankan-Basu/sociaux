@@ -18,11 +18,11 @@ const Portfolio = () => {
     <Blob additionCss='top-10 left-20 md:left-36 lg:left-64'/>
       <Banner />
 
-      <div className='flex flex-col justify-center gap-12 min-h-screen snap-start py-12'>
+      <div className='flex flex-col justify-center gap-12 min-h-screen snap-start snap-always py-12'>
       <Skills type='skills' arr={skills}/>
       </div>
 
-      <div className='flex flex-col justify-center gap-12 min-h-screen snap-start py-12'>
+      <div className='flex flex-col justify-center gap-12 min-h-screen snap-start snap-always py-12'>
       <Skills type='languages' arr={languages} />
       </div>
       

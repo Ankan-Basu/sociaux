@@ -52,7 +52,6 @@ const SignupComponent: FC = () => {
 
     const resObj: ValidatedOutput = inputValidator(obj);
 
-    console.log("Res Obj", resObj);
 
     const obj2 = { name, uname: "", email: "", password: "" };
 
@@ -68,7 +67,6 @@ const SignupComponent: FC = () => {
     }
 
     if (!resObj.email) {
-      console.log("INVALID EMAIL");
 
       setEmailInvalid(true);
       invalidDetected = true;
@@ -78,7 +76,6 @@ const SignupComponent: FC = () => {
     }
 
     if (!resObj.uname) {
-      console.log("INVALID Uname");
       setUnameInvalid(true);
       invalidDetected = true;
       // return;
@@ -102,10 +99,10 @@ const SignupComponent: FC = () => {
       //do login and redirect
 
       const status = await signIn("credentials", {
-        redirect: false,
+        redirect: true,
         email: obj2.email,
         password: obj2.password,
-        // callbackUrl: "/feed",
+        callbackUrl: "/app/feed",
       });
 
       if (!status) {
@@ -115,12 +112,12 @@ const SignupComponent: FC = () => {
         return;
       }
 
-      if (status.ok) {
-        router.push("/feed")
-        .then(()=>{}).catch(()=>{});
-      } else {
-        // ERROR
-      }
+      // if (status.ok) {
+      //   router.push("/feed")
+      //   .then(()=>{}).catch(()=>{});
+      // } else {
+      //   // ERROR
+      // }
     } else if (resp.status === 400) {
       if (resp.email) {
         setDuplEmail(true);
@@ -128,6 +125,9 @@ const SignupComponent: FC = () => {
         setDuplUname(true);
       } else {
         // show err modal
+        setErrorDisplay(true);
+        setErrorMessage('An unexpected error occured');
+        setErrorType('simple');
       }
     }
   };
@@ -135,8 +135,8 @@ const SignupComponent: FC = () => {
   return (
     <div
       className="
-    m-auto w-5/6 max-w-md rounded-lg border-2 border-solid
-    p-3 shadow-lg"
+    m-auto w-5/6 max-w-md rounded-lg
+    p-3 shadow-xl bg-white/70"
     >
       <h2
         className="
@@ -379,7 +379,7 @@ text-red-500
 
         <div>
           Already have an account?
-          <Link href="/login">
+          <Link href="/app/login">
             <span
               className="
         ml-1

@@ -7,6 +7,7 @@ import type ValidatedOutput from '../util/ValidatedOutput';
 
 import { useSession, signIn, type SignInResponse } from "next-auth/react"
 import { useRouter } from 'next/router';
+import Loading from '../loading/loading';
 
 const LoginComponent: FC = () => {
 
@@ -23,13 +24,27 @@ const LoginComponent: FC = () => {
 
 
   if (session.status === "loading") {
-    return <div className='m-auto'>Loading...</div>
+    return (
+      <div className='flex justify-center'>
+    <div className='flex flex-col gap-2 justify-center items-center'>
+      <div>Loading ...</div>
+      <Loading height={50} width={50} />
+      </div>
+      </div>
+      )
   }
 
   if (session.status === "authenticated") {
-    router.push('/feed')
+    router.push('/app/feed')
     .then(()=>{}).catch(()=>{});
-    return <div className='m-auto'>You are logged in. Redirecting ...</div>
+    return (
+      <div className='flex justify-center'>
+    <div className='flex flex-col gap-2 justify-center items-center'>
+      <div>You are logged in. Redirecting ...</div>
+      <Loading height={50} width={50} />
+      </div>
+      </div>
+      )
   }
   
 
@@ -67,11 +82,11 @@ const LoginComponent: FC = () => {
     // console.log(obj2);
 
     const status: SignInResponse | undefined = await signIn('credentials', {
-      redirect: false,
+      redirect: true,
       email: obj2.email,
       uname: '',
       password: obj2.password,
-      callbackUrl:'/feed'
+      callbackUrl:'/app/feed'
     })
 
     // console.log(status);
@@ -88,8 +103,8 @@ const LoginComponent: FC = () => {
 
   return (
     <div className='
-    w-5/6 max-w-md m-auto p-3 rounded-lg shadow-lg
-    border-2 border-solid'>
+    w-5/6 max-w-md m-auto p-3 rounded-lg shadow-xl
+    bg-white/70 /ml-2'>
       <h2
       className='
       text-3xl font-medium
@@ -202,7 +217,7 @@ const LoginComponent: FC = () => {
       </div>
       <div>
         Don&apos;t have an account? 
-        <Link href='/signup'>
+        <Link href='/app/signup'>
         <span 
         className='
         ml-1

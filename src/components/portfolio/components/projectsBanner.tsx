@@ -5,7 +5,7 @@ import DetailsBanner from './detailsBanner'
 
 const ProjectsBanner = () => {
   return (
-    <div className='flex flex-col gap-8 snap-start py-16 md:w-700px mx-auto min-h-screen /bg-red-200'>
+    <div className='flex flex-col gap-8 snap-start snap-always py-16 pb-44 md:w-700px mx-auto min-h-screen /bg-red-200'>
       {/* <Blob /> */}
       <h1 className='text-4xl px-2 md:p-0'>Projects</h1>
       {

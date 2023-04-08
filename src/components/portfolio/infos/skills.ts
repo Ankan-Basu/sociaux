@@ -9,6 +9,7 @@ import tfLogo from '../img/tensorflow.svg';
 import trpcLogo from '../img/trpc.svg';
 import sqlLogo from '../img/sql.svg';
 import tailwindLogo from '../img/tailwind.svg';
+import kerasLogo from '../img/keras.svg'
 
 const skills = [
   {
@@ -53,7 +54,7 @@ const skills = [
   },{
     _id: 8,
     name: 'Keras',
-    img: ''
+    img: kerasLogo
   },
   {
     _id: 9,
