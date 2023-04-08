@@ -9,6 +9,8 @@ import { useSession } from 'next-auth/react';
 import NotifContextProvider, { type IFriendReqItemHydrated, type INotifItemHydrated } from '~/contexts/notifContext';
 import { type INotifItem } from '~/server/db/models/Notification';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
+import Link from 'next/link';
 
 const Navbar: FC = () => {
   const session = useSession();
@@ -94,7 +96,13 @@ const Navbar: FC = () => {
     <nav className={`z-10 mb-2 shadow-lg backdrop-blur-md py-2 px-2 flex items-center gap-1 sticky top-0
     ${showNavbar?'block':'hidden'}
     `}>
-      <span className='flex-1'>Navbar</span>
+      <div className='flex-1 relative'>
+        <Link href='/app/feed'>
+        <div className='w-10 h-10 relative rounded full'>
+        <Image src={'/logo.svg'} alt='logo' fill={true} className='rounded-full'/>
+        </div>
+        </Link>
+      </div>
       <span className='flex-1'><SearchBox /></span>
 
 

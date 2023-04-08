@@ -13,7 +13,7 @@ const DefaultHeader: FC = () => {
 
     <div 
     className='flex flex-col gap-3 lg:gap-0 relative items-center lg:items-baseline'>
-        <Image src='/avtar.jpg' height={100} width={100} alt='logo'
+        <Image src='/logo.png' height={300} width={300} alt='logo'
         className='h-24 w-24 lg:h-56 lg:w-56 rounded-full shadow-lg'/>
        
     <div className='block lg:hidden'>
@@ -22,7 +22,7 @@ const DefaultHeader: FC = () => {
     </div>
     <div className='bg-white p-1 flex flex-1 lg:flex-none flex-col gap-1 rounded-lg shadow-lg'>
         <div className='p-1 rounded-lg flex flex-col'>
-        <div><h1 className='text-3xl font-semibold'>App Name</h1></div>
+        <div><h1 className='text-3xl font-semibold'>Sociaux<span className='text-primary2'>.</span></h1></div>
         <div><h2 className='font-medium text-lg'>News Feed</h2></div>
         </div>
        
