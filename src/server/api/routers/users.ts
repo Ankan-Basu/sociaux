@@ -16,27 +16,39 @@ export const usersRouter = createTRPCRouter({
   getUser: publicProcedure
     .input(z.object({ uname: z.string() }))
     .query(async ({ ctx, input }) => {
-      try {
-        if (!input.uname) {
-          console.log('user, ignoring', input.uname);
-          return {
-            uname: undefined,
-            name: undefined,
-            email: undefined,
-            bio: undefined,
-          };
-        }
+      if (!input.uname) {
+        return {
+          uname: undefined,
+          name: undefined,
+          email: undefined,
+          bio: undefined,
+        };
+      }
 
+      try {
         await dbConnect();
-        // console.log('Context', ctx);
-        
-        const res: IUser | null = await UserModel.findOne({uname: input.uname});
+
+          const res: IUser | null = await UserModel.findOne({uname: input.uname});
+          
+          
+          if (!res) {
+            console.log('NOT FOUND');
+            
+            throw new TRPCError({
+              code: 'NOT_FOUND'
+            })
+          }
         
         return res; 
-      } catch(err) {
-        throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR'
-        })
+      } catch(err) {        
+        if (err instanceof TRPCError) {
+          throw err;
+        } else {
+
+          throw new TRPCError({
+            code: 'INTERNAL_SERVER_ERROR'
+          })
+        }
       }
     }
     ),

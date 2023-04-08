@@ -1,5 +1,6 @@
 import { type FC } from "react";
 import { signOut } from 'next-auth/react';
+import { useRouter } from "next/router";
 
 interface IErrorPopupProps {
   display: boolean;
@@ -9,6 +10,9 @@ interface IErrorPopupProps {
 }
 
 const ErrorPopup: FC<IErrorPopupProps> = ({display, setDisplay, message, type}) => {
+
+  const router = useRouter();
+
   const handleClick = () => {
     setDisplay(false);
     switch(type) {
@@ -16,6 +20,8 @@ const ErrorPopup: FC<IErrorPopupProps> = ({display, setDisplay, message, type}) 
         break;
       case "redirect":
         // write here
+        router.push('/app/feed')
+        .then(()=>{}).catch(()=>{});
         break;
       case "logout":
         signOut({callbackUrl: '/login'}).then(()=>{}).catch(()=>{});

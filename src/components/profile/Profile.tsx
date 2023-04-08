@@ -1,4 +1,4 @@
-import { type FC, useEffect, useState } from "react";
+import { type FC, useEffect, useState, useContext } from "react";
 import { FiEdit3 } from "react-icons/fi";
 import { useRouter } from "next/router";
 import { api } from "~/utils/api";
@@ -6,6 +6,9 @@ import FileUploadModal from "./fileUploadModal";
 import { useSession } from "next-auth/react";
 import ButtonTest from "./button";
 import Image from "next/image";
+import Loading from "../loading/loading";
+import { ErrorContext, ErrorContextType } from "~/contexts/errorContext";
+import { TRPCClientError } from "@trpc/client";
 
 const Profile: FC = () => {
   const [fullName, setFullName] = useState<string>();
@@ -13,6 +16,8 @@ const Profile: FC = () => {
   const [img, setImg] = useState<string>();
 
   const [showUploadModal, setShowUploadModal] = useState<boolean>(false);
+
+  const {setErrorDisplay, setErrorMessage, setErrorType} = useContext(ErrorContext) as ErrorContextType;
 
   const router = useRouter();
 
@@ -27,16 +32,38 @@ const Profile: FC = () => {
 
   useEffect(() => {
     if (router.query.uname) {
-      //   console.log(router.query.uname);
       (async () => {
-        refetch().then((resp) => {
-          // console.log("USE EFFECT\n", x);
-          setFullName(resp.data?.name);
-          setUserName(resp.data?.uname);
+        
+        refetch()
+        .then((resp) => {
+          // console.log('IN THEN, resp', resp);
+
+          if (resp.status === 'success') { 
+            setFullName(resp.data?.name);
+            setUserName(resp.data?.uname);
+          } else {
+            let err = resp.error;
+            setErrorDisplay(true);
+          let msg = 'An unexpected error occured';
+          if (err instanceof TRPCClientError) {
+            msg = err.data.code || msg;
+          }
+          setErrorMessage(msg);
+          setErrorType('redirect');
+          }
+        })
+        .catch((err) => {
+          // console.log("PROFILE err", err);
+          setErrorDisplay(true);
+          let msg = 'An unexpected error occured';
+          if (err instanceof TRPCClientError) {
+            msg = err.data.code || msg;
+          }
+          setErrorMessage(msg);
+          setErrorType('redirect');
         });
 
         imgQuery.refetch().then((resp) => {
-          // console.log('IMAGE', resp);
           setImg(resp.data?.img);
         });
       })();
@@ -48,6 +75,62 @@ const Profile: FC = () => {
     }
   }, [router]);
 
+
+  if (isLoading) {
+    return (
+      <>
+      <div
+      className="flex w-screen items-center /justify-center
+    gap-1 p-1 lg:sticky 
+    lg:top-16 lg:w-60 lg:flex-col
+    lg:items-stretch lg:gap-3
+    "
+    >
+    <div className="relative flex flex-col items-center gap-3 lg:items-baseline lg:gap-0">
+        
+        <div className="relative h-36 w-36 rounded-full shadow-lg lg:h-56 lg:w-56">
+          {/* //img */}
+          <Image src={img || '/avtar.jpg'} fill={true}  alt='photo' className="rounded-full" />
+        </div>
+        
+        <div className="block lg:hidden">
+        </div>
+      </div>
+
+
+      <div className="flex flex-1 flex-col gap-1 rounded-lg bg-white p-1 shadow-lg lg:flex-none">
+
+          <div className="flex justify-center items-center">
+        <Loading height={100} width={100} />
+
+          </div>
+        {/* <div className="flex flex-col rounded-lg p-1">
+          <div>
+            <h2 className="text-lg font-semibold">
+              {"Loading..."}
+            </h2>
+          </div>
+          <div>
+            <h2 className="text-sm font-medium lg:text-base">
+              {"Loading..."}
+            </h2>
+          </div>
+        </div>
+        <div className="mt-1 hidden lg:block">
+         
+        </div>
+        <div>
+          <div className="mt-1 flex items-center justify-between p-1 text-sm lg:text-base">
+            <h3 className="font-medium">Bio:</h3>
+          </div>
+
+          <div className="h-24 overflow-hidden whitespace-pre-wrap rounded-lg bg-secondary2 p-1 text-sm lg:h-28 lg:text-base"></div>
+        </div> */}
+      </div>
+    </div>
+      </>
+    )
+  }
   return (
     <div
       className="flex w-screen items-center 
