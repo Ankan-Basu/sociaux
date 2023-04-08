@@ -30,5 +30,12 @@
     background: #028174;
   }
 
+
+
+
+.navbarComp {
+  background-color: red;
+}
+
 @tailwind components;
 @tailwind utilities;

@@ -46,7 +46,7 @@ const NotifMobile: FC<INotifMobileProps> = ({notifs, friendReqs, display, type})
 
     return (
       <div className={`
-      z-30
+      z-20
     //bg-white/60
     //backdrop-blur-sm 
        overflow-auto p-2

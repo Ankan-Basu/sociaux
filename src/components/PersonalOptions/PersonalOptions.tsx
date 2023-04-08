@@ -18,7 +18,7 @@ const PersonalOptions: FC = () => {
     
   return (
     <div 
-    className='hidden sticky z-20 lg:z-0 
+    className='hidden sticky /z-20 /z-0 /lg:z-0 
     top-0 left-0
     lg:top-16
     bg-white
@@ -126,18 +126,18 @@ const PersonalOptions: FC = () => {
 
 
 
-        <div className={`
+        {/* <div className={`
         bg-slate-800/80
         fixed
         w-screen h-screen top-0 left-0
         ${!showModal?'hidden':'flex'} justify-center
         items-center
-        `}>
+        `}> */}
 
 
 
-            <Modal mode='desktop' display={true} setShowModal={setShowModal} />
-        </div>
+            <Modal mode='desktop' display={showModal} setShowModal={setShowModal} />
+        {/* </div> */}
     </div>
   )
 }

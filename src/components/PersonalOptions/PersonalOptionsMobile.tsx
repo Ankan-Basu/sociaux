@@ -34,11 +34,11 @@ const PersonalOptionsMobile: FC<IPersonalOptionsMobileProps> = ({
       className={`
         ${toShow ? "" : "hidden"}
         fixed top-0 left-0 
-        z-20 flex
+        /z-20 flex
         h-screen
         w-screen flex-col
         gap-3 rounded-lg
-        bg-white p-4 lg:z-0`}
+        bg-white p-4 /lg:z-0`}
     >
       <div
         onClick={() => toggleToShow((currState: boolean) => !currState)}

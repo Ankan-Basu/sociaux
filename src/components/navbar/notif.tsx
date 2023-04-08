@@ -43,8 +43,7 @@ const Notif: FC<INotifProps> = ({ display, type }) => {
   return (
     <div
       className={`
-      z-30 
-      hidden
+      hidden z-20
       ${display ? "lg:block" : "hidden"} fixed
        top-14 right-4 h-100 w-72 overflow-auto 
        rounded-lg border-2 bg-white p-2 

@@ -32,7 +32,7 @@ const NotifScreenMobile: FC<INotifScreenMobileProps> = (
       <div className={`
       ${display?'block':'hidden'}
       lg:hidden
-      z-30 pt-2
+      z-20 pt-2
       fixed top-0 w-screen h-screen
       bg-white/90
       overflow-auto

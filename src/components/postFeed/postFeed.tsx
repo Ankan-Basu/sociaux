@@ -77,7 +77,7 @@ const PostFeed: FC = () => {
   }
 
   return (
-    <div className="mx-auto rounded-lg p-2 lg:w-101">
+    <div className="mx-auto rounded-lg /z-0 p-2 lg:w-101">
       <div className="w-80">
       <span className="text-2xl font-medium pb-4">Posts:</span>
       </div>

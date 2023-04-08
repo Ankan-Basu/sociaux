@@ -20,8 +20,8 @@ const PostScreen: FC<IPostScreenProps> = ({ display }) => {
     <div
       className={`
     ${display ? "block" : "hidden"}
-    fixed z-50
-   
+    fixed
+    z-30
     top-0 left-0 w-screen h-screen
     bg-gray-600/50 backdrop-blur-lg
     //overflow-hidden
@@ -58,7 +58,7 @@ const PostScreen: FC<IPostScreenProps> = ({ display }) => {
                 lg:hover:text-primary lg:active:text-primary2
                 fixed top-1
                 bg-secondary2 p-3 rounded-full border-2 border-solid border-primary
-                z-10
+                z-20 //do it
                 "
           >
             <FiX />

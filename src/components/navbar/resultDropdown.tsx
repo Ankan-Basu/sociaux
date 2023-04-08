@@ -145,7 +145,7 @@ const Result: FC<IResultProps> = ({result, setDisplay}) => {
     className='
     cursor-pointer
     rounded-lg
-    
+    z-20
     w-full
     flex gap-1
     '

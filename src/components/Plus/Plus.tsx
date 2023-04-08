@@ -9,7 +9,7 @@ const Plus: FC = () => {
 
   return (
     <div 
-    className='active:bg-primary2 z-10 fixed bottom-6 right-6 shadow-2xl h-14 w-14 flex lg:hidden justify-center items-center bg-primary rounded-full'
+    className='active:bg-primary2 /z-10 fixed bottom-6 right-6 shadow-2xl h-14 w-14 flex lg:hidden justify-center items-center bg-primary rounded-full'
     >
         <span
         onClick={() => {

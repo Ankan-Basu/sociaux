@@ -44,7 +44,7 @@ const CommentScreen: FC<ICommentScreenProps> = ({ postId }) => {
           >
       <div className="sticky top-0
       bg-white/40 backdrop-blur-md
-      rounded-lg pb-2
+      rounded-lg pb-2 z-50
       ">
       <div className="p-2 pt-0">
         <h3 className="text-lg font-medium

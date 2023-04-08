@@ -132,9 +132,23 @@ const Modal: FC<IModalProps> = ({
       className={`
         ${!display ? "hidden" : ""}
         ${(customCss || '') + " "}
-        fixed z-40 h-screen
-        w-screen rounded-lg bg-white p-2 pt-1 lg:h-auto lg:w-100`}
+        fixed top-0 left-0
+        flex h-screen w-screen items-center
+        justify-center bg-gray-500/50 backdrop-blur-lg z-30
+        `}
     >
+      <div
+        className={`
+        m-auto
+        w-screen rounded-lg bg-white p-2 pt-1 md:w-100 lg:h-auto lg:w-100`}
+      >
+    {/* <div
+      className={`
+        ${!display ? "hidden" : ""}
+        ${(customCss || '') + " "}
+        fixed h-screen
+        w-screen rounded-lg bg-white p-2 pt-1 lg:h-auto lg:w-100`}
+    > */}
       <div
         className={`
             ${session.status === "unauthenticated" ? "block" : "hidden"}
@@ -168,7 +182,7 @@ const Modal: FC<IModalProps> = ({
         >
           <span className="font-medium">Privacy: </span>
           <span
-          className="border-2 border-solid border-black cursor-pointer"
+          className="cursor-pointer"
           onClick={() => {setDisplayDropdown(currState => !currState)}}
           >
             {privacy?'Friends':'Public'}
@@ -196,7 +210,7 @@ const Modal: FC<IModalProps> = ({
             name="textarea"
             rows={4}
             cols={50}
-            className="w-full resize-none rounded-lg bg-secondary2 p-1 outline-none lg:w-99"
+            className="w-full resize-none rounded-lg bg-secondary2 p-1 outline-primary2 lg:w-full"
           ></textarea>
         </div>
         <input type={'file'} accept='image/*' onChange={handleImg} ref={formRef} className='invisible' />
@@ -253,6 +267,7 @@ const Modal: FC<IModalProps> = ({
           </span>
         </div>
       </div>
+    </div>
     </div>
   );
 };

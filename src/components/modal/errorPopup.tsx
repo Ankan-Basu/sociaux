@@ -31,7 +31,7 @@ const ErrorPopup: FC<IErrorPopupProps> = ({display, setDisplay, message, type}) 
   
   return (
     <div className={`
-    fixed top-0 left-0 z-80 h-screen w-screen bg-gray-500/50 backdrop-blur-lg
+    fixed top-0 left-0 h-screen w-screen bg-gray-500/50 backdrop-blur-lg
     ${display?'flex':'hidden'} justify-center items-center
     `}>
 

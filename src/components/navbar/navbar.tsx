@@ -82,19 +82,19 @@ const Navbar: FC = () => {
     }, [router])
 
 
-    useEffect(() => {
-      console.log('Navbar MOUNTS');
+    // useEffect(() => {
+    //   console.log('Navbar MOUNTS');
 
-      return () => {
-        console.log('Navbar Unmounts');
+    //   return () => {
+    //     console.log('Navbar Unmounts');
         
-      }
-    }, [])
+    //   }
+    // }, [])
     
   return (
     <>
-    <nav className={`z-10 mb-2 shadow-lg backdrop-blur-md py-2 px-2 flex items-center gap-1 sticky top-0
-    ${showNavbar?'block':'hidden'}
+    <nav className={`mb-2 shadow-lg backdrop-blur-md py-2 px-2 flex items-center gap-1 sticky top-0
+    ${showNavbar?'block':'hidden'} z-10
     `}>
       <div className='flex-1 relative'>
         <Link href='/app/feed'>

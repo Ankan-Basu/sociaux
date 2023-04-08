@@ -30,6 +30,8 @@ const Profile: FC = () => {
     uname: `${router.query.uname}`,
   });
 
+  const session = useSession();
+
   useEffect(() => {
     if (router.query.uname) {
       (async () => {
@@ -83,7 +85,7 @@ const Profile: FC = () => {
       className="flex w-screen items-center /justify-center
     gap-1 p-1 lg:sticky 
     lg:top-16 lg:w-60 lg:flex-col
-    lg:items-stretch lg:gap-3
+    lg:items-stretch lg:gap-3 z-0
     "
     >
     <div className="relative flex flex-col items-center gap-3 lg:items-baseline lg:gap-0">
@@ -136,7 +138,7 @@ const Profile: FC = () => {
       className="flex w-screen items-center 
     gap-1 p-1 lg:sticky 
     lg:top-16 lg:w-60 lg:flex-col
-    lg:items-stretch lg:gap-3
+    lg:items-stretch lg:gap-3 z-0
     "
     >
       {/* <Link href='/user/ayaka'>
@@ -150,14 +152,17 @@ const Profile: FC = () => {
         <div className="relative h-36 w-36 rounded-full shadow-lg lg:h-56 lg:w-56">
           <Image src={img || '/avtar.jpg'} fill={true}  alt='photo' className="rounded-full" />
         </div>
-        <div
-          className="absolute bottom-12 right-0 inline-block rounded-full bg-secondary2 p-3 text-primary shadow-lg lg:bottom-4 lg:right-2"
+        
+        {/* <div
+          className={`absolute bottom-12 right-0 
+          ${(session.data?.user.uname === router.query.unmae)?'inline-block':'hidden'} rounded-full bg-secondary2 p-3 text-primary shadow-lg lg:bottom-4 lg:right-2`}
           onClick={() => {
-            setShowUploadModal(true);
+            // setShowUploadModal(true);
+            router.push('/app/dashboard')
           }}
         >
           <FiEdit3 />
-        </div>
+        </div> */}
         {/* <div>Upload</div> */}
         <div className="block lg:hidden">
           {/* <FriendButton /> */}

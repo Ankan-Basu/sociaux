@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { FC, useContext, useEffect, useRef, useState } from "react";
 import { FiImage, FiX } from "react-icons/fi";
-import { ErrorContext } from "~/contexts/errorContext";
+import { ErrorContext, type ErrorContextType } from "~/contexts/errorContext";
 import { api } from "~/utils/api";
 
 interface IFileUploadModalProps {
@@ -21,7 +21,7 @@ const FileUploadModal: FC<IFileUploadModalProps> = ({display, setDisplay, uname,
 
   const profileImgMutation = api.users.uploadProfileImage.useMutation();
 
-  const {setErrorDisplay, setErrorMessage, setErrorType} = useContext(ErrorContext);
+  const {setErrorDisplay, setErrorMessage, setErrorType} = useContext(ErrorContext) as ErrorContextType;
 
   const formRef = useRef<HTMLInputElement>(null);
 
@@ -117,7 +117,7 @@ const handleProfilImgUpload = async (e: React.FormEvent<HTMLFormElement>) => {
     <div
     className={`
     fixed top-0 left-0 h-screen w-screen
-    z-80
+    z-50
     bg-gray-500/50
     backdrop-blur-sm
     ${display?'flex':'hidden'}

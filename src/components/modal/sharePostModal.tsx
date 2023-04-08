@@ -102,13 +102,13 @@ const SharePostModal: FC<IShareModalProps> = ({
         ${!display ? "hidden" : ""}
         ${(customCss || '') + " "}
         fixed top-0 left-0
-        z-40 flex h-screen w-screen items-center
-        justify-center bg-gray-500/50 backdrop-blur-lg
+        flex h-screen w-screen items-center
+        justify-center bg-gray-500/50 backdrop-blur-lg z-30
         `}
     >
       <div
         className={`
-        //fixed //h-screen z-40
+        //fixed //h-screen /z-0
         m-auto
         w-screen rounded-lg bg-white p-2 pt-1 md:w-100 lg:h-auto lg:w-100`}
       >
@@ -146,7 +146,7 @@ const SharePostModal: FC<IShareModalProps> = ({
           <div className="flex py-1 pt-0 relative gap-1">
           <span className="font-medium">Privacy: </span>
           <span
-          className="border-2 border-solid border-black cursor-pointer"
+          className="cursor-pointer"
           onClick={() => {setDisplayDropdown(currState => !currState)}}
           >
             {privacy?'Friends':'Public'}
@@ -175,7 +175,7 @@ const SharePostModal: FC<IShareModalProps> = ({
               name="textarea"
               rows={4}
               cols={50}
-              className="w-full resize-none rounded-lg bg-secondary2 p-1 outline-none lg:w-99"
+              className="w-full resize-none rounded-lg bg-secondary2 p-1 outline-none lg:w-full"
             ></textarea>
           </div>
 
