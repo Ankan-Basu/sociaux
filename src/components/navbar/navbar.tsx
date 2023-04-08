@@ -95,7 +95,7 @@ const Navbar: FC = () => {
     <>
     <nav className={`mb-2 shadow-lg backdrop-blur-md py-2 px-2 flex items-center gap-1 sticky top-0
     ${showNavbar?'block':'hidden'} z-10
-    `}>
+    `} >
       <div className='flex-1 relative'>
         <Link href='/app/feed'>
         <div className='w-10 h-10 relative rounded full'>

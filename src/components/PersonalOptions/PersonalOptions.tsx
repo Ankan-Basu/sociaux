@@ -6,6 +6,7 @@ import { FiEdit, FiSettings, FiLogOut, FiUser, FiX, FiLogIn } from "react-icons/
 import { ErrorContext, type ErrorContextType } from '~/contexts/errorContext';
 import Loading from '../loading/loading';
 import Modal from '../modal/Modal';
+import Test from '../test/test';
 
 const PersonalOptions: FC = () => {
 
@@ -125,19 +126,19 @@ const PersonalOptions: FC = () => {
         </Link>
 
 
-
-        {/* <div className={`
-        bg-slate-800/80
-        fixed
+        {/* <Test /> */}
+        <div className={`
+        bg-gray-700/80
+        fixed backdrop-blur-md
         w-screen h-screen top-0 left-0
         ${!showModal?'hidden':'flex'} justify-center
-        items-center
-        `}> */}
+        items-center z-60
+        `}>
 
 
 
             <Modal mode='desktop' display={showModal} setShowModal={setShowModal} />
-        {/* </div> */}
+        </div>
     </div>
   )
 }

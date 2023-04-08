@@ -9,7 +9,7 @@ export interface IPost {
     imageId?: string;
     shareId?: string;
     likes?: Array<string>;
-    comments?: Array<string>;
+    comments: Array<string>;
     shares?: number;
 }
 

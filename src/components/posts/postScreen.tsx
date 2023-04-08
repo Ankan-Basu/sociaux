@@ -58,7 +58,7 @@ const PostScreen: FC<IPostScreenProps> = ({ display }) => {
                 lg:hover:text-primary lg:active:text-primary2
                 fixed top-1
                 bg-secondary2 p-3 rounded-full border-2 border-solid border-primary
-                z-20 //do it
+                z-60 //do it
                 "
           >
             <FiX />

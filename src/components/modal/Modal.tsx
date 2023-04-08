@@ -128,27 +128,27 @@ const Modal: FC<IModalProps> = ({
   };
 
   return (
+    // <div
+      // className={`
+      //   ${!display ? "hidden" : ""}
+      //   ${(customCss || '') + " "}
+      //   fixed top-0 left-0
+      //   flex h-screen w-screen items-center
+      //   justify-center bg-gray-500/50 backdrop-blur-lg z-30
+      //   `}
+    // >
+    //   <div
+    //     className={`
+    //     m-auto
+    //     w-screen rounded-lg bg-white p-2 pt-1 md:w-100 lg:h-auto lg:w-100`}
+      // >
     <div
       className={`
         ${!display ? "hidden" : ""}
         ${(customCss || '') + " "}
-        fixed top-0 left-0
-        flex h-screen w-screen items-center
-        justify-center bg-gray-500/50 backdrop-blur-lg z-30
-        `}
-    >
-      <div
-        className={`
-        m-auto
-        w-screen rounded-lg bg-white p-2 pt-1 md:w-100 lg:h-auto lg:w-100`}
-      >
-    {/* <div
-      className={`
-        ${!display ? "hidden" : ""}
-        ${(customCss || '') + " "}
-        fixed h-screen
+        fixed h-screen /z-30
         w-screen rounded-lg bg-white p-2 pt-1 lg:h-auto lg:w-100`}
-    > */}
+    >
       <div
         className={`
             ${session.status === "unauthenticated" ? "block" : "hidden"}
@@ -268,7 +268,7 @@ const Modal: FC<IModalProps> = ({
         </div>
       </div>
     </div>
-    </div>
+    // </div>
   );
 };
 

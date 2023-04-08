@@ -1,6 +1,6 @@
 import {Schema, models, model, Model} from "mongoose";
 
-interface IPostImage {
+export interface IPostImage {
     img: string;
 }
 // reference of this image will be stored in the post

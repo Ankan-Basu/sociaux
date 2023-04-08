@@ -9,6 +9,7 @@ import Image from "next/image";
 import Loading from "../loading/loading";
 import { ErrorContext, ErrorContextType } from "~/contexts/errorContext";
 import { TRPCClientError } from "@trpc/client";
+import Test from "../test/test";
 
 const Profile: FC = () => {
   const [fullName, setFullName] = useState<string>();

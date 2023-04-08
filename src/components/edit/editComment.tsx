@@ -147,7 +147,7 @@ const EditComment: FC = () => {
       className={`
       ${showCommentEditModal ? "flex" : "hidden"}
       fixed top-0 left-0
-    /z-60
+    z-60
     h-screen w-screen items-center justify-center
     bg-slate-500/50 backdrop-blur-md
     `}

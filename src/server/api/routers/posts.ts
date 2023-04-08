@@ -9,7 +9,7 @@ import {
 } from "~/server/api/trpc";
 import FriendListModel from "~/server/db/models/Friend";
 import PostModel, { IPost } from "~/server/db/models/Post";
-import PostImageModel from "~/server/db/models/PostImage";
+import PostImageModel, { IPostImage } from "~/server/db/models/PostImage";
 
 import dbConnect from "~/server/db/mongo";
 import detectFriendship from "../utilFuncs/detectFriend";
@@ -24,6 +24,9 @@ export const postsRouter = createTRPCRouter({
 
       return resArr;
     } catch (err) {
+      if (err instanceof TRPCError) {
+        throw err
+      }
       throw new TRPCError({
         code: "INTERNAL_SERVER_ERROR",
       });
@@ -59,6 +62,10 @@ export const postsRouter = createTRPCRouter({
 
         return posts;
       } catch (err) {
+        if (err instanceof TRPCError) {
+          throw err
+        }
+
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
         });
@@ -125,7 +132,10 @@ export const postsRouter = createTRPCRouter({
             
             // return post;
       } catch (err) {
-        console.log(err);
+        // console.log(err);
+        if (err instanceof TRPCError) {
+          throw err
+        }
 
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
@@ -149,7 +159,7 @@ export const postsRouter = createTRPCRouter({
         const post = input;
 
         const img = input.img;
-        let imgResp = null;
+        let imgResp: HydratedDocument<IPostImage> | null = null;
 
         if (img) {
           imgResp = await PostImageModel.create({ img: img });
@@ -172,6 +182,7 @@ export const postsRouter = createTRPCRouter({
           privacy: input.privacy,
           message: input.message,
           imageId: imgId,
+          comments: []
         };
 
         //  console.log('post', postObj);
@@ -180,6 +191,9 @@ export const postsRouter = createTRPCRouter({
 
         return dbResp;
       } catch (err) {
+        if (err instanceof TRPCError) {
+          throw err
+        }
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
         });
@@ -196,8 +210,10 @@ export const postsRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ input }) => {
-      await dbConnect();
-      // console.log(input);
+      try {
+
+        await dbConnect();
+        // console.log(input);
 
       const post = await PostModel.findOne({ _id: input.postId });
 
@@ -207,13 +223,22 @@ export const postsRouter = createTRPCRouter({
           message: "Not found",
         });
       }
-
+      
       post.message = input.message;
       post.privacy = input.privacy;
-
+      
       const dbResp = await post.save();
-
+      
       return dbResp;
+    } catch(err) {
+      if (err instanceof TRPCError) {
+        throw err
+      }
+
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR'
+      })
+    }
     }),
 
   getPostImage: publicProcedure
@@ -247,6 +272,9 @@ export const postsRouter = createTRPCRouter({
           });
         }
       } catch (err) {
+        if (err instanceof TRPCError) {
+          throw err
+        }
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
         });
@@ -260,12 +288,19 @@ export const postsRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ input }) => {
-      await dbConnect();
-      // console.log(input);
+      try {
 
-      const dbResp = await PostModel.deleteOne({ _id: input.postId });
-
-      return dbResp;
+        await dbConnect();
+        // console.log(input);
+        
+        const dbResp = await PostModel.deleteOne({ _id: input.postId });
+        
+        return dbResp;
+      } catch(err) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR'
+        })
+      }
     }),
 
   sharePost: publicProcedure
@@ -286,7 +321,8 @@ export const postsRouter = createTRPCRouter({
           privacy: input.privacy,
           message: input.message,
           shareId: input.shareId,
-          time: Date.now()
+          time: Date.now(),
+          comments: []
         });
 
         return dbResp;

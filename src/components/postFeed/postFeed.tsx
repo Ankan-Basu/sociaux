@@ -7,6 +7,7 @@ import EditPost from "../edit/editPost";
 import Loading from "../loading/loading";
 import Post from "../posts/Post";
 import PostScreen from "../posts/postScreen";
+import Test from "../test/test";
 
 const PostFeed: FC = () => {
   const [posts, setPosts] = useState<Array<Object>>([]);

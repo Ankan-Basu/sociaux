@@ -38,7 +38,7 @@ const SearchBox = () => {
   }
 
     return (
-      <div className='bg-secondary2 rounded-full p-1 relative'>
+      <div className='bg-secondary2 rounded-full p-1 relative z-0'>
         <form 
         ref={searchBoxRef}
         onClick={handleReShowDropdown}

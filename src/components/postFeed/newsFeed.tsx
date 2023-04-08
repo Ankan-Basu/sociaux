@@ -6,6 +6,7 @@ import EditPost from "../edit/editPost";
 import Loading from "../loading/loading";
 import Post from "../posts/Post";
 import PostScreen from "../posts/postScreen";
+import Test from "../test/test";
 
 const NewsFeed: FC = () => {
   // const [posts, setPosts] = useState<Array<Object>>([]);
@@ -80,6 +81,7 @@ const NewsFeed: FC = () => {
           <EditPost />
         </PostEditContextProvider>
       </PostFeedContextProvider>
+      {/* <Test /> */}
     </div>
   );
 };

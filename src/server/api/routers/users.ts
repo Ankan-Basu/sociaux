@@ -7,7 +7,10 @@ import {
   publicProcedure,
   protectedProcedure,
 } from "~/server/api/trpc";
+import CommentModel from "~/server/db/models/Comment";
+import PostModel from "~/server/db/models/Post";
 import ProfileImageModel from "~/server/db/models/profileImage";
+import ReplyCommentModel from "~/server/db/models/ReplyComment";
 
 import UserModel, { IUser } from "~/server/db/models/User";
 import dbConnect from "~/server/db/mongo";
@@ -159,10 +162,73 @@ export const usersRouter = createTRPCRouter({
             message: 'Duplicate Email'
           });
         }
+
+        if (err instanceof TRPCError) {
+          throw err;
+        }
+
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR'
         });
         
+      }
+    }),
+
+
+
+    deleteUser: publicProcedure
+    .input(z.object({uname: z.string()}))
+    .mutation(async ({ input }) => {
+      if (!input.uname) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST'
+        });
+      }
+      
+      try {
+        await dbConnect();
+        // console.log('Img upload', input);
+        
+        // delete all posts
+
+        //delete comments in the post
+        const posts = await PostModel.find({uname: input.uname});
+
+        if (!posts || !posts.length) {
+          // ignore
+        } else {
+          // for (let i=0; i<posts.length; i++) {
+          //     for (let j=0; j<posts[i]?.comments?.length!; j++) {
+          //         CommentModel.deleteOne({_id: posts[i]?.comments[j]});
+          //     }
+          //     PostModel.deleteOne({_id: posts[i]?._id});
+          // }
+
+          // posts.map((post) => {
+          //   const x = post.comments.map((comment) => {
+          //     return CommentModel.deleteOne({_id: comment});
+          //   })
+          //   Promise.all(x).then(() => {
+          //     return 
+          //   })
+          // })
+        }
+
+        //delete all comments by the user
+        await CommentModel.deleteMany({uname: input.uname});
+
+        // delete all reply comments by the user
+        await ReplyCommentModel.deleteMany({uname: input.uname});
+        
+       
+      } catch(err) {
+        if (err instanceof TRPCError) {
+          throw err;
+        } else {
+          throw new TRPCError({
+            code: 'INTERNAL_SERVER_ERROR'
+          })
+        }
       }
     }),
 });
