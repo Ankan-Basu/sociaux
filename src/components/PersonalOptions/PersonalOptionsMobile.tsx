@@ -90,7 +90,7 @@ const PersonalOptionsMobile: FC<IPersonalOptionsMobileProps> = ({
               setErrorType('simple');
               return;
           }
-              router.push(`/user/${session.data.user.uname}`)
+              router.push(`/app/user/${session.data.user.uname}`)
               .then(()=>{}).catch(()=>{});
               toggleToShow(false);
           }
@@ -99,7 +99,7 @@ const PersonalOptionsMobile: FC<IPersonalOptionsMobileProps> = ({
           <FiUser />
           <h4>My Profile</h4>
         </div>
-        <Link href='/dashboard'>
+        <Link href='/app/dashboard'>
         <div className="flex cursor-pointer items-center gap-1 rounded-lg p-2 hover:bg-primary">
           <FiSettings />
           <h4>Settings</h4>
@@ -108,7 +108,7 @@ const PersonalOptionsMobile: FC<IPersonalOptionsMobileProps> = ({
         <div
           onClick={() => {
             signOut({
-              callbackUrl: "/login",
+              callbackUrl: "/app/login",
             })
             .then(()=>{}).catch(()=>{});
           }}
@@ -118,7 +118,7 @@ const PersonalOptionsMobile: FC<IPersonalOptionsMobileProps> = ({
           <h4>Logout</h4>
         </div>
       </div>
-      <Link href="/login">
+      <Link href="/app/login">
         <div
           className={`
         p-2 

@@ -1,12 +1,11 @@
-import Link from "next/link";
-import React, { FC, useEffect, useState } from "react";
-import { FaPen } from "react-icons/fa";
-import { FiEdit2, FiEdit3, FiX } from "react-icons/fi";
+import { type FC, useEffect, useState } from "react";
+import { FiEdit3 } from "react-icons/fi";
 import { useRouter } from "next/router";
 import { api } from "~/utils/api";
 import FileUploadModal from "./fileUploadModal";
 import { useSession } from "next-auth/react";
 import ButtonTest from "./button";
+import Image from "next/image";
 
 const Profile: FC = () => {
   const [fullName, setFullName] = useState<string>();
@@ -61,10 +60,13 @@ const Profile: FC = () => {
 <button>Go</button>
 </Link> */}
       <div className="relative flex flex-col items-center gap-3 lg:items-baseline lg:gap-0">
-        <img
+        {/* <img
           src={img}
           className="h-36 w-36 rounded-full shadow-lg lg:h-56 lg:w-56"
-        />
+        /> */}
+        <div className="relative h-36 w-36 rounded-full shadow-lg lg:h-56 lg:w-56">
+          <Image src={img || '/avtar.jpg'} fill={true}  alt='photo' className="rounded-full" />
+        </div>
         <div
           className="absolute bottom-12 right-0 inline-block rounded-full bg-secondary2 p-3 text-primary shadow-lg lg:bottom-4 lg:right-2"
           onClick={() => {
@@ -106,9 +108,9 @@ const Profile: FC = () => {
           <div className="mt-1 flex items-center justify-between p-1 text-sm lg:text-base">
             <h3 className="font-medium">Bio:</h3>
 
-            <span>
+            {/* <span>
               <FiEdit3 />
-            </span>
+            </span> */}
           </div>
 
           <div className="h-24 overflow-hidden whitespace-pre-wrap rounded-lg bg-secondary2 p-1 text-sm lg:h-28 lg:text-base"></div>
@@ -133,51 +135,51 @@ typeof router.query.uname === 'string' &&
   );
 };
 
-const FriendButton: FC = () => {
-  const session = useSession();
-  const router = useRouter();
+// const FriendButton: FC = () => {
+//   const session = useSession();
+//   const router = useRouter();
 
-  const frienReqMutation = api.friends.sendFriendReq.useMutation();
+//   const frienReqMutation = api.friends.sendFriendReq.useMutation();
 
-  const sendFriendReq = async () => {
-    console.log("Freind req");
+//   const sendFriendReq = async () => {
+//     console.log("Freind req");
 
-    if (session.status !== "authenticated") {
-      console.log("LOGIN PLZ");
-      return;
-    }
+//     if (session.status !== "authenticated") {
+//       console.log("LOGIN PLZ");
+//       return;
+//     }
 
-    if (!router.query.uname) {
-      console.log("WHo req to send?");
-      return;
-    }
+//     if (!router.query.uname) {
+//       console.log("WHo req to send?");
+//       return;
+//     }
 
-    const requesterUname = session.data.user.uname;
-    const targetUname = router.query.uname as string;
+//     const requesterUname = session.data.user.uname;
+//     const targetUname = router.query.uname as string;
 
-    if (!requesterUname || !targetUname) {
-      console.log("UnauThorIseD");
-      return;
-    }
+//     if (!requesterUname || !targetUname) {
+//       console.log("UnauThorIseD");
+//       return;
+//     }
 
-    try {
-      const x = frienReqMutation.mutateAsync({ requesterUname, targetUname });
-      console.log(x);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+//     try {
+//       const x = frienReqMutation.mutateAsync({ requesterUname, targetUname });
+//       console.log(x);
+//     } catch (err) {
+//       console.log(err);
+//     }
+//   };
 
-  return (
-    <>
-      <button
-        onClick={sendFriendReq}
-        className="rounded-lg border-2 border-solid border-primary2 bg-primary p-1 lg:px-2"
-      >
-        <span className="text-sm lg:text-base">Add Friend</span>
-      </button>
-    </>
-  );
-};
+//   return (
+//     <>
+//       <button
+//         onClick={sendFriendReq}
+//         className="rounded-lg border-2 border-solid border-primary2 bg-primary p-1 lg:px-2"
+//       >
+//         <span className="text-sm lg:text-base">Add Friend</span>
+//       </button>
+//     </>
+//   );
+// };
 
 export default Profile;

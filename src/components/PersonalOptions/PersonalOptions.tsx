@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { type FC, useState, useContext } from 'react'
 import { FiEdit, FiSettings, FiLogOut, FiUser, FiX, FiLogIn } from "react-icons/fi";
 import { ErrorContext, type ErrorContextType } from '~/contexts/errorContext';
+import Loading from '../loading/loading';
 import Modal from '../modal/Modal';
 
 const PersonalOptions: FC = () => {
@@ -41,6 +42,7 @@ const PersonalOptions: FC = () => {
         ${status==='loading'?'flex': 'hidden'} flex-col gap-3 p-2
         `}>
             Loading ...
+            <Loading height={40} width={40} />
         </div>
 
         
@@ -83,7 +85,7 @@ const PersonalOptions: FC = () => {
                 setErrorType('simple');
                 return;
             }
-                router.push(`/user/${data.user.uname}`)
+                router.push(`/app/user/${data.user.uname}`)
                 .then(()=>{}).catch(()=>{});
             }
         }}
@@ -92,7 +94,7 @@ const PersonalOptions: FC = () => {
         >
             <FiUser /><h4>My Profile</h4>
         </div>
-        <Link href='/dashboard'>
+        <Link href='/app/dashboard'>
         <div className='p-2 flex gap-1 items-center rounded-lg cursor-pointer hover:bg-primary'>
             <FiSettings/>
             <h4>Settings</h4>
@@ -101,7 +103,7 @@ const PersonalOptions: FC = () => {
         <div 
         onClick={() => {
             signOut({
-                callbackUrl: '/login'
+                callbackUrl: '/app/login'
             }).then(()=>{}).catch(()=>{});
         }}
         className='p-2 flex gap-1 items-center rounded-lg cursor-pointer hover:bg-primary'>
@@ -110,7 +112,7 @@ const PersonalOptions: FC = () => {
         </div>
         </div>
 
-<Link href='/login'>
+<Link href='/app/login'>
         <div 
         className={`
         p-2 

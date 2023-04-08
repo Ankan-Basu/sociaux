@@ -1,8 +1,8 @@
+import { TRPCClientError } from '@trpc/client';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
-import { bracketSameLine } from 'prettier.config.cjs';
-import React, { FC, useEffect, useState } from 'react'
-import { string } from 'zod'
+import { type FC, useEffect, useState, useContext } from 'react'
+import { ErrorContext, type ErrorContextType } from '~/contexts/errorContext';
 import { api } from '~/utils/api';
 
 interface IProps {
@@ -18,13 +18,13 @@ const ButtonTest: FC<IProps> = ({profileUname}) => {
   const cancelFriendReqMutation = api.friends.cancelFriendReq.useMutation();
   const acceptFriendReqMutation = api.friends.acceptFriendReq.useMutation();
 
+  const {setErrorDisplay, setErrorMessage, setErrorType} = useContext(ErrorContext) as ErrorContextType;
+
   const session = useSession();
 
   useEffect(() => {
     if (buttonQuery.isFetched) {
       if (buttonQuery.data?.code) {
-        console.log('SET BUTTON STATE', buttonState);
-        
         setButtonState(buttonQuery.data?.code)
       }
     }
@@ -32,57 +32,73 @@ const ButtonTest: FC<IProps> = ({profileUname}) => {
   
 
   const handleButtonClick = async (mode: string) => {
+    // setButtonState(0)
+    // return
     if (session.status !== 'authenticated') {
-      console.log('Unauthenticated');
+      // console.log('Unauthenticated');
+      setErrorDisplay(true);
+      setErrorMessage('You need to login to perform this action');
+      setErrorType('simple');
       return;
     }
 
     const requesterUname = session.data?.user.uname;
     if (!requesterUname) {
-      console.log('Unauth');
+      // console.log('Unauth');
+      setErrorDisplay(true);
+      setErrorMessage('You need to login to perform this action');
+      setErrorType('logout');
       return;
     }
+    
+    try {
 
-    let resp = undefined;
-    switch(mode) {
-      case 'sendReq':
-        resp = await sendFriendReqMutation.mutateAsync({requesterUname, targetUname: profileUname});
+      switch(mode) {
+        case 'sendReq':
+          await sendFriendReqMutation.mutateAsync({requesterUname, targetUname: profileUname});
+          setButtonState(0);
+          await buttonQuery.refetch();
         break;
 
-      case 'acceptReq':
-        resp = await acceptFriendReqMutation.mutateAsync({acceptorUname: requesterUname, targetUname: profileUname});
+        case 'acceptReq':
+        await acceptFriendReqMutation.mutateAsync({acceptorUname: requesterUname, targetUname: profileUname});
+        setButtonState(0);
+        await buttonQuery.refetch();
         break;
 
       case 'cancelReq':
-        resp = await cancelFriendReqMutation.mutateAsync({cancellerUname: requesterUname, targetUname: profileUname});
+        await cancelFriendReqMutation.mutateAsync({cancellerUname: requesterUname, targetUname: profileUname});
+        setButtonState(0);
+        await buttonQuery.refetch();
         break;
 
       case 'unFriend':
-        resp = await unFriendMutation.mutateAsync({unFrienderUname: requesterUname, targetUname: profileUname});
+        await unFriendMutation.mutateAsync({unFrienderUname: requesterUname, targetUname: profileUname});
+        setButtonState(0);
+        await buttonQuery.refetch();
         break;
 
       default:
-        console.log('ERROR switch case');
+        // console.log('ERROR switch case');
+        setErrorDisplay(true);
+        setErrorMessage('An unknown error occured');
+        setErrorType('simple');
         break;
-
+      }
+    } catch(err) {
+      setErrorDisplay(true);
+      let msg = 'An unexpected error occcured';
+      if (err instanceof TRPCClientError) {
+        msg = err.data.code || msg;
+      }
+      setErrorMessage(msg);
+      setErrorType('simple');
     }
   }
 
-// if(buttonQuery.isFetching) {
-//   return (
-//     <button 
-//     className="rounded-lg border-2 border-solid border-deactiv bg-deactiv p-1 lg:px-2"
-//     >
-//       <span className="text-sm lg:text-base">Loading ...</span>
-//     </button>
-//   )
-// }
-  // else if (buttonQuery.isFetched) {
-
-    // return (
-    //   <>{JSON.stringify(buttonQuery.data)}</>
-    // )
   if (buttonState === 0) {
+    console.log('BUTTON SATE 0');
+    
     return (
       <button 
     className="rounded-lg border-2 border-solid border-deactiv bg-deactiv p-1 lg:px-2"
@@ -104,7 +120,7 @@ const ButtonTest: FC<IProps> = ({profileUname}) => {
 
   else if (buttonState === -2) {
     return (
-      <Link href='/dashboard'>
+      <Link href='/app/dashboard'>
       <button 
     className="rounded-lg border-2 border-solid border-deactiv bg-deactiv p-1 lg:px-2"
     >
@@ -164,45 +180,10 @@ const ButtonTest: FC<IProps> = ({profileUname}) => {
     console.log('Error in friend button')
     return (
       <>
-      xD
+      Error
       </>
     )
   }
-// }
-
-
-  
-  // return (
-  //   <>
-  //   {/* <div>{profileUname}</div>
-  //   <div>{buttonQuery.data?.toString()}</div> */}
-  //   <button 
-  //   className="rounded-lg border-2 border-solid border-primary2 bg-primary p-1 lg:px-2"
-  //   >
-  //     <span className="text-sm lg:text-base">Add Friend</span>
-  //   </button>
-
-
-  //   <button 
-  //   className="rounded-lg border-2 border-solid border-primary2 bg-primary p-1 lg:px-2"
-  //   >
-  //     <span className="text-sm lg:text-base">Unfriend</span>
-  //   </button>
-
-  //   <button 
-  //   className="rounded-lg border-2 border-solid border-primary2 bg-primary p-1 lg:px-2"
-  //   >
-  //     <span className="text-sm lg:text-base">Cancel Request</span>
-  //   </button>
-
-
-  //   <button 
-  //   className="rounded-lg border-2 border-solid border-primary2 bg-primary p-1 lg:px-2"
-  //   >
-  //     <span className="text-sm lg:text-base">Accept Request</span>
-  //   </button>
-  //   </>
-  // )
 }
 
 export default ButtonTest
