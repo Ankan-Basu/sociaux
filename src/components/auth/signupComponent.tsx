@@ -99,7 +99,7 @@ const SignupComponent: FC = () => {
       //do login and redirect
 
       const status = await signIn("credentials", {
-        redirect: true,
+        redirect: false,
         email: obj2.email,
         password: obj2.password,
         callbackUrl: "/app/feed",
@@ -136,7 +136,7 @@ const SignupComponent: FC = () => {
     <div
       className="
     m-auto w-5/6 max-w-md rounded-lg
-    p-3 shadow-xl bg-white/70"
+    p-3 shadow-2xl bg-white/70"
     >
       <h2
         className="
@@ -157,8 +157,7 @@ const SignupComponent: FC = () => {
         <input
           className={`
         w-full rounded-lg
-        border-2 border-solid
-        bg-secondary2 p-1
+        bg-secondary2 p-1 outline-primary2
         `}
           placeholder="Full Name"
           type="text"
@@ -174,8 +173,7 @@ const SignupComponent: FC = () => {
           <input
             className={`
         w-full rounded-lg
-        border-2 border-solid
-        bg-secondary2 p-1
+        bg-secondary2 p-1 outline-primary2
         `}
             placeholder="Email"
             type="text"
@@ -201,8 +199,7 @@ const SignupComponent: FC = () => {
           <input
             className={`
         w-full rounded-lg
-        border-2 border-solid
-        bg-secondary2 p-1
+        bg-secondary2 p-1 outline-primary2
         `}
             placeholder="Username"
             type="text"
@@ -229,8 +226,7 @@ const SignupComponent: FC = () => {
           <input
             className={`
         w-full rounded-lg
-        border-2 border-solid
-        bg-secondary2 p-1
+        bg-secondary2 p-1 outline-primary2
         `}
             placeholder="Password"
             type={`${showPassword ? "text" : "password"}`}
@@ -294,8 +290,7 @@ text-red-500
           <input
             className={`
         w-full rounded-lg
-        border-2 border-solid
-        bg-secondary2 p-1
+        bg-secondary2 p-1 outline-primary2
         `}
             placeholder="Confirm Password"
             type={`${showCPassword ? "text" : "password"}`}

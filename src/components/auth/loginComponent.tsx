@@ -23,33 +23,6 @@ const LoginComponent: FC = () => {
   const [unauth, setUnauth] = useState<boolean>(false);
 
 
-  if (session.status === "loading") {
-    return (
-      <div className='flex justify-center'>
-    <div className='flex flex-col gap-2 justify-center items-center'>
-      <div>Loading ...</div>
-      <Loading height={50} width={50} />
-      </div>
-      </div>
-      )
-  }
-
-  if (session.status === "authenticated") {
-    router.push('/app/feed')
-    .then(()=>{}).catch(()=>{});
-    return (
-      <div className='flex justify-center'>
-    <div className='flex flex-col gap-2 justify-center items-center'>
-      <div>You are logged in. Redirecting ...</div>
-      <Loading height={50} width={50} />
-      </div>
-      </div>
-      )
-  }
-  
-
-  
-
 
   const handleLoginSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -82,7 +55,7 @@ const LoginComponent: FC = () => {
     // console.log(obj2);
 
     const status: SignInResponse | undefined = await signIn('credentials', {
-      redirect: true,
+      redirect: false,
       email: obj2.email,
       uname: '',
       password: obj2.password,
@@ -103,8 +76,8 @@ const LoginComponent: FC = () => {
 
   return (
     <div className='
-    w-5/6 max-w-md m-auto p-3 rounded-lg shadow-xl
-    bg-white/70 /ml-2'>
+    w-5/6 max-w-md m-auto p-3 rounded-lg shadow-2xl
+    bg-white/70'>
       <h2
       className='
       text-3xl font-medium
@@ -126,7 +99,7 @@ const LoginComponent: FC = () => {
         className={`
         p-1 bg-secondary2
         w-full rounded-lg
-        border-2 border-solid
+         outline-primary2 
         `}
         placeholder='username or email'
         type='text'
@@ -145,7 +118,7 @@ const LoginComponent: FC = () => {
         className={`
         p-1 bg-secondary2
         w-full rounded-lg
-        border-2 border-solid
+       outline-primary2
         `}
         placeholder='password'
         type={`${showPassword?'text':'password'}`}
