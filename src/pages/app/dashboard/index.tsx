@@ -1,15 +1,16 @@
-import React, { FC, useEffect, useState } from "react";
-import { FiEdit2, FiEdit3, FiX, FiTrash } from "react-icons/fi";
+import { type FC, useEffect, useState } from "react";
+import { FiEdit3, FiTrash } from "react-icons/fi";
 import { useSession } from "next-auth/react";
 import { api } from "~/utils/api";
-import { TRPCClientError } from "@trpc/client";
-import { AppRouter } from "~/server/api/root";
 import { useRouter } from "next/router";
 import FileUploadModal from "~/components/profile/fileUploadModal";
+import Loading from "~/components/loading/loading";
 
 
 const Dashboard: FC = () => {
 
+  const router = useRouter();
+  
   const session = useSession();
 
   const [fName, setFName] = useState<string>();
@@ -66,16 +67,30 @@ const Dashboard: FC = () => {
   }, [])
 
   if (session.status === "loading") {
-    return <>Loading ...</>;
+    return (
+      <div
+      className="
+    w-screen
+    max-w-md mx-auto"
+    >
+      <div className="flex justify-center">
+      < Loading height={90} width={90} />
+
+      </div>
+    </div>
+    )
   } else if (session.status === "unauthenticated") {
-    return <>UNAUTHORISED</>;
+    router.push('/app/login');
+    return <div className="mx-auto">
+      UNAUTHORISED
+      </div>;
   }
 
   return (
     <div
       className="
     w-screen
-    max-w-md"
+    max-w-md mx-auto"
     >
 
       <div>
@@ -192,7 +207,7 @@ const DataField: FC<IDataFieldProps> = ({mode, data}) => {
       return;
     }
     
-    let resp = undefined;
+    let resp: any = undefined;
 
     switch(mode) {
       case 'Name':
