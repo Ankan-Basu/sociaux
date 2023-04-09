@@ -34,7 +34,7 @@ const LoginComponent: FC = () => {
     }
 
     const resObj: ValidatedOutput = inputValidator(obj);
-    console.log(resObj);
+    // console.log(resObj);
 
     if (!resObj.uname && !resObj.email) {
       setInpInvalid(true);

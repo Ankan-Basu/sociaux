@@ -11,6 +11,7 @@ import { imageRouter } from "./routers/image";
 import { friendsRouter } from "./routers/friend";
 import { buttonRouter } from "./routers/buttonState";
 import { searchRouter } from "./routers/search";
+import { passwordResetRouter } from "./routers/password";
 
 /**
  * This is the primary router for your server.
@@ -30,6 +31,7 @@ export const appRouter = createTRPCRouter({
   images: imageRouter,
   button: buttonRouter,
   search: searchRouter,
+  passwordReset: passwordResetRouter,
 });
 
 // export type definition of API

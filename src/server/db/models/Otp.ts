@@ -1,13 +1,13 @@
 import {Schema, models, model, type Model} from "mongoose";
 
 interface IOtp {
-    uname: string;
+    email: string;
     otp: string;
     expireAt?: { type: Date,  expires: 11 };
 }
 
 const otpSchema: Schema = new Schema<IOtp>({
-    uname: {
+    email: {
         type: String,
         required: true,
         unique: true,
