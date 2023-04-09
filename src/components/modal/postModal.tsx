@@ -88,7 +88,12 @@ const PostModal: FC<IPostModalProps> = ({
 
 
   const handlePost = async () => {
-    console.log(postMessage);
+    // console.log(postMessage);
+
+    if (!postMessage && !img) {
+      setShowModal(false);
+      return;
+    }
 
     if (!uname) {
       // console.log("error");
@@ -224,10 +229,10 @@ const PostModal: FC<IPostModalProps> = ({
             }
             formRef.current.value = '';
           }}
-          className="p-2 bg-secondary2 text-primary rounded-full absolute -top-4 -right-4">
+          className="p-2 bg-secondary2 text-primary rounded-full absolute -top-4 -right-4 z-10">
             <FiX />
             </span>
-        <Image src={img} height={100} width={100} alt='img' />
+        <Image src={img} fill={true} alt='img' />
         </div>
         :<></>}
         <div className="flex justify-center gap-2 py-1">

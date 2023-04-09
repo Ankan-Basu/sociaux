@@ -2,6 +2,7 @@ import dayjs from "dayjs";
 import relativeTime from 'dayjs/plugin/relativeTime';
 dayjs.extend(relativeTime);
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { FC, useContext, useEffect, useState } from "react";
@@ -334,10 +335,16 @@ const Post: FC<IPostProps> =({
         }
       </div>
       {imageId && 
-      <div className="border-solid border-2 border-secondary2 rounded-lg flex justify-center gap-2 py-1">
+      <div className="border-solid border-2 border-secondary2 rounded-lg flex justify-center gap-2 py-1 relative w-full h-72 max-h-72">
+        {
+          imageId && !imgQuery.data?.img &&
+          <div className="flex justify-center">
+            <Loading width={40} height={40} />
+          </div>
+        }
        {
          imageId?
-         <img src={imgQuery.data?.img} />
+         <Image src={imgQuery.data?.img || ''} alt='Image' fill={true} className='rounded-lg'/>
          :
       <></> 
       }       
