@@ -14,6 +14,7 @@ import Test from "../test/test";
 const Profile: FC = () => {
   const [fullName, setFullName] = useState<string>();
   const [userName, setUserName] = useState<string>();
+  const [bio, setBio] = useState<string>();
   const [img, setImg] = useState<string>();
 
   const [showUploadModal, setShowUploadModal] = useState<boolean>(false);
@@ -44,6 +45,7 @@ const Profile: FC = () => {
           if (resp.status === 'success') { 
             setFullName(resp.data?.name);
             setUserName(resp.data?.uname);
+            setBio(resp.data?.bio);
           } else {
             let err = resp.error;
             setErrorDisplay(true);
@@ -202,7 +204,9 @@ const Profile: FC = () => {
             </span> */}
           </div>
 
-          <div className="h-24 overflow-hidden whitespace-pre-wrap rounded-lg bg-secondary2 p-1 text-sm lg:h-28 lg:text-base"></div>
+          <div className="h-24 overflow-hidden whitespace-pre-wrap rounded-lg bg-secondary2 p-1 text-sm lg:h-28">
+            {bio}
+          </div>
         </div>
       </div>
       {uname ? (
