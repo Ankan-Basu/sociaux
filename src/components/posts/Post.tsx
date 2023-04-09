@@ -17,6 +17,7 @@ import { PostEditContext, PostEditContextType } from "~/contexts/postEditContext
 import { PostFeedContext, PostFeedContextType } from "~/contexts/postFeedContext";
 import { api } from "~/utils/api";
 import Dropdown from "../dropdown/dropdown";
+import Loading from "../loading/loading";
 import Modal from "../modal/Modal";
 import SharePostModal from "../modal/sharePostModal";
 
@@ -253,7 +254,7 @@ const Post: FC<IPostProps> =({
       className={`
     ${expanded ? "w-full" : ""}
     w-80 mb-8 shadow-lg border-2 
-    border-solid border-secondary 
+    border-solid border-primary 
     lg:w-100 p-2 pt-1 rounded-lg
     ${isSharedPost? "w-full lg:w-full mb-0": ""}
     bg-white relative
@@ -276,7 +277,7 @@ const Post: FC<IPostProps> =({
           >
             <FiMoreHorizontal />
           </span>
-          <Dropdown additionCSS="top-6 right-0" display={displayDropdown}
+          <Dropdown additionCSS="top-6 right-0 z-10" display={displayDropdown}
           options={
            [
             {optionName: 'Edit', callback: handleEdit},
@@ -311,6 +312,11 @@ const Post: FC<IPostProps> =({
         {(message || message==='')?message:''}
       </div>
       <div>
+        { shareId &&sharedPostQuery.isFetching && !sharedPostQuery.data &&
+        <div className="flex justify-center">
+          <Loading height={40} width={40} /> 
+        </div>
+        }
         {
           shareId && sharedPostQuery.isFetched &&
           <Post expanded={true} 
@@ -328,7 +334,7 @@ const Post: FC<IPostProps> =({
         }
       </div>
       {imageId && 
-      <div className="border-solid border-2 border-yellow-500 flex justify-center gap-2 py-1">
+      <div className="border-solid border-2 border-secondary2 rounded-lg flex justify-center gap-2 py-1">
        {
          imageId?
          <img src={imgQuery.data?.img} />
