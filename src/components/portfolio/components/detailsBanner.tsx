@@ -158,7 +158,7 @@ const BannerButton: FC<IBannerButtonProps> = ({children}) => {
     <button 
     className='
     p-1 w-32 md:w-40 rounded-lg 
-    active:bg-primary2 duration-150
+    active:bg-primary2 active:text-white duration-150
     lg:hover:bg-primary lg:active:bg-primary2 lg:active:text-white
     border-2 border-solid border-primary2 lg:duration-700'>
       {children}

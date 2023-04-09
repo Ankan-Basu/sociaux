@@ -1,6 +1,8 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
+import { FC } from "react";
+import Blob from "~/components/blob/blob";
 
 
 const Home: NextPage = () => {
@@ -12,18 +14,71 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-       <div>
-        <Link href='/app/login'>
-        <button>Social Media</button>
-        </Link>
-        <Link href='/Ankan-Basu'>
-        <button>Portfolio</button>
-        </Link>
+
+       <div className="flex flex-col gap-6 p-2 py-4 sm:p-4
+       sm:w-100 md:w-700px shadow-lg
+       bg-white/60 rounded-lg m-auto mt-20
+       ">
+
+        {/*  Fixed elements. doesn't affect the flex box */}
+        <Blob additionCss="lg:left-20 xl:left-40" />
+        <Blob additionCss="bottom-20 right-20 lg:bottom-40 lg:right-40 xl:bottom-48 xl:right-48"/>
+        {/*  ............................................... */}
+
+
+        <h1 className="font-medium text-3xl md:text-5xl">
+          Welcome to <span className="text-primary2">Sociaux</span>
+          </h1>
+       
+       <div className="flex flex-col sm:flex-row gap-2 mx-auto">
+       
+       <Button href='/app/login'>Use Sociaux App</Button>
+       
+       <Button href='Ankan-Basu'>Go to my Portfolio</Button>
+
+       </div>
+
+       <div className="flex flex-col gap-2">
+        <p className="text-justify">
+          This social media is created by me as a project to showcase my technical skills to potential recruiters.
+        </p>
+        <p className="text-justify">
+          Feel free to explore and report any issues (on my github).
+        </p>
+        <p className="text-justify">
+          I will try to keep adding new features and improving.
+        </p>
+        <p className="font-medium">Github Repo: <Link href={'https://github.com/Ankan-Basu/sociaux'} target='_blank'>
+          <span className="text-primary2">
+          github.com/Ankan-Basu/sociaux
+          </span>
+          </Link></p>
+       </div>
        </div>
       </main>
     </>
   );
 };
+
+interface IButtonProps {
+  children: React.ReactNode;
+  href: string;
+}
+
+const Button: FC<IButtonProps> = ({children, href}) => {
+  return (
+    <Link href={href}>
+    <button 
+    className='
+    p-1 w-40 rounded-lg font-medium
+    active:bg-primary2 active:text-white duration-150
+    lg:hover:bg-primary lg:active:bg-primary2 lg:active:text-white
+    border-2 border-solid border-primary2 lg:duration-500'>
+      {children}
+    </button>
+    </Link>
+  )
+}
 
 export default Home;
 
