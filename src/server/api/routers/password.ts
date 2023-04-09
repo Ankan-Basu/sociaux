@@ -55,7 +55,7 @@ export const passwordResetRouter = createTRPCRouter({
 
         const otp = otpGenerator(6);
         const resp = await transporter.sendMail({
-          from: 'ankan.basu.webdev@gmail.com',
+          from: process.env.MAIL,
           to: email,
           subject: 'Password Reset',
           text: `OTP is ${otp}. Valid for 5 mins.`
