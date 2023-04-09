@@ -5,7 +5,7 @@ import PersonalOptionsMobile from '../PersonalOptions/PersonalOptionsMobile';
 
 const Plus: FC = () => {
   const [menuOpen, setMenuOpen] = useState<boolean>(false)
-  const [showModal, setShowModal] = useState<boolean>(false);
+  // const [showModal, setShowModal] = useState<boolean>(false);
 
   return (
     <div 
@@ -22,13 +22,12 @@ const Plus: FC = () => {
         </span>
 
         <PersonalOptionsMobile toShow={menuOpen} toggleToShow={setMenuOpen}
-        setShowModal={setShowModal}
         />
 
-        <Modal 
+        {/* <Modal 
                 customCss='bottom-0 right-0'
                 display={showModal}
-                setShowModal={setShowModal} />
+                setShowModal={setShowModal} /> */}
     </div>
   )
 }

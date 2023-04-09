@@ -11,21 +11,24 @@ import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { ErrorContext, type ErrorContextType } from "~/contexts/errorContext";
+import { PostModalContext, type PostModalContextType } from "~/contexts/postModalContext";
 
 interface IPersonalOptionsMobileProps {
   toShow: boolean;
   toggleToShow: React.Dispatch<React.SetStateAction<boolean>>;
-  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+  // setShowModal?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const PersonalOptionsMobile: FC<IPersonalOptionsMobileProps> = ({
   toShow,
   toggleToShow,
-  setShowModal,
-}) => {
+  }) => {
   // console.log(toShow);
 
   const {setErrorDisplay, setErrorMessage, setErrorType} = useContext(ErrorContext) as ErrorContextType;
+
+  const {setShowModal, setMode} = useContext(PostModalContext) as PostModalContextType;
+  
   const router = useRouter();
   const session = useSession();
 
@@ -38,13 +41,13 @@ const PersonalOptionsMobile: FC<IPersonalOptionsMobileProps> = ({
         h-screen
         w-screen flex-col
         gap-3 rounded-lg
-        bg-white p-4 lg:z-0`}
+        bg-white/60 backdrop-blur-md p-4 lg:z-0`}
 
       
     >
       <div
         onClick={() => toggleToShow((currState: boolean) => !currState)}
-        className="flex justify-end p-2 text-lg active:text-primary lg:hidden"
+        className="flex justify-end p-2 text-lg active:text-primary lg:hidden mt-12"
       >
         <FiX />
       </div>
@@ -65,7 +68,7 @@ const PersonalOptionsMobile: FC<IPersonalOptionsMobileProps> = ({
         <div
           className="
             flex gap-1 pl-2 text-xl
-            font-medium
+            font-medium bg-white/60 rounded-lg
             "
         >
           Hi,
@@ -74,7 +77,9 @@ const PersonalOptionsMobile: FC<IPersonalOptionsMobileProps> = ({
 
         <div
           onClick={() => {
+            // setShowModal(true);
             setShowModal(true);
+            setMode('mobile');
             toggleToShow(false);
           }}
           className="flex cursor-pointer items-center justify-center gap-1
@@ -97,12 +102,12 @@ const PersonalOptionsMobile: FC<IPersonalOptionsMobileProps> = ({
               toggleToShow(false);
           }
         }}
-        className="flex cursor-pointer items-center gap-1 rounded-lg p-2 hover:bg-primary">
+        className="flex cursor-pointer items-center gap-1 rounded-lg p-2 hover:bg-primary bg-white/60">
           <FiUser />
           <h4>My Profile</h4>
         </div>
         <Link href='/app/dashboard'>
-        <div className="flex cursor-pointer items-center gap-1 rounded-lg p-2 hover:bg-primary">
+        <div className="flex cursor-pointer items-center gap-1 rounded-lg p-2 hover:bg-primary bg-white/60">
           <FiSettings />
           <h4>Settings</h4>
         </div>
@@ -114,7 +119,7 @@ const PersonalOptionsMobile: FC<IPersonalOptionsMobileProps> = ({
             })
             .then(()=>{}).catch(()=>{});
           }}
-          className="flex cursor-pointer items-center gap-1 rounded-lg p-2 hover:bg-primary"
+          className="flex cursor-pointer items-center gap-1 rounded-lg p-2 hover:bg-primary bg-white/60"
         >
           <FiLogOut />
           <h4>Logout</h4>

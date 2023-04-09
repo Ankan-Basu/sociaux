@@ -5,6 +5,8 @@ import { useSession } from 'next-auth/react'
 import React, { type FC } from 'react'
 import NewsFeed from '~/components/postFeed/newsFeed'
 import Loading from '~/components/loading/loading'
+import PostModalContextProvider from '~/contexts/postModalContext'
+import PostModal from '~/components/modal/postModal'
 
 const Feed: FC = () => {
 
@@ -28,8 +30,11 @@ const Feed: FC = () => {
     >
       <DefaultHeader />
         <NewsFeed />
-      <PersonalOptions />
-      <Plus />
+        <PostModalContextProvider>
+        <PersonalOptions />
+        <Plus />
+        <PostModal />
+        </PostModalContextProvider>
     </div>
   )
 }

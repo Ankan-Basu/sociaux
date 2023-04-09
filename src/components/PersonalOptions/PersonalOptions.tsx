@@ -4,13 +4,18 @@ import { useRouter } from 'next/router';
 import { type FC, useState, useContext } from 'react'
 import { FiEdit, FiSettings, FiLogOut, FiUser, FiX, FiLogIn } from "react-icons/fi";
 import { ErrorContext, type ErrorContextType } from '~/contexts/errorContext';
+import { PostFeedContext } from '~/contexts/postFeedContext';
+import { PostModalContext, type PostModalContextType } from '~/contexts/postModalContext';
 import Loading from '../loading/loading';
 import Modal from '../modal/Modal';
+import PostModal from '../modal/postModal';
 import Test from '../test/test';
 
 const PersonalOptions: FC = () => {
 
-    const [showModal, setShowModal] = useState<boolean>(false);
+    // const [showModal, setShowModal] = useState<boolean>(false);
+
+    const {setShowModal, setMode} = useContext(PostModalContext) as PostModalContextType;
 
     const {data, status} = useSession();
 
@@ -68,7 +73,13 @@ const PersonalOptions: FC = () => {
 
 
         <div 
-        onClick={()=> setShowModal(currState => !currState)}
+        onClick={
+            // ()=> setShowModal(currState => !currState)
+            () => {
+                setShowModal(true);
+                setMode('desktop');
+            }
+        }
         className={`
         p-1 flex justify-center gap-1 items-center
         border-2 border-solid border-primary2 rounded-lg cursor-pointer bg-primary hover:bg-primary2 hover:text-white`}>
@@ -125,9 +136,10 @@ const PersonalOptions: FC = () => {
         </div>
         </Link>
 
+{/* <PostModal display={true} setShowModal={setShowModal} mode='desktop' /> */}
 
         {/* <Test /> */}
-        <div className={`
+        {/* <div className={`
         bg-gray-700/80
         fixed backdrop-blur-md
         w-screen h-screen top-0 left-0
@@ -138,7 +150,7 @@ const PersonalOptions: FC = () => {
 
 
             <Modal mode='desktop' display={showModal} setShowModal={setShowModal} />
-        </div>
+        </div> */}
     </div>
   )
 }
