@@ -182,12 +182,14 @@ const LoginComponent: FC = () => {
           Login
         </button>
       
+      <Link href='/app/forgot-password'>
       <div
       className='
       text-primary active:text-primary2
       lg:hover:text-primary2 lg:active:text-primary'>
         Forgot Password?
       </div>
+        </Link>
       <div>
         Don&apos;t have an account? 
         <Link href='/app/signup'>

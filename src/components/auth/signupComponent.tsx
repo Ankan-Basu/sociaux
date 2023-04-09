@@ -112,10 +112,11 @@ const SignupComponent: FC = () => {
         return;
       }
 
-      // if (status.ok) {
-      //   router.push("/feed")
-      //   .then(()=>{}).catch(()=>{});
-      // } else {
+      if (status.ok) {
+        router.push("/app/feed")
+        .then(()=>{}).catch(()=>{});
+      }
+      //  else {
       //   // ERROR
       // }
     } else if (resp.status === 400) {

@@ -6,7 +6,7 @@ interface IErrorPopupProps {
   display: boolean;
   setDisplay: React.Dispatch<React.SetStateAction<boolean>>;
   message: string;
-  type: 'simple' | 'redirect' | 'logout' | undefined;
+  type: 'simple' | 'redirect' | 'logout' | 'redirectLogin' | undefined;
 }
 
 const ErrorPopup: FC<IErrorPopupProps> = ({display, setDisplay, message, type}) => {
@@ -25,6 +25,10 @@ const ErrorPopup: FC<IErrorPopupProps> = ({display, setDisplay, message, type}) 
         break;
       case "logout":
         signOut({callbackUrl: '/login'}).then(()=>{}).catch(()=>{});
+        break;
+      case "redirectLogin":
+        router.push('/app/login')
+        .then(()=>{}).catch(()=>{});
         break;
     }
   }
