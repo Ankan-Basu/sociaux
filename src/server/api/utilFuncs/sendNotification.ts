@@ -22,6 +22,10 @@ const sendNotification = async ({
   commentId = "",
   replyCommentId = "",
 }: x) => {
+  if (source === uname) {
+    return;
+  }
+  
   const notifListTarget = await NotificationModel.findOne({ uname: uname });
 
   const obj: INotifItem = {
