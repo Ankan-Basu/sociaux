@@ -93,7 +93,7 @@ const Navbar: FC = () => {
     
   return (
     <>
-    <nav className={`mb-2 shadow-lg backdrop-blur-md py-2 px-2 flex items-center gap-1 sticky top-0
+    <nav className={`mb-2 shadow-lg bg-white/40 backdrop-blur-md py-2 px-2 flex items-center gap-1 sticky top-0
     ${showNavbar?'block':'hidden'} z-10
     `} >
       <div className='flex-1 relative'>
