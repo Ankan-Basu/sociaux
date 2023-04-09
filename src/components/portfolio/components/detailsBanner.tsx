@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import React, { FC, useEffect, useRef, useState } from 'react'
 import { projectType } from '../infos/projects'
 import works, { workType } from '../infos/work'
@@ -71,7 +72,7 @@ const DetailsBanner: FC<IDetailsBannerProps> = ({data}) => {
         
         
       <div>
-        <p className='text-sm md:text-base'>{data?.desc}</p>
+        <p className='text-sm md:text-base text-justify'>{data?.desc}</p>
       </div>  
         
         
@@ -101,14 +102,18 @@ const DetailsBanner: FC<IDetailsBannerProps> = ({data}) => {
           // <div> Live Link:
           // <button>liveLink</button>
           // </div>
+          <Link href={data.liveLink} target='_blank'>
           <BannerButton>Live Link</BannerButton>
+          </Link>
           :
           <></> }
           {data?.gitHubLink?
           // <div> Github Link: 
           // <button>gitHub</button>
           // </div>
-          <BannerButton>Github Link</BannerButton>
+          <Link href={data.gitHubLink} target='_blank'>
+            <BannerButton>Github Link</BannerButton>
+          </Link>
           :
           <></> }
         </div>
@@ -118,8 +123,22 @@ const DetailsBanner: FC<IDetailsBannerProps> = ({data}) => {
           <div 
         className='flex flex-col gap-2 items-start'
         >
-          {data?.certificateLink?<BannerButton>Certificate</BannerButton>:<></> }
-          {data?.LORLink?<BannerButton>LOR</BannerButton>:<></> }
+          {
+            data?.certificateLink?
+           <Link href={data.certificateLink} target='_blank'>
+              <BannerButton>Certificate</BannerButton>
+            </Link>
+            :
+            <></> 
+          }
+          {
+            data?.LORLink?
+            <Link href={data.LORLink} target='_blank'>
+              <BannerButton>LOR</BannerButton>
+            </Link>
+            :
+            <></> 
+          }
         </div>
 
 

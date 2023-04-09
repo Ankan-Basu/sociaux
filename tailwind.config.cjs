@@ -41,7 +41,7 @@ module.exports = {
       },
 
       animation: {
-        scrollAppear: "scrollAppear 1.5s linear 1",
+        scrollAppear: "scrollAppear 1.5s linear 1 forwards",
         blob: "blob 9s infinite"
       },
 

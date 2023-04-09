@@ -11,8 +11,8 @@ const projects = [
       't3 Stack', 'NextJs', 'React', 'MongoDb', 'tRPC', 'Tailwind', 'Typescript', 'AWS'
     ],
     img: '',
-    liveLink: '..',
-    gitHubLink: '..',
+    liveLink: 'https://www.sociauxapp.com',
+    gitHubLink: 'https://github.com/Ankan-Basu/sociaux',
     certificateLink: undefined,
     LORLink: undefined,
   },
@@ -27,7 +27,7 @@ const projects = [
     ],
     img: newsappImg,
     liveLink: '',
-    gitHubLink: '..',
+    gitHubLink: 'https://github.com/Ankan-Basu/news-app-functionbased',
     certificateLink: undefined,
     LORLink: undefined
   },
@@ -42,7 +42,7 @@ const projects = [
     ],
     img: '',
     liveLink: '',
-    gitHubLink: '..',
+    gitHubLink: 'https://github.com/Ankan-Basu/ERGM-project',
     certificateLink: undefined,
     LORLink: undefined
   },

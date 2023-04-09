@@ -12,9 +12,8 @@ const works = [
       'NodeJs', 'Express', 'MongoDb'
     ],
     img: shoptopImg,
-    link: '',
-    certificateLink: 'bv',
-    LORLink: 'vnn',
+    certificateLink: 'https://drive.google.com/file/d/1yqmMnhf8EbANxrXx19y65Aa6kTefJWHa/view?usp=sharing',
+    LORLink: 'https://drive.google.com/file/d/1AUJvrMA8zU2IEmxOGLXcORYOLfgj8sez/view?usp=sharing',
     liveLink: '',
     gitHubLink: ''
   },
@@ -28,7 +27,6 @@ const works = [
       'NodeJs', 'Express', 'Puppeteer', 'AWS', 'MongoDb', 'ReactJs'
     ],
     img: tourcirkitImg,
-    link: '',
     liveLink: '',
     gitHubLink: ''
   },
