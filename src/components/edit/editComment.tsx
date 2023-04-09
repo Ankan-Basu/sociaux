@@ -184,7 +184,7 @@ const EditComment: FC = () => {
             name="textarea"
             rows={4}
             cols={50}
-            className="w-full resize-none rounded-lg bg-secondary2 p-1 outline-none lg:w-99"
+            className="w-full resize-none rounded-lg bg-secondary2 p-1 outline-primary2 lg:w-99"
           ></textarea>
         </div>
         <div className="flex flex-col justify-center gap-1 pt-1">

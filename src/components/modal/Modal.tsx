@@ -1,3 +1,6 @@
+/// NOT NEEDED ANYMORE. Replaced by PostModal
+
+
 import { TRPCClientError } from "@trpc/client";
 import { useSession } from "next-auth/react";
 import Image from "next/image";

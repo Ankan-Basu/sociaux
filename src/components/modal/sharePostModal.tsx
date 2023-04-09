@@ -175,7 +175,7 @@ const SharePostModal: FC<IShareModalProps> = ({
               name="textarea"
               rows={4}
               cols={50}
-              className="w-full resize-none rounded-lg bg-secondary2 p-1 outline-none lg:w-full"
+              className="w-full resize-none rounded-lg bg-secondary2 p-1 lg:w-full outline-primary2"
             ></textarea>
           </div>
 
