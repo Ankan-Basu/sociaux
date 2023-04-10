@@ -55,6 +55,9 @@ const PostFeed: FC = () => {
 
   if (isFetching && posts.length === 0) {
     return (
+      <PostFeedContextProvider additionVals={{ showExpanded, setShowExpanded }}>
+        <PostEditContextProvider additionVals={{ reload, setReload }}>
+          <PostModal />
       <div className="mx-auto rounded-lg p-2 lg:w-101">
         <div className="w-80">
       <span className="text-2xl font-medium pb-4">Posts:</span>
@@ -63,11 +66,16 @@ const PostFeed: FC = () => {
       <Loading height={100} width={100}/>
       </div>
       </div>
+      </PostEditContextProvider>
+      </PostFeedContextProvider>
     );
   }
 
   if (isFetched && posts.length === 0) {
     return (
+      <PostFeedContextProvider additionVals={{ showExpanded, setShowExpanded }}>
+        <PostEditContextProvider additionVals={{ reload, setReload }}>
+          <PostModal />
       <div className="mx-auto rounded-lg p-2 lg:w-101">
         <div className="w-80">
       <span className="text-2xl font-medium pb-4">Posts:</span>
@@ -76,6 +84,8 @@ const PostFeed: FC = () => {
       No posts found
       </div>
       </div>
+      </PostEditContextProvider>
+      </PostFeedContextProvider>
     );
   }
 
@@ -89,6 +99,7 @@ const PostFeed: FC = () => {
       </div>
       <PostFeedContextProvider additionVals={{ showExpanded, setShowExpanded }}>
         <PostEditContextProvider additionVals={{ reload, setReload }}>
+          <PostModal />
           {/* <PostModalContextProvider> */}
 
           {posts.map((post: any) => {
@@ -110,7 +121,6 @@ const PostFeed: FC = () => {
           })}
           <PostScreen display={showExpanded} />
           <EditPost />
-          <PostModal />
           {/* </PostModalContextProvider> */}
         </PostEditContextProvider>
       </PostFeedContextProvider>

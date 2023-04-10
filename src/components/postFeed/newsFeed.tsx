@@ -54,6 +54,9 @@ const NewsFeed: FC = () => {
 
   if (postsQuery.isFetching && postsQuery.data === undefined) {
     return (
+      <PostFeedContextProvider additionVals={{ showExpanded, setShowExpanded }}>
+        <PostEditContextProvider additionVals={{ setReload }}>
+              <PostModal />
       <div className="mx-auto rounded-lg p-2 lg:w-101">
         <div className="w-80">
       <span className="text-2xl font-medium pb-4">Posts:</span>
@@ -62,11 +65,16 @@ const NewsFeed: FC = () => {
       <Loading height={100} width={100}/>
       </div>
       </div>
+      </PostEditContextProvider>
+      </PostFeedContextProvider>
     );
   }
 
   if (postsQuery.isFetched && postsQuery.data?.resArr?.length === 0) {
     return (
+      <PostFeedContextProvider additionVals={{ showExpanded, setShowExpanded }}>
+        <PostEditContextProvider additionVals={{ setReload }}>
+              <PostModal />
       <div className="mx-auto rounded-lg p-2 lg:w-101">
         <div className="w-80">
       <span className="text-2xl font-medium pb-4">Posts:</span>
@@ -75,6 +83,8 @@ const NewsFeed: FC = () => {
       No posts found
       </div>
       </div>
+      </PostEditContextProvider>
+      </PostFeedContextProvider>
     );
   }
 
@@ -85,6 +95,7 @@ const NewsFeed: FC = () => {
       </div>
       <PostFeedContextProvider additionVals={{ showExpanded, setShowExpanded }}>
         <PostEditContextProvider additionVals={{ setReload }}>
+              <PostModal />
         {/* <PostModalContextProvider> */}
           {postsQuery.data?.resArr?.map((post: any) => {
             return (
@@ -105,7 +116,6 @@ const NewsFeed: FC = () => {
           })}
           <PostScreen display={showExpanded} />
           <EditPost />
-          <PostModal />
          {/* </PostModalContextProvider> */}
         </PostEditContextProvider>
       </PostFeedContextProvider>
