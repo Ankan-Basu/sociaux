@@ -10,6 +10,7 @@ import trpcLogo from '../img/trpc.svg';
 import sqlLogo from '../img/sql.svg';
 import tailwindLogo from '../img/tailwind.svg';
 import kerasLogo from '../img/keras.svg'
+import sklearnLogo from '../img/sklearn.svg'
 
 const skills = [
   {
@@ -63,11 +64,16 @@ const skills = [
   },
   {
     _id: 10,
+    name: 'ScikitLearn',
+    img: sklearnLogo
+  },
+  {
+    _id: 11,
     name: 'Git',
     img: gitLogo
   },
   {
-    _id: 11,
+    _id: 12,
     name: 'Linux',
     img: linuxLogo
   },
