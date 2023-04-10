@@ -5,6 +5,7 @@ import type {FC} from 'react';
 import { IUser } from '~/server/db/models/User';
 import { api } from '~/utils/api';
 import Loading from '../loading/loading';
+import Image from 'next/image';
 
 interface IResultDropdownProps {
   display: boolean;
@@ -152,11 +153,11 @@ const Result: FC<IResultProps> = ({result, setDisplay}) => {
     >
       <div
       className='
-     
+      relative
       h-12 w-12 
       '
       >
-        <img src={imgQuery.data?.img}
+        <Image src={imgQuery.data?.img || '/avtar.jpg'} fill={true} alt='image'
         className='rounded-full'
         />
         </div>

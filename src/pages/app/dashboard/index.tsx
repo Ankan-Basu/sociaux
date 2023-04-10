@@ -1,10 +1,13 @@
-import { type FC, useEffect, useState } from "react";
+import { type FC, useEffect, useState, useContext } from "react";
 import { FiEdit3, FiTrash } from "react-icons/fi";
 import { useSession } from "next-auth/react";
 import { api } from "~/utils/api";
 import { useRouter } from "next/router";
 import FileUploadModal from "~/components/profile/fileUploadModal";
 import Loading from "~/components/loading/loading";
+import Image from "next/image";
+import { TRPCClientError } from "@trpc/client";
+import { ErrorContext, ErrorContextType } from "~/contexts/errorContext";
 
 
 const Dashboard: FC = () => {
@@ -103,12 +106,15 @@ const Dashboard: FC = () => {
       relative 
       flex items-center justify-center"
         >
-          <img
-            src={img}
+          <div className=" h-36 w-36 relative">
+
+          <Image
+            src={img || '/avtar.jpg'} alt='image' fill={true}
             className="
-        h-36 w-36 rounded-full
-        "
-          ></img>
+            h-36 w-36 rounded-full
+            "
+            ></Image>
+            </div>
 
           <div
             className="
@@ -135,7 +141,7 @@ const Dashboard: FC = () => {
           <DataField mode='Name' data={fName || ''} />
           <DataField mode='Uname' data={uname} />
           <DataField mode='Email' data={email || ''} />
-          <div>
+          {/* <div>
             <button
               className="
   flex items-center
@@ -150,7 +156,7 @@ const Dashboard: FC = () => {
               <FiTrash />
               Delete Account
             </button>
-          </div>
+          </div> */}
         </div>
 
         {uname ? (
@@ -174,6 +180,8 @@ interface IDataFieldProps {
 }
 const DataField: FC<IDataFieldProps> = ({mode, data}) => {
 
+  const {setErrorDisplay, setErrorMessage, setErrorType} = useContext(ErrorContext) as ErrorContextType;
+
   const session = useSession();
 
   const [state, setState] = useState<string>(data);
@@ -191,7 +199,10 @@ const DataField: FC<IDataFieldProps> = ({mode, data}) => {
     // console.log('Submit event');
     
     if (session.status !== 'authenticated') {
-      console.log('Unauthenticated');
+      // console.log('Unauthenticated');
+      setErrorDisplay(true);
+      setErrorMessage('UNAUTHENTICATED');
+      setErrorType('logout');
       return;
     }
 
@@ -209,15 +220,18 @@ const DataField: FC<IDataFieldProps> = ({mode, data}) => {
     
     let resp: any = undefined;
 
-    switch(mode) {
-      case 'Name':
-        try {
-          resp = await changeNameMutation.mutateAsync({uname, fName: editedText});
+    try {
+
+      switch(mode) {
+        case 'Name':
+          try {
+            resp = await changeNameMutation.mutateAsync({uname, fName: editedText});
           setState(editedText)
           setEditedText('');
           setEditMode(false);
         } catch(err) {
-          console.log(err);
+          // console.log(err);
+          throw err;
         }
         break;
       
@@ -227,16 +241,33 @@ const DataField: FC<IDataFieldProps> = ({mode, data}) => {
           setEditedText('');
           setEditMode(false);
         } catch(err) {
-          console.log(err);
+          // console.log(err);
+          if (err instanceof TRPCClientError) {
+            if (err.data.code === 'BAD_REQUEST') {
+              throw 'Duplicate';
+            }
+          }
+          throw err;
           
         }
         break;
-
-      default:
-        break;
+        
+        default:
+          break;
+        }
+      } catch(err) {
+        setErrorDisplay(true);
+        let msg = 'An unexpected error occured';
+        if (err instanceof TRPCClientError) {
+          msg = err.data.code || msg
+        } else if (typeof err === 'string') {
+          msg = 'Duplicate Email'
+        }
+      setErrorMessage(msg);
+      setErrorType('simple');
+      }
     }
-  }
-
+      
   return (
     <div
     className="

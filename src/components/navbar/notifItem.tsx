@@ -130,7 +130,7 @@ const NotifItem: FC<INotifProps> = ({ notif }) => {
         router.push(`/app/user/${notif.source}`)
         .then(()=>{}).catch(()=>{});
       }}
-      src={imgQuery.data?.img || ''} className="h-12 w-12 rounded-full" />
+      src={imgQuery.data?.img || '/avtar.jpg'} className="h-12 w-12 rounded-full" />
       <div className="w-100 flex-1">
         <div
           onClick={handleRedirect}
