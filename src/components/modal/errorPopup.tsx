@@ -36,7 +36,7 @@ const ErrorPopup: FC<IErrorPopupProps> = ({display, setDisplay, message, type}) 
   return (
     <div className={`
     fixed top-0 left-0 h-screen w-screen bg-gray-500/50 backdrop-blur-lg
-    ${display?'flex':'hidden'} justify-center items-center
+    ${display?'flex':'hidden'} justify-center items-center z-80
     `}>
 
       <div className={`
@@ -44,7 +44,7 @@ const ErrorPopup: FC<IErrorPopupProps> = ({display, setDisplay, message, type}) 
       flex flex-col justify-between
       `
       }>
-        <div className='
+        <div className='flex justify-center
         '>
           {message}
           
