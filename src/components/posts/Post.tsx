@@ -14,6 +14,7 @@ import {
   FiMessageSquare,
   FiMoreHorizontal
 } from "react-icons/fi";
+import { ErrorContext, ErrorContextType } from "~/contexts/errorContext";
 import { PostEditContext, PostEditContextType } from "~/contexts/postEditContext";
 import { PostFeedContext, PostFeedContextType } from "~/contexts/postFeedContext";
 import { api } from "~/utils/api";
@@ -73,6 +74,8 @@ const Post: FC<IPostProps> =({
     setReload
   } = useContext(PostEditContext) as PostEditContextType;
 
+  const {setErrorDisplay, setErrorMessage, setErrorType} = useContext(ErrorContext) as ErrorContextType;
+
   const session = useSession();
 
   const reactorUname = session.data?.user.uname;
@@ -99,7 +102,10 @@ const Post: FC<IPostProps> =({
 
   const handleLike = async () => {
     if (session.status!=='authenticated' || !reactorUname) {
-      console.log('UnAuthenticated');     
+      // console.log('UnAuthenticated');  
+      setErrorDisplay(true);
+      setErrorMessage('You need to Login to like');
+      setErrorType('simple');  
       return;
     }
 
@@ -121,7 +127,10 @@ const Post: FC<IPostProps> =({
 
   const handleUnlike = async () => {
     if (session.status!=='authenticated' || !reactorUname) {
-      console.log('UnAuthenticated');     
+      // console.log('UnAuthenticated');
+      setErrorDisplay(true);
+      setErrorMessage('You need to Login to unlike');
+      setErrorType('simple');       
       return;
     }
 
@@ -397,7 +406,22 @@ const Post: FC<IPostProps> =({
           </span>
         </span>
         <span 
-        onClick={() => setShowShareModal(true)}
+        onClick={() => {
+          if (session.status === 'unauthenticated') {
+            setErrorDisplay(true);
+            setErrorMessage('You need to Login to share post');
+            setErrorType('simple');
+            return;  
+          }
+          if (!session.data?.user.uname) {
+            setErrorDisplay(true);
+            setErrorMessage('You need to Login to share post');
+            setErrorType('logout');  
+          }
+
+          setShowShareModal(true)
+        
+        }}
         className="py-1 pointer
         flex-1 flex justify-center items-center gap-1 border-solid border-2 border-primary rounded-lg">
           <FiCornerUpRight />
@@ -407,8 +431,8 @@ const Post: FC<IPostProps> =({
         </span>
       </div>
 
-      {/* don't allow reshare of shared post */}
-      <SharePostModal postId={_id} mode='desktop' display={!shareId && showShareModal} setShowModal={setShowShareModal} />
+      {/* if post has shared post, share the original post */}
+      <SharePostModal postId={shareId || _id} mode='desktop' display={showShareModal} setShowModal={setShowShareModal} />
     </div>
   );
 }

@@ -4,6 +4,7 @@ import React, { type FC, useContext, useState } from "react";
 
 import { FiTrash, FiCornerUpRight, FiX } from "react-icons/fi";
 import { ErrorContext, type ErrorContextType } from "~/contexts/errorContext";
+import { PostEditContext, type PostEditContextType } from "~/contexts/postEditContext";
 import { api } from "~/utils/api";
 import Dropdown from "../dropdown/dropdown";
 
@@ -39,6 +40,8 @@ const SharePostModal: FC<IShareModalProps> = ({
   const sharePostMutation = api.posts.sharePost.useMutation();
 
   const {setErrorDisplay, setErrorMessage, setErrorType} = useContext(ErrorContext) as ErrorContextType;
+
+  const {setReload} = useContext(PostEditContext) as PostEditContextType;
 
   const handleClose = () => {
     setPostMessage('')
@@ -83,6 +86,11 @@ const SharePostModal: FC<IShareModalProps> = ({
         shareId: postId,
       });
       handleClose();
+      if (!setReload) {
+        //won't happen
+        return;
+      }
+      setReload({reload: 1})
     } catch (err) {
       // console.log(err);
       setErrorDisplay(true);

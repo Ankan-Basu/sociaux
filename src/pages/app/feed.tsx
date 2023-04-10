@@ -2,17 +2,20 @@ import DefaultHeader from '~/components/defaultHeader/defaultHeader'
 import PersonalOptions from '~/components/PersonalOptions/PersonalOptions'
 import Plus from '~/components/Plus/Plus'
 import { useSession } from 'next-auth/react'
-import React, { type FC } from 'react'
+import React, { useState, type FC } from 'react'
 import NewsFeed from '~/components/postFeed/newsFeed'
 import Loading from '~/components/loading/loading'
 import PostModalContextProvider from '~/contexts/postModalContext'
 import PostModal from '~/components/modal/postModal'
 import Head from 'next/head'
+import PostEditContextProvider from '~/contexts/postEditContext'
 
 const Feed: FC = () => {
 
   const session = useSession();
-  console.log(session);
+  // console.log(session);
+
+  // const [reload, setReload] = useState({reload: 1})
 
   if (session.status === 'loading') {
     return (
@@ -33,12 +36,14 @@ const Feed: FC = () => {
         <title>Sociaux | News Feed</title>
       </Head>
       <DefaultHeader />
-        <NewsFeed />
+        {/* <PostEditContextProvider additionVals={{ setReload }}> */}
         <PostModalContextProvider>
+        <NewsFeed />
         <PersonalOptions />
         <Plus />
-        <PostModal />
+        {/* <PostModal /> */}
         </PostModalContextProvider>
+        {/* </PostEditContextProvider> */}
     </div>
   )
 }
