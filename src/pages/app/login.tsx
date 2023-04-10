@@ -4,6 +4,7 @@ import Blob from '~/components/blob/blob'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router';
 import Loading from '~/components/loading/loading';
+import Head from 'next/head';
 
 
 
@@ -42,6 +43,9 @@ const Login: FC = () => {
 
   return (
     <div className=''>
+      <Head>
+        <title>Sociaux | Login</title>
+      </Head>
       <Blob additionCss='left-20 md:left-28 lg:left-40 xl:left-52 2xl:left-72'/>
       
       <div className={`mt-4 lg:mt-14 flex flex-col justify-center gap-2 lg:flex-row`}>

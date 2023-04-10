@@ -7,6 +7,7 @@ import NewsFeed from '~/components/postFeed/newsFeed'
 import Loading from '~/components/loading/loading'
 import PostModalContextProvider from '~/contexts/postModalContext'
 import PostModal from '~/components/modal/postModal'
+import Head from 'next/head'
 
 const Feed: FC = () => {
 
@@ -28,6 +29,9 @@ const Feed: FC = () => {
     <div 
     className='flex flex-col lg:flex-row justify-center items-start'
     >
+      <Head>
+        <title>Sociaux | News Feed</title>
+      </Head>
       <DefaultHeader />
         <NewsFeed />
         <PostModalContextProvider>

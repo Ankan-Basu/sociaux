@@ -8,6 +8,7 @@ import PostEditContextProvider from "~/contexts/postEditContext";
 import { type IPost } from "~/server/db/models/Post";
 import { type HydratedDocument } from "mongoose";
 import { ErrorContext, type ErrorContextType } from "~/contexts/errorContext";
+import Head from "next/head";
 
 const PostPage: FC = () => {
   const router = useRouter();
@@ -61,6 +62,9 @@ const PostPage: FC = () => {
   return (
     <PostFeedContextProvider additionVals={{ showExpanded, setShowExpanded }}>
       <PostEditContextProvider additionVals={{ setReload }}>
+      <Head>
+        <title>Sociaux</title>
+      </Head>
     <div className="
     w-screen
     flex flex-col justify-center items-center
