@@ -220,7 +220,7 @@ const Comment: FC<ICommentProps> = (
     //lg:w-98`}>
         <div className='w-16'>
         <div className='w-full'>
-            <Image src={profileImgQuery.data?.img || ''} height='60' width='60' alt='photo' className='rounded-full'/>
+            <Image src={profileImgQuery.data?.img || '/avtar.jpg'} height='60' width='60' alt='photo' className='rounded-full'/>
         </div>
         </div>
         <div className='flex-1'>

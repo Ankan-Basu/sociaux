@@ -134,7 +134,7 @@ const FrenReq: FC<IFrenReqProps> = ({friendReq}) => {
             alt='photo'
             width={100} height={100}
             onClick={handleRedirect}
-            src={imgQuery.data?.img || ''} className='w-12 h-12 rounded-full' />
+            src={imgQuery.data?.img || '/avtar.jpg'} className='w-12 h-12 rounded-full' />
             <div className='flex-1 w-100'>
                 <div 
                 onClick={handleRedirect}
