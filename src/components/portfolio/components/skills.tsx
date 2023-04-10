@@ -16,7 +16,7 @@ const Skills: FC<ISkillsProps> = ({type, arr}) => {
       <div
       className={`
       border-2 border-solid border-primary2 
-      rounded-lg w-10/12 md:w-700px m-auto p-4 flex ${type==='skills'?'gap-6':'gap-4'} flex-wrap justify-between  shadow-lg bg-white/60
+      rounded-lg w-10/12 md:w-700px m-auto p-4 flex ${type==='skills'?'gap-4':'gap-4'} flex-wrap justify-between  shadow-lg bg-white/60
       `}
       >
         {
@@ -40,8 +40,8 @@ const X: FC<skillType> = ({_id, name, img}) => {
     <div className=' w-20
     flex flex-col justify-center items-center p-1 gap-2
     '>
-    <div className='relative h-16 w-16 bg-white rounded-full'>
-    <Image src={img || tail} alt='logo' fill={true} />
+    <div className='relative h-12 w-12 md:h-16 md:w-16 bg-white rounded-full'>
+    <Image src={img || tail} alt='logo' fill={true} className='rounded-full' />
     </div>
     <div className='text-sm font-medium'>
       {name}
