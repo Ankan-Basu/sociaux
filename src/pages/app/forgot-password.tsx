@@ -1,4 +1,5 @@
 import { useSession } from 'next-auth/react';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { type FC } from 'react'
 import PasswordResetComponent from '~/components/auth/passwordResetComponent';
@@ -34,6 +35,9 @@ const ForgotPassword: FC = () => {
   }
   return (
     <div>
+      <Head>
+        <title>Sociaux | Forgot Password</title>
+      </Head>
       <Blob additionCss='left-20 md:left-28 lg:left-40 xl:left-52 2xl:left-72'/>
       <PasswordResetComponent />
       </div>

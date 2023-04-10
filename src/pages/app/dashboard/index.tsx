@@ -8,6 +8,7 @@ import Loading from "~/components/loading/loading";
 import Image from "next/image";
 import { TRPCClientError } from "@trpc/client";
 import { ErrorContext, ErrorContextType } from "~/contexts/errorContext";
+import Head from "next/head";
 
 
 const Dashboard: FC = () => {
@@ -275,6 +276,9 @@ const DataField: FC<IDataFieldProps> = ({mode, data}) => {
    px-2 py-1
     "
   >
+    <Head>
+        <title>Sociaux | Dashboard</title>
+      </Head>
     <span 
     className={`${editMode?'hidden':'block'}
     py-1`}

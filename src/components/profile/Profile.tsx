@@ -85,13 +85,15 @@ const Profile: FC = () => {
     return (
       <>
       <div
-      className="flex w-screen items-center /justify-center
+      className="flex w-screen items-center 
     gap-1 p-1 lg:sticky 
     lg:top-16 lg:w-60 lg:flex-col
-    lg:items-stretch lg:gap-3 z-0
+    lg:items-stretch lg:gap-3 z-0 xl:left-20
+    2xl:left-48
     "
     >
-    <div className="relative flex flex-col items-center gap-3 lg:items-baseline lg:gap-0">
+    <div className="relative flex flex-col items-center gap-3 lg:items-baseline lg:gap-0 
+    ">
         
         <div className="relative h-36 w-36 rounded-full shadow-lg lg:h-56 lg:w-56">
           {/* //img */}
@@ -141,7 +143,8 @@ const Profile: FC = () => {
       className="flex w-screen items-center 
     gap-1 p-1 lg:sticky 
     lg:top-16 lg:w-60 lg:flex-col
-    lg:items-stretch lg:gap-3 z-0
+    lg:items-stretch lg:gap-3 z-0 xl:left-20
+    2xl:left-48
     "
     >
       {/* <Link href='/user/ayaka'>

@@ -7,7 +7,8 @@ const DefaultHeader: FC = () => {
     className='p-1 w-screen lg:w-60 
     flex lg:flex-col items-center 
     lg:items-stretch gap-1 lg:gap-3
-    lg:sticky lg:top-16
+    lg:sticky lg:top-16 xl:left-20
+    2xl:left-48
     '
     >
 

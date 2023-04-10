@@ -31,7 +31,7 @@ const PersonalOptions: FC = () => {
     w-screen h-screen
     lg:w-60 lg:h-auto
     p-4 lg:p-1 rounded-lg lg:shadow-lg 
-    lg:flex flex-col gap-3'
+    lg:flex flex-col gap-3 xl:right-20 2xl:right-48'
     >
         <div className='lg:hidden flex justify-end p-2 text-lg'>
             <FiX />

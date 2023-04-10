@@ -1,10 +1,14 @@
 import SignupComponent from '~/components/auth/signupComponent'
 import React, { FC } from 'react'
 import Blob from '~/components/blob/blob'
+import Head from 'next/head'
 
 const Signup: FC = () => {
   return (
     <div className=''>
+      <Head>
+        <title>Sociaux | Signup</title>
+      </Head>
       <Blob additionCss='left-20 md:left-28 lg:left-40 xl:left-52 2xl:left-72'/>
       
       <div className={`mt-4 lg:mt-10 flex flex-col justify-center gap-2 lg:flex-row`}>
