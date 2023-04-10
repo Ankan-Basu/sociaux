@@ -16,14 +16,18 @@ import detectFriendship from "../utilFuncs/detectFriend";
 import fetchPosts from "../utilFuncs/fetchPosts";
 
 export const postsRouter = createTRPCRouter({
-  getAllPosts: publicProcedure.query(async ({ ctx }) => {
+  getAllPosts: publicProcedure
+  .input(z.object({page: z.number()}))
+  .query(async ({ ctx, input }) => {
     try {
       await dbConnect();
 
-      const resArr = await fetchPosts(ctx);
+      const x = await fetchPosts(ctx, input.page);
 
-      return resArr;
+      return {resArr: x.resArr, pageNo: x.pageNo};
     } catch (err) {
+      console.log(err);
+      
       if (err instanceof TRPCError) {
         throw err
       }
