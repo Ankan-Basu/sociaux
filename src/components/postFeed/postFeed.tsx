@@ -2,9 +2,11 @@ import { useRouter } from "next/router";
 import React, { FC, useEffect, useState } from "react";
 import PostEditContextProvider from "~/contexts/postEditContext";
 import PostFeedContextProvider from "~/contexts/postFeedContext";
+import PostModalContextProvider from "~/contexts/postModalContext";
 import { api } from "~/utils/api";
 import EditPost from "../edit/editPost";
 import Loading from "../loading/loading";
+import PostModal from "../modal/postModal";
 import Post from "../posts/Post";
 import PostScreen from "../posts/postScreen";
 import Test from "../test/test";
@@ -45,7 +47,7 @@ const PostFeed: FC = () => {
 
   const refetchData = async () => {
     const x = await refetch();
-        console.log(x);
+        // console.log(x);
         if (x.status === "success") {
           setPosts(x.data);
         }
@@ -87,6 +89,8 @@ const PostFeed: FC = () => {
       </div>
       <PostFeedContextProvider additionVals={{ showExpanded, setShowExpanded }}>
         <PostEditContextProvider additionVals={{ reload, setReload }}>
+          {/* <PostModalContextProvider> */}
+
           {posts.map((post: any) => {
             return (
               <Post
@@ -106,6 +110,8 @@ const PostFeed: FC = () => {
           })}
           <PostScreen display={showExpanded} />
           <EditPost />
+          <PostModal />
+          {/* </PostModalContextProvider> */}
         </PostEditContextProvider>
       </PostFeedContextProvider>
     </div>

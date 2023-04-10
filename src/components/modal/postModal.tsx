@@ -10,7 +10,8 @@ import {
   FiImage,
 } from "react-icons/fi";
 import { ErrorContext, type ErrorContextType } from "~/contexts/errorContext";
-import { PostModalContext, PostModalContextType } from "~/contexts/postModalContext";
+import { PostEditContext, PostEditContextType } from "~/contexts/postEditContext";
+import { PostModalContext, type PostModalContextType } from "~/contexts/postModalContext";
 import { api } from "~/utils/api";
 import Dropdown from "../dropdown/dropdown";
 import Loading from "../loading/loading";
@@ -39,6 +40,8 @@ const PostModal: FC<IPostModalProps> = ({
 
   // console.log(mode);
   const {setErrorDisplay, setErrorMessage, setErrorType} = useContext(ErrorContext) as ErrorContextType;
+
+  const {setReload} = useContext(PostEditContext) as PostEditContextType;
 
   const session = useSession();
 
@@ -110,7 +113,7 @@ const PostModal: FC<IPostModalProps> = ({
         privacy,
         img: img || ''
       });
-      console.log(x);
+      // console.log(x);
       setPostMessage("");
       setImg("");
       if (!formRef.current) {
@@ -118,6 +121,11 @@ const PostModal: FC<IPostModalProps> = ({
       }
       formRef.current.value ='';
       setShowModal(false);
+      if (!setReload) {
+        //won't happen
+        return;
+      }
+      setReload({reload: 1})
     } catch (err) {
       // console.log(err);
       setErrorDisplay(true);

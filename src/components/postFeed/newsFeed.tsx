@@ -2,9 +2,11 @@ import { FC, useEffect, useState } from "react";
 import { FiArrowRight, FiArrowLeft } from "react-icons/fi";
 import PostEditContextProvider from "~/contexts/postEditContext";
 import PostFeedContextProvider from "~/contexts/postFeedContext";
+import PostModalContextProvider from "~/contexts/postModalContext";
 import { api } from "~/utils/api";
 import EditPost from "../edit/editPost";
 import Loading from "../loading/loading";
+import PostModal from "../modal/postModal";
 import Post from "../posts/Post";
 import PostScreen from "../posts/postScreen";
 import Test from "../test/test";
@@ -83,6 +85,7 @@ const NewsFeed: FC = () => {
       </div>
       <PostFeedContextProvider additionVals={{ showExpanded, setShowExpanded }}>
         <PostEditContextProvider additionVals={{ setReload }}>
+        {/* <PostModalContextProvider> */}
           {postsQuery.data?.resArr?.map((post: any) => {
             return (
               <Post
@@ -102,6 +105,8 @@ const NewsFeed: FC = () => {
           })}
           <PostScreen display={showExpanded} />
           <EditPost />
+          <PostModal />
+         {/* </PostModalContextProvider> */}
         </PostEditContextProvider>
       </PostFeedContextProvider>
       {/* <Test /> */}
