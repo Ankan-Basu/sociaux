@@ -14,7 +14,7 @@ const fetchPosts = async (ctx: { session: Session | null }, page: number) => {
   if (!ctx.session) {
     // not logged in
     // send only public
-    let resArr = filterPublicPosts(posts);
+    let resArr = filterPublicPosts(posts, undefined);
     
     // if (resArr.length < limit/2) {
     //   // fetch some more
@@ -42,7 +42,7 @@ const fetchPosts = async (ctx: { session: Session | null }, page: number) => {
   if (!friendListTarget) {
     // no fiends added ever
     // send all public
-    let resArr = filterPublicPosts(posts);
+    let resArr = filterPublicPosts(posts, targetUname);
 
     // if (resArr.length < limit/2) {
     //   // fetch some more
@@ -66,7 +66,7 @@ const fetchPosts = async (ctx: { session: Session | null }, page: number) => {
     // no friends
     // send all public
 
-    let resArr = filterPublicPosts(posts);
+    let resArr = filterPublicPosts(posts, targetUname);
 
     // if (resArr.length < limit/2) {
     //   // fetch some more
@@ -109,9 +109,9 @@ const fetchPosts = async (ctx: { session: Session | null }, page: number) => {
 
 };
 
-const filterPublicPosts = (posts: Array<HydratedDocument<IPost>>) => {
+const filterPublicPosts = (posts: Array<HydratedDocument<IPost>>, targetUname: string | undefined | null) => {
   const resArr = posts.filter((post: HydratedDocument<IPost>) => {
-    return post.privacy === 0;
+    return post.uname === targetUname || post.privacy === 0;
   });
 
   return resArr;
@@ -130,13 +130,13 @@ const fetchMore = async (pageNo: number, limit: number, targetUname: string|unde
 
   if (!targetUname) {
     // notlogged in
-    const resArr2 = filterPublicPosts(posts);
+    const resArr2 = filterPublicPosts(posts, targetUname);
     return resArr2;
   }
 
   if (friendsArrTarget.length === 0) {
     // no friend. return public posts
-    const resArr2 = filterPublicPosts(posts);
+    const resArr2 = filterPublicPosts(posts, targetUname);
     return resArr2;
   }
 

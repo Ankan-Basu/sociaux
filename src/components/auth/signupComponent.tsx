@@ -386,6 +386,15 @@ text-red-500
             </span>
           </Link>
         </div>
+
+        <Link href='/app/feed'>
+      <div
+      className='
+      text-primary active:text-primary2
+      lg:hover:text-primary2 lg:active:text-primary'>
+        Continue without an account
+      </div>
+        </Link>
       </form>
     </div>
   );

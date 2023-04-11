@@ -204,7 +204,7 @@ const CommentInput: FC<ICommentInputProps> = ({ postId, customCssClass }) => {
           className="
         flex-1
         rounded-lg bg-secondary2
-        p-2
+        p-2 outline-primary2
         "
         ></input>
         <button

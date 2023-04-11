@@ -57,7 +57,7 @@ const LoginComponent: FC = () => {
     const status: SignInResponse | undefined = await signIn('credentials', {
       redirect: false,
       email: obj2.email,
-      uname: '',
+      uname: obj2.uname,
       password: obj2.password,
       callbackUrl:'/app/feed'
     })
@@ -202,6 +202,15 @@ const LoginComponent: FC = () => {
         </span>
         </Link>
       </div>
+
+      <Link href='/app/feed'>
+      <div
+      className='
+      text-primary active:text-primary2
+      lg:hover:text-primary2 lg:active:text-primary'>
+        Continue without an account
+      </div>
+      </Link>
 
 
       </form>
