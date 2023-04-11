@@ -41,7 +41,7 @@ const X: FC<skillType> = ({_id, name, img}) => {
     flex flex-col justify-center items-center p-1 gap-2
     '>
     <div className='relative h-12 w-12 md:h-16 md:w-16 bg-white rounded-full'>
-    <Image src={img || tail} alt='logo' fill={true} className='rounded-full' />
+    <Image src={img || tail} alt='logo' fill={true} className='' />
     </div>
     <div className='text-sm font-medium'>
       {name}

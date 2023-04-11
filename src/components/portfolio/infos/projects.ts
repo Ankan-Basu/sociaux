@@ -1,4 +1,7 @@
-import newsappImg from '../img/newsapp.webp'
+import newsappImg from '../img/newsapp.webp';
+import sociauxImg from '../img/sociaux.png';
+import shcImg from '../img/shc.png';
+import ergmImg from '../img/ergm.webp';
 
 const projects = [
   {
@@ -10,7 +13,7 @@ const projects = [
     techStack: [
       't3 Stack', 'NextJs', 'React', 'MongoDb', 'tRPC', 'Tailwind', 'Typescript', 'AWS'
     ],
-    img: '',
+    img: sociauxImg,
     liveLink: 'https://www.sociauxapp.com',
     gitHubLink: 'https://github.com/Ankan-Basu/sociaux',
     certificateLink: undefined,
@@ -40,7 +43,7 @@ const projects = [
     techStack: [
       'R (Programming Language)'
     ],
-    img: '',
+    img: ergmImg,
     liveLink: '',
     gitHubLink: 'https://github.com/Ankan-Basu/ERGM-project',
     certificateLink: undefined,
@@ -48,16 +51,16 @@ const projects = [
   },
   {
     _id: 3,
-    name: 'Predicting Heat Capacity of Nanofluids',
+    name: 'Predicting HC of Nanofluids',
     ongoing: true,
     title: 'Research (Machine Learning)',
-    desc: 'Predicting Heat Capacity of Nanofluids can be a challenging task. This project builds upon previous works and aims to use Machine Learning to predict the heat capacity of nanofluids.',
+    desc: 'Predicting Heat Capacity (HC) of Nanofluids can be a challenging task. This project builds upon previous works and aims to use Machine Learning to predict the heat capacity of nanofluids.',
     techStack: [
-      'Python',
+      'Python', 'Keras', 'Tensorflow', 'ScikitLearn'
     ],
-    img: '',
+    img: shcImg,
     liveLink: '',
-    gitHubLink: '..',
+    gitHubLink: 'https://github.com/Ankan-Basu/Mech-Project',
     certificateLink: undefined,
     LORLink: undefined
   },
