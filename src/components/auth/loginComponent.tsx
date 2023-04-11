@@ -57,7 +57,7 @@ const LoginComponent: FC = () => {
     const status: SignInResponse | undefined = await signIn('credentials', {
       redirect: false,
       email: obj2.email,
-      uname: '',
+      uname: obj2.uname,
       password: obj2.password,
       callbackUrl:'/app/feed'
     })

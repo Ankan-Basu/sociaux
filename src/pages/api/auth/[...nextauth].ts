@@ -4,6 +4,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import dbConnect from '~/server/db/mongo';
 import UserModel, {IUser} from "~/server/db/models/User";
 import bcrypt from 'bcrypt';
+import { HydratedDocument } from "mongoose";
 
 
 export const authOptions: NextAuthOptions = {
@@ -18,7 +19,12 @@ export const authOptions: NextAuthOptions = {
                 dbConnect().catch(err => { error: 'Connection failed'; });
 
                 // console.log(credentials);
-                const result = await UserModel.findOne({ email: credentials.email });
+                let result: HydratedDocument<IUser>;
+                if (credentials.email) {
+                    result = await UserModel.findOne({ email: credentials.email });
+                } else if (credentials.uname) {
+                    result = await UserModel.findOne({ uname: credentials.uname });
+                }
 
                 if (!result) {
                     console.log('User not found');
