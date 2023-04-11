@@ -245,7 +245,14 @@ const Comment: FC<ICommentProps> = (
                     ${session.data?.user.uname===uname? 'flex': 'hidden'} 
                     gap-2 relative`}>
                         <span className='cursor-pointer'
-                        onClick={() => setDisplayDropdown(currState => !currState)}
+                        onClick={() => {
+                            if (!displayDropdown) {
+                                setDisplayDropdown(currState => !currState)
+                            } else {
+                                // return;
+                                // setDisplayDropdown(false);
+                            }
+                        }}
                         >
                         <FiMoreHorizontal />
                         </span>

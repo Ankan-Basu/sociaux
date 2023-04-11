@@ -33,10 +33,10 @@ const DetailsBanner: FC<IDetailsBannerProps> = ({data}) => {
     ref={detailsBannerRef}
     className={`border-2 border-solid border-primary2 rounded-lg 
     bg-white/60
-    w-10/12 md:w-700px flex gap-2 p-2 shadow-lg lg:hover:bg-secondary2 lg:hover:bg-opacity-60
+    w-10/12 md:w-700px flex gap-2 p-2 shadow-lg active:bg-secondary2 active:bg-opacity-60 lg:hover:bg-secondary2 lg:hover:bg-opacity-60
     opacity-0
-    ${isVisible?'animate-scrollAppear opacity-100':''}
-    transition-all /delay-500 mx-auto duration-500
+    ${isVisible?'animate-scrollAppear':''}
+    transition-all mx-auto duration-500
     `}
     >
       
