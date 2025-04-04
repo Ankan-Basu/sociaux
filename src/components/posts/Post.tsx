@@ -395,7 +395,7 @@ const Post: FC<IPostProps> =({
         </span>
         <span
           onClick={handleExpanded ? handleExpanded : () => {}}
-          className="py-1 flex-1 flex justify-center items-center gap-1 border-solid border-2 border-primary rounded-lg"
+          className="py-1 flex-1 flex justify-center items-center gap-1 border-solid border-2 border-primary rounded-lg  cursor-pointer"
         >
           <FiMessageSquare />
 
@@ -423,7 +423,7 @@ const Post: FC<IPostProps> =({
         
         }}
         className="py-1 pointer
-        flex-1 flex justify-center items-center gap-1 border-solid border-2 border-primary rounded-lg">
+        flex-1 flex justify-center items-center gap-1 border-solid border-2 border-primary rounded-lg  cursor-pointer">
           <FiCornerUpRight />
 
           {/* Display Text only in big screen */}
