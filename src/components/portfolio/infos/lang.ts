@@ -5,6 +5,7 @@ import cppLogo from '../img/cpp.svg';
 import pythonLogo from '../img/python.svg';
 import javaLogo from '../img/java.svg';
 import rLogo from '../img/r.svg';
+import cSharpLogo from '../img/c-sharp.svg'
 
 const languages = [
   {
@@ -38,10 +39,15 @@ const languages = [
     img: javaLogo
   },
   {
+    _id: 7,
+    name: 'C#',
+    img: cSharpLogo
+  },
+  {
     _id: 6,
     name: 'R',
     img: rLogo
-  },
+  }
 ]
 
 export default languages;
