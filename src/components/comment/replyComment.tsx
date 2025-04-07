@@ -169,11 +169,11 @@ const ReplyComment: FC<IReplyCommentProps> = ({_id, parenCommId, uname, message,
 
     return (
     <div className='flex 
-    //w-80 w-full
+    //w-80 w-full gap-1
     lg:w-98'>
-        <div className='w-16'>
-        <div className='w-full'>
-            <Image src={profileImgQuery.data?.img || '/avtar.jpg'} height='60' width='60' alt='photo' className='rounded-full'/>
+        <div className='w-16 h-16'>
+        <div className='w-full h-full'>
+            <Image src={profileImgQuery.data?.img || '/avtar.jpg'} height='60' width='60' alt='photo' className='rounded-full w-full h-full object-cover'/>
         </div>
         </div>
         <div className='flex-1'>

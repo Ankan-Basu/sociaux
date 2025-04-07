@@ -215,12 +215,12 @@ const Comment: FC<ICommentProps> = (
   return (
     <>
     <div className={`flex 
-    //w-80 w-full p-1 rounded-lg
+    //w-80 w-full p-1 rounded-lg gap-1
     ${replyingTo?._id===_id? 'bg-yellow-100':''}
     //lg:w-98`}>
-        <div className='w-16'>
-        <div className='w-full'>
-            <Image src={profileImgQuery.data?.img || '/avtar.jpg'} height='60' width='60' alt='photo' className='rounded-full'/>
+        <div className='w-16 h-16'>
+        <div className='w-full h-full'>
+            <Image src={profileImgQuery.data?.img || '/avtar.jpg'} height='60' width='60' alt='photo' className='rounded-full w-full h-full object-cover'/>
         </div>
         </div>
         <div className='flex-1'>
