@@ -13,7 +13,7 @@ const Plus: FC = () => {
     >
         <span
         onClick={() => {
-          console.log(menuOpen)
+          // menuOpen
           setMenuOpen((currState) => !currState)
         }} 
         className='text-3xl active:text-white p-1'

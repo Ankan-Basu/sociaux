@@ -209,7 +209,6 @@ export const replyCommentsRouter = createTRPCRouter({
           }
         }
       } catch (err) {
-        // console.log('Outer DEL CMM', err);
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
           message: "Internal Server Error",

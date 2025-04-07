@@ -40,10 +40,8 @@ const userSchema: Schema = new Schema<IUser>({
 });
 
 userSchema.pre('save', async function(next) {
-    // console.log('pre save hook')
     const salt = await bcrypt.genSalt();
     this.password = await bcrypt.hash(this.password, salt);
-    // console.log('saving', this);
     next();
 })
 

@@ -58,7 +58,6 @@ const SignupComponent: FC = () => {
     let invalidDetected = false;
 
     if (!resObj.password) {
-      console.log("INVALID Password");
       setPasswordInvalid(true);
       invalidDetected = true;
       // return;

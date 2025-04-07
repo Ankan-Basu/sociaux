@@ -14,7 +14,7 @@ const Banner = () => {
       <span className='text-primary2'>Ankan Basu</span> 
       </h1>
      
-     <h2 className={`${style.jobTitle} text-primary2 font-medium text-xl md:text-3xl mt-6`}>Full Stack Developer and ML enthusiast</h2>
+     <h2 className={`${style.jobTitle} text-primary2 font-medium text-xl md:text-3xl mt-6`}>Full Stack and ML Developer</h2>
      <h3 className={`${style.welcome} text-gray-600 text-lg`}>Welcome to my website</h3>
 
      <div className={` ${style.arrow} absolute bottom-16 opacity-0 flex justify-center left-1 right-1 text-6xl font-medium text-gray-600`}><FiArrowDown /></div>

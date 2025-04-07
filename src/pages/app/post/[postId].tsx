@@ -55,10 +55,6 @@ const PostPage: FC = () => {
     }
   }, [postId]);
 
-
-  console.log(postId);
-  
-
   return (
     <PostFeedContextProvider additionVals={{ showExpanded, setShowExpanded }}>
       <PostEditContextProvider additionVals={{ setReload }}>

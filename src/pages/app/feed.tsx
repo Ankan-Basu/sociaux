@@ -13,8 +13,6 @@ import PostEditContextProvider from '~/contexts/postEditContext'
 const Feed: FC = () => {
 
   const session = useSession();
-  // console.log(session);
-
   // const [reload, setReload] = useState({reload: 1})
 
   if (session.status === 'loading') {

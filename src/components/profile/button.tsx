@@ -35,7 +35,6 @@ const ButtonTest: FC<IProps> = ({profileUname}) => {
     // setButtonState(0)
     // return
     if (session.status !== 'authenticated') {
-      // console.log('Unauthenticated');
       setErrorDisplay(true);
       setErrorMessage('You need to login to perform this action');
       setErrorType('simple');
@@ -44,7 +43,6 @@ const ButtonTest: FC<IProps> = ({profileUname}) => {
 
     const requesterUname = session.data?.user.uname;
     if (!requesterUname) {
-      // console.log('Unauth');
       setErrorDisplay(true);
       setErrorMessage('You need to login to perform this action');
       setErrorType('logout');
@@ -79,7 +77,6 @@ const ButtonTest: FC<IProps> = ({profileUname}) => {
         break;
 
       default:
-        // console.log('ERROR switch case');
         setErrorDisplay(true);
         setErrorMessage('An unknown error occured');
         setErrorType('simple');
@@ -97,7 +94,6 @@ const ButtonTest: FC<IProps> = ({profileUname}) => {
   }
 
   if (buttonState === 0) {
-    console.log('BUTTON SATE 0');
     
     return (
       <button 
@@ -177,7 +173,6 @@ const ButtonTest: FC<IProps> = ({profileUname}) => {
   }
 
   else {
-    console.log('Error in friend button')
     return (
       <>
       Error

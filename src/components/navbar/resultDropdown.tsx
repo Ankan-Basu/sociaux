@@ -48,10 +48,10 @@ const ResultDropdown: FC<IResultDropdownProps> = ({display, setDisplay, searchBo
 
     //@ts-ignore
     if (!refOne.current.contains(e.target) && !searchBoxRef.current.contains(e.target)) {
-      console.log('CLICK OUTSIDE search');
+      // CLICK OUTSIDE search
       setDisplay && setDisplay(false);
     } else {
-      console.log('CLICK INSIDE search');
+      // CLICK INSIDE search
       setDisplay && setDisplay(true);
     }
   }

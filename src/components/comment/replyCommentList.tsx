@@ -17,8 +17,6 @@ const ReplyCommentList: FC<IReplyCommentListProps> = ({
   parenCommId,
   display = false,
 }) => {
-  // console.log('Reply to', parenCommId);
-
   const [replies, setReplies] = useState<Array<HydratedDocument<IReplyComment>>>([]);
   const { refreshReplies } = useContext(ReplyingContext) as ReplyingContextType;
 
@@ -52,7 +50,6 @@ const ReplyCommentList: FC<IReplyCommentListProps> = ({
     try {
 
       const data2 = await refetch();
-      // console.log('REPLY', data2);
       
       if (data2) {
         setReplies(data2.data!);
