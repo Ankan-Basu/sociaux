@@ -102,7 +102,6 @@ const Post: FC<IPostProps> =({
 
   const handleLike = async () => {
     if (session.status!=='authenticated' || !reactorUname) {
-      // console.log('UnAuthenticated');  
       setErrorDisplay(true);
       setErrorMessage('You need to Login to like');
       setErrorType('simple');  
@@ -116,7 +115,6 @@ const Post: FC<IPostProps> =({
 
     try {
       const x = await likeMutation.mutateAsync({postId: _id, uname: reactorUname})
-      console.log(x);
       likes?.push(reactorUname);
       
         setLiked(true);
@@ -127,7 +125,6 @@ const Post: FC<IPostProps> =({
 
   const handleUnlike = async () => {
     if (session.status!=='authenticated' || !reactorUname) {
-      // console.log('UnAuthenticated');
       setErrorDisplay(true);
       setErrorMessage('You need to Login to unlike');
       setErrorType('simple');       
@@ -141,12 +138,8 @@ const Post: FC<IPostProps> =({
 
     try {
       const x = await unlikeMutation.mutateAsync({postId: _id, uname: reactorUname})
-      console.log(x);
       
         setLiked(false);
-        // likes = likes?.filter((like) => {
-        //   return like !== reactorUname;
-        // })
         likes?.pop();
     } catch (e: any) {
       console.log(e);      
@@ -191,7 +184,7 @@ const Post: FC<IPostProps> =({
           _id,
         });
       } else {
-        console.log("peepeepoopoo");
+        return;
       }
     };
   } catch (err) {
@@ -200,7 +193,6 @@ const Post: FC<IPostProps> =({
 
   const handleEdit = () => {
     setShowEditModal(true);
-    // console.log(message);
 
     if (!uname || privacy === undefined || !_id || message === undefined) {
       //err

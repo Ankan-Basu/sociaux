@@ -49,9 +49,7 @@ export const likesRouter = createTRPCRouter({
             })
           }
         }
-      } catch(err) {
-        // console.log("POST LIKE", err);
-        
+      } catch(err) {        
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR'
         })
@@ -111,7 +109,6 @@ export const likesRouter = createTRPCRouter({
         try {
           const comment: HydratedDocument<IComment> | null =
           await CommentModel.findOne({ _id: input.commentId });
-          // console.log(comment);
         if (!comment) {
           //ie null
           throw new TRPCError({
@@ -140,7 +137,6 @@ export const likesRouter = createTRPCRouter({
          * exception will arise when mongoose won't be able to do typecasting
          * ie user send wrong lwength or format of string
          * */
-        // console.log(err);
         throw new TRPCError({
           code: "NOT_FOUND",
           message: "Comment not found",
@@ -212,7 +208,6 @@ export const likesRouter = createTRPCRouter({
         await dbConnect();
         const replyComment: HydratedDocument<IReplyComment> | null =
           await ReplyCommentModel.findOne({ _id: input.replyCommentId });
-        // console.log(comment);
         if (!replyComment) {
           //ie null
           throw new TRPCError({
@@ -300,9 +295,7 @@ export const likesRouter = createTRPCRouter({
                 return;
               } else {              
                 removeNotification({uname: replyComment.uname, source: input.uname, type: "likeReplyComment", commentId: replyComment.parenCommId, replyCommentId: replyComment._id.toString(), postId: parenComm.postId})
-                .then(() => console.log('Then of remove unlike')).catch(()=>{});   
-                console.log('After promise');
-                
+                .then(() => {}).catch(()=>{});        
               }
             })().then(()=>{}).catch(()=>{});
 

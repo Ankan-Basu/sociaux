@@ -31,7 +31,6 @@ const Comment: FC<ICommentProps> = (
     {uname, message, likes=[], replies, time, _id}
 ) => {
 
-    // console.log('Comment renders', _id);
     const router = useRouter();
     
     const deleteCommentMutation = api.comments.deleteComment.useMutation();
@@ -59,17 +58,13 @@ const Comment: FC<ICommentProps> = (
 
     const reactorUname = session.data?.user.uname;
     
-    useEffect(() => {
-        console.log('comment', _id);
-        // console.log(_id, 'liked', liked);
-        
+    useEffect(() => {        
         if (!reactorUname) {
             return;
         } else if(likes?.includes(reactorUname)) {
             setLiked(true);
         }
 
-        // console.log(_id, 'liked', liked);
     }, [reactorUname]);
 
 
@@ -87,7 +82,6 @@ const Comment: FC<ICommentProps> = (
             setLiked(true);
             likes.push(reactorUname);
         } catch(err) {
-            // console.log(err);
             setErrorDisplay(true);
             if (err instanceof TRPCClientError) {
                 setErrorMessage(err.data.code);
@@ -117,7 +111,6 @@ const Comment: FC<ICommentProps> = (
                 }
             
         } catch(err) {
-            // console.log(err);
             setErrorDisplay(true);
             if (err instanceof TRPCClientError) {
                 setErrorMessage(err.data.code);
@@ -130,7 +123,6 @@ const Comment: FC<ICommentProps> = (
     }
 
     const toggleLike = () => {
-        // console.log(_id);
         if (liked) {
             handleUnLike()
             .then(()=>{}).catch(()=>{});
@@ -164,7 +156,6 @@ const Comment: FC<ICommentProps> = (
     }
 
     const handleEdit = () => {
-        console.log(_id);
         setShowCommentEditModal((currState: boolean) => !currState);
         setCurrEditComment({
             _id, uname, message
@@ -174,7 +165,6 @@ const Comment: FC<ICommentProps> = (
 
     const handleDelete = async () => {
         if (!reactorUname) {
-            console.log('UNAUTH');
             return;
         }
         
@@ -188,7 +178,6 @@ const Comment: FC<ICommentProps> = (
             }
             setRefreshComments({val: 1});
         } catch(err) {
-            // console.log(err);
             setErrorDisplay(true);
             if (err instanceof TRPCClientError) {
                 setErrorMessage(err.data.code);

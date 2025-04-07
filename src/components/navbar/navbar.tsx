@@ -69,7 +69,6 @@ const Navbar: FC = () => {
     }, [friendReqSelected, mobileNotifSelected])
 
     const router = useRouter();
-    // console.log(router);
 
     const [showNavbar, setShowNavbar] = useState<boolean>(false);
     
@@ -79,17 +78,7 @@ const Navbar: FC = () => {
       } else {
         setShowNavbar(false);
       }
-    }, [router])
-
-
-    // useEffect(() => {
-    //   console.log('Navbar MOUNTS');
-
-    //   return () => {
-    //     console.log('Navbar Unmounts');
-        
-    //   }
-    // }, [])
+    }, [router]);
     
   return (
     <>

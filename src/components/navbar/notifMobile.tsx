@@ -23,19 +23,16 @@ const NotifMobile: FC<INotifMobileProps> = ({notifs, friendReqs, display, type})
 
     const handleReadAll = async () => {
       if (session.status !== "authenticated") {
-        console.log("UNAUTH");
         return;
       }
   
       const uname = session.data.user.uname;
   
       if (!uname) {
-        console.log("UNAUTH");
         return;
       }
   
       const x = await readNotifMutation.mutateAsync({ uname, notifId: "0" });
-      // console.log('Notif', x);
   
       if (!setNotifList){
         //won't happen
@@ -64,10 +61,6 @@ const NotifMobile: FC<INotifMobileProps> = ({notifs, friendReqs, display, type})
               Mark all as read</span>
           :
           <span className='flex justify-between'>
-          {/* <span className='cursor-pointer hover:text-primary active:text-primary2'>
-              Accept All</span>
-          <span className='cursor-pointer hover:text-primary active:text-primary2'>
-              Reject All</span>     */}
           </span>}
   
         </div>

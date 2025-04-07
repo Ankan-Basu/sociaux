@@ -64,7 +64,6 @@ const ReplyComment: FC<IReplyCommentProps> = ({_id, parenCommId, uname, message,
 
     
     const handleEdit = () => {
-        console.log(_id);
         setShowCommentEditModal(true);
         setCurrEditComment({
             _id, uname, message
@@ -74,7 +73,6 @@ const ReplyComment: FC<IReplyCommentProps> = ({_id, parenCommId, uname, message,
 
     const handleDelete = async () => {
         if (!reactorUname) {
-            console.log('Unauth');
             return;
         }
         try {
@@ -89,7 +87,6 @@ const ReplyComment: FC<IReplyCommentProps> = ({_id, parenCommId, uname, message,
             
             setRefreshReplies({ val: 1 });
         } catch(err) {
-            // console.log(err);
             showServerError(err);
         }
     }
@@ -100,7 +97,6 @@ const ReplyComment: FC<IReplyCommentProps> = ({_id, parenCommId, uname, message,
             await unlikeReplyMutation.mutateAsync({replyCommentId: _id, uname: reactorUname});
             setLiked(false);
         } catch(err) {
-            // console.log(err);
             showServerError(err);
         }
     }
@@ -110,14 +106,12 @@ const ReplyComment: FC<IReplyCommentProps> = ({_id, parenCommId, uname, message,
             await likeReplyMutation.mutateAsync({replyCommentId: _id, uname: reactorUname});
             setLiked(true);
         } catch(err) {
-            // console.log(err);
             showServerError(err);
         }
     }
   
     const toggleLike = () => {
         if (session.status !== 'authenticated') {
-            // console.log('unAuthorised');
             setErrorDisplay(true);
             setErrorMessage('You need to login to like');
             setErrorType('simple');
@@ -126,7 +120,6 @@ const ReplyComment: FC<IReplyCommentProps> = ({_id, parenCommId, uname, message,
 
         // const reactorName = session.data.user.uname;
         if (!reactorUname) {
-            // console.log('unAuthoRised');
             setErrorDisplay(true);
             setErrorMessage('UNAUTHORISED');
             setErrorType('logout');
@@ -160,7 +153,6 @@ const ReplyComment: FC<IReplyCommentProps> = ({_id, parenCommId, uname, message,
         let msg = 'An unknown error occured'
         if (err instanceof TRPCClientError) {
             msg = err.data.code;
-            // console.log(msg);
             
         }
         setErrorMessage(msg);

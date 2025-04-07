@@ -40,9 +40,7 @@ const Dashboard: FC = () => {
       (async () => {
         userQuery = await userQueryInitial.refetch();
 
-        if (userQuery.status === 'success') {
-          console.log('USER', userQuery);
-          
+        if (userQuery.status === 'success') {          
           setFName(userQuery.data?.name);
           // setUName(userQuery.data?.uname);
           setEmail(userQuery.data?.email);
@@ -197,10 +195,8 @@ const DataField: FC<IDataFieldProps> = ({mode, data}) => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // console.log('Submit event');
     
     if (session.status !== 'authenticated') {
-      // console.log('Unauthenticated');
       setErrorDisplay(true);
       setErrorMessage('UNAUTHENTICATED');
       setErrorType('logout');
@@ -212,7 +208,6 @@ const DataField: FC<IDataFieldProps> = ({mode, data}) => {
     }
 
     const uname = session.data.user.uname;
-    // console.log(editedText);
 
     if (!uname) {
       //err
@@ -231,7 +226,6 @@ const DataField: FC<IDataFieldProps> = ({mode, data}) => {
           setEditedText('');
           setEditMode(false);
         } catch(err) {
-          // console.log(err);
           throw err;
         }
         break;
@@ -242,7 +236,6 @@ const DataField: FC<IDataFieldProps> = ({mode, data}) => {
           setEditedText('');
           setEditMode(false);
         } catch(err) {
-          // console.log(err);
           if (err instanceof TRPCClientError) {
             if (err.data.code === 'BAD_REQUEST') {
               throw 'Duplicate';
@@ -356,22 +349,18 @@ const Bio: FC<IBioProps> = ({bio}) => {
   }, [bio])
   const handleSubmitBio = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // console.log('Submit', editedText);
 
     if (session.status === 'unauthenticated') {
-      console.log('Error');
       return;
     }
 
     if (session.status === 'loading') {
-      // console.log('Error');
       return;
     }
 
     const uname = session.data?.user.uname;
 
     if (!uname) {
-      console.log('Unauth');
       return;
     }
 
@@ -382,7 +371,6 @@ const Bio: FC<IBioProps> = ({bio}) => {
       setEditMode(false);
       
     } catch(err) {
-      console.log(err);
       return;
     }
     

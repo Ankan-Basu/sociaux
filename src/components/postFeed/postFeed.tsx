@@ -25,8 +25,6 @@ const PostFeed: FC = () => {
 
   useEffect(() => {
     // data && setPosts(data);
-    // console.log(data);
-
     if (router.query.uname) {
       (async () => {
         refetchData()
@@ -47,7 +45,6 @@ const PostFeed: FC = () => {
 
   const refetchData = async () => {
     const x = await refetch();
-        // console.log(x);
         if (x.status === "success") {
           setPosts(x.data);
         }

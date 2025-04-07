@@ -34,9 +34,7 @@ export const usersRouter = createTRPCRouter({
           const res: IUser | null = await UserModel.findOne({uname: input.uname});
           
           
-          if (!res) {
-            console.log('NOT FOUND');
-            
+          if (!res) {            
             throw new TRPCError({
               code: 'NOT_FOUND'
             })
@@ -63,7 +61,6 @@ export const usersRouter = createTRPCRouter({
 
         
         await dbConnect();
-        // console.log('Img upload', input);
         const dbResp = await ProfileImageModel.findOneAndUpdate({uname: input.uname}, {uname: input.uname, img: input.image}, {upsert: true});
         
         return {
@@ -85,7 +82,6 @@ export const usersRouter = createTRPCRouter({
         }
         
         await dbConnect();
-        // console.log('Img upload', input);
         const dbResp = await ProfileImageModel.findOne({uname: input.uname});
         
         if (!dbResp) {
@@ -153,9 +149,7 @@ export const usersRouter = createTRPCRouter({
         return {
           dbResp
         };
-      } catch(err: any) {
-        // console.log(err.codeName);
-        
+      } catch(err: any) {        
         if (err.codeName === 'DuplicateKey') {
           throw new TRPCError({
             code: 'BAD_REQUEST',

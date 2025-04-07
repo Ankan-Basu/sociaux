@@ -40,8 +40,6 @@ const Profile: FC = () => {
         
         refetch()
         .then((resp) => {
-          // console.log('IN THEN, resp', resp);
-
           if (resp.status === 'success') { 
             setFullName(resp.data?.name);
             setUserName(resp.data?.uname);
@@ -58,7 +56,6 @@ const Profile: FC = () => {
           }
         })
         .catch((err) => {
-          // console.log("PROFILE err", err);
           setErrorDisplay(true);
           let msg = 'An unexpected error occured';
           if (err instanceof TRPCClientError) {
@@ -111,28 +108,6 @@ const Profile: FC = () => {
         <Loading height={100} width={100} />
 
           </div>
-        {/* <div className="flex flex-col rounded-lg p-1">
-          <div>
-            <h2 className="text-lg font-semibold">
-              {"Loading..."}
-            </h2>
-          </div>
-          <div>
-            <h2 className="text-sm font-medium lg:text-base">
-              {"Loading..."}
-            </h2>
-          </div>
-        </div>
-        <div className="mt-1 hidden lg:block">
-         
-        </div>
-        <div>
-          <div className="mt-1 flex items-center justify-between p-1 text-sm lg:text-base">
-            <h3 className="font-medium">Bio:</h3>
-          </div>
-
-          <div className="h-24 overflow-hidden whitespace-pre-wrap rounded-lg bg-secondary2 p-1 text-sm lg:h-28 lg:text-base"></div>
-        </div> */}
       </div>
     </div>
       </>
@@ -151,10 +126,6 @@ const Profile: FC = () => {
 <button>Go</button>
 </Link> */}
       <div className="relative flex flex-col items-center gap-3 lg:items-baseline lg:gap-0">
-        {/* <img
-          src={img}
-          className="h-36 w-36 rounded-full shadow-lg lg:h-56 lg:w-56"
-        /> */}
         <div className="relative h-36 w-36 rounded-full shadow-lg lg:h-56 lg:w-56">
           <Image src={img || '/avtar.jpg'} fill={true}  alt='photo' className="rounded-full" />
         </div>

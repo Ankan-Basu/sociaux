@@ -13,9 +13,6 @@ const PostScreen: FC<IPostScreenProps> = ({ display }) => {
   const { setShowExpanded, currPost, setCurrPost } =
     useContext(PostFeedContext) as PostFeedContextType;
 
-  // console.log("screen", currPost);
-
-
   return (
     <div
       className={`

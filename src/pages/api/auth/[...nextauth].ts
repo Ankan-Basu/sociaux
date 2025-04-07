@@ -15,10 +15,8 @@ export const authOptions: NextAuthOptions = {
         CredentialsProvider({
             name: 'Credentials',
             async authorize(credentials, req) {
-                // console.log('authorize, credentials', credentials);
                 dbConnect().catch(err => { error: 'Connection failed'; });
 
-                // console.log(credentials);
                 let result: HydratedDocument<IUser>;
                 if (credentials.email) {
                     result = await UserModel.findOne({ email: credentials.email });

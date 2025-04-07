@@ -62,7 +62,6 @@ export const passwordResetRouter = createTRPCRouter({
         });
 
         const dbResp = await OtpModel.findOneAndUpdate({email: input.email}, {email: input.email, otp: otp, expireAt: Date.now()}, {upsert: true});
-        // console.log('MAIL', resp);
 
         return {
           status: 200,

@@ -10,7 +10,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const email = body.email;
 
     const mailOptions = {
-      from: 'ankan.basu.webdev@gmail.com',
+      from: '',
       to: email
     }
 

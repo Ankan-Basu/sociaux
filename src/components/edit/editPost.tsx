@@ -35,8 +35,6 @@ const EditPost: FC = ({}) => {
 
 
   useEffect(() => {
-    // console.log("use Effect", currEditPost);
-
     if (!currEditPost) {
       //err
       return;
@@ -53,7 +51,6 @@ const EditPost: FC = ({}) => {
   }, [currEditPost]);
 
   const handleClose = () => {
-    console.log("Close");
     setPostMessage("");
     setCurrEditPost(null);
     setShowEditModal(false);
@@ -76,7 +73,6 @@ const EditPost: FC = ({}) => {
     }
 
     if (!(currEditPost._id)) {
-      // console.log("error");
       setErrorDisplay(true);
       setErrorMessage('BAD_REQUEST');
       setErrorType('simple');
@@ -108,7 +104,6 @@ const EditPost: FC = ({}) => {
         setReload({reload: 1});
         handleClose();
     } catch (err) {
-        // console.log(err);
         setErrorDisplay(true);
       let msg = 'An unknown error occured';
       if (err instanceof TRPCClientError) {

@@ -15,7 +15,6 @@ export const imageRouter = createTRPCRouter({
     .mutation(async ({ input }) => {
       try {
         await dbConnect();
-        // console.log('Img upload', input);
         const dbResp = await ImageModel.create({img: input.image});
         
         return {
@@ -33,7 +32,6 @@ export const imageRouter = createTRPCRouter({
     .query(async ({ input }) => {
       try {
         await dbConnect();
-        // console.log('Img upload', input);
         const dbResp = await ImageModel.findOne({_id: input.imageId});
         
         return {
