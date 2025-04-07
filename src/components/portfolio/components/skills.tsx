@@ -16,7 +16,7 @@ const Skills: FC<ISkillsProps> = ({type, arr}) => {
       <div
       className={`
       border-2 border-solid border-primary2 
-      rounded-lg w-10/12 md:w-700px m-auto p-4 flex ${type==='skills'?'gap-4':'gap-4'} flex-wrap justify-between  shadow-lg bg-white/60
+      rounded-lg w-10/12 md:w-700px m-auto p-4 flex ${type==='skills'?'gap-4':'gap-4'} flex-wrap justify-center shadow-lg bg-white/60
       `}
       >
         {

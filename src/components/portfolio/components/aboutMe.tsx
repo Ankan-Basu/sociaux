@@ -8,9 +8,9 @@ const AboutMe = () => {
       <h1 className='text-4xl font-medium text-primary2'>More About Me</h1>
       <p className='text-gray-700 font-medium pl-2 pt-2 text-justify'>Hi, <br/>
       I am Ankan Basu.
-      I am a student of Computer Science and Engineering. <br />
+      I am a Software Engineer specializing in Full Stack Development and Machine Learning and AI. <br />
       I like learning new things - technology, science and anything cool.
-     I also like learning languages (not just programming ones. But the ones humans speak) and discover new cultures and people.  
+     I also enjoy learning languages (not just programming languages. But the ones humans speak) and love exploring new cultures and connecting with people from all around the world. . 
     </p>
     
 <br />
