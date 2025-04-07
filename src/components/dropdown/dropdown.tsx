@@ -63,7 +63,7 @@ const Dropdown: FC<IDropdownProps> = ({additionCSS='', display, setDisplay, opti
           onClick={() => {
             const x = option.callback();
 
-            if (x instanceof Promise<void>) {
+            if (x instanceof Promise) {
               x.then(()=>{}).catch(()=>{});
             }
             setDisplay(false);
