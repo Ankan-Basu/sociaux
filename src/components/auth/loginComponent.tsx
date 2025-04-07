@@ -34,7 +34,6 @@ const LoginComponent: FC = () => {
     }
 
     const resObj: ValidatedOutput = inputValidator(obj);
-    // console.log(resObj);
 
     if (!resObj.uname && !resObj.email) {
       setInpInvalid(true);
@@ -52,8 +51,6 @@ const LoginComponent: FC = () => {
       obj2.email = unameEmail;
     }
 
-    // console.log(obj2);
-
     const status: SignInResponse | undefined = await signIn('credentials', {
       redirect: false,
       email: obj2.email,
@@ -62,13 +59,11 @@ const LoginComponent: FC = () => {
       callbackUrl:'/app/feed'
     })
 
-    // console.log(status);
     // if (status?.ok) {
     //   router.push('/user/1')
     // }
 
     if (!status?.ok) {
-      // console.log('Err');
       setUnauth(true);
     }
     

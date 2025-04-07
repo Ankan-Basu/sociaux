@@ -23,8 +23,6 @@ const PersonalOptionsMobile: FC<IPersonalOptionsMobileProps> = ({
   toShow,
   toggleToShow,
   }) => {
-  // console.log(toShow);
-
   const {setErrorDisplay, setErrorMessage, setErrorType} = useContext(ErrorContext) as ErrorContextType;
 
   const {setShowModal, setMode} = useContext(PostModalContext) as PostModalContextType;

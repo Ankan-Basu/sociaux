@@ -19,19 +19,16 @@ const Notif: FC<INotifProps> = ({ display, type }) => {
 
   const handleReadAll = async () => {
     if (session.status !== "authenticated") {
-      console.log("UNAUTH");
       return;
     }
 
     const uname = session.data.user.uname;
 
     if (!uname) {
-      console.log("UNAUTH");
       return;
     }
 
     const x = await readNotifMutation.mutateAsync({ uname, notifId: "0" });
-    // console.log('Notif', x);
 
     if (!setNotifList) {
       //err //maybe ignore coz i know i didn't do error while writing the code
@@ -77,7 +74,6 @@ const Notif: FC<INotifProps> = ({ display, type }) => {
       {type === "Notifications"
         ? notifList &&
           notifList.map((notifItem: INotifItemHydrated, indx: number, arr: Array<INotifItemHydrated>) => {
-            // console.log(notif);
             // map in reverse order
             return arr[arr.length - 1 -indx]? <NotifItem key={indx} notif={arr[arr.length - 1 -indx]!} />:<></>;
           })

@@ -35,7 +35,6 @@ const NotifItem: FC<INotifProps> = ({ notif }) => {
 
   const handleReadNotif = async () => {
     if (session.status !== "authenticated") {
-      // console.log("UNAUTH");
       setErrorDisplay(true);
       setErrorMessage('UNAUTHENTICATED');
       setErrorType('logout');
@@ -45,7 +44,6 @@ const NotifItem: FC<INotifProps> = ({ notif }) => {
     const uname = session.data.user.uname;
 
     if (!uname) {
-      // console.log("UNAUTH");
       setErrorDisplay(true);
       setErrorMessage('UNAUTHENTICATED');
       setErrorType('logout');
@@ -63,7 +61,6 @@ const NotifItem: FC<INotifProps> = ({ notif }) => {
       uname,
       notifId: notif._id.toString(),
     });
-    // console.log('Notif', x);
 
     if (!setNotifList) {
       // won't happen

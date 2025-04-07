@@ -16,7 +16,6 @@ const UserId: FC = () => {
   const session = useSession();
 
   const router = useRouter();
-  // console.log(session);
   
   return (
     <div 

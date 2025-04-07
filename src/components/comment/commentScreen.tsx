@@ -14,8 +14,6 @@ const CommentScreen: FC<ICommentScreenProps> = ({ postId }) => {
   const [refreshReplies, setRefreshReplies] = useState<{val: number}>({ val: 1 });
   const [refreshComments, setRefreshComments] = useState<{val: number}>({ val: 1 });
 
-  // console.log('comment screen here', postId);
-
   if (!postId) {
     return (
       <>

@@ -30,8 +30,6 @@ const FileUploadModal: FC<IFileUploadModalProps> = ({display, setDisplay, uname,
 
   const handleImg = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
-    console.log(e);
-    console.log(e.target.files);
     const file = e.target.files?e.target.files[0]:null;
 
     const reader = new FileReader();
@@ -45,7 +43,6 @@ const FileUploadModal: FC<IFileUploadModalProps> = ({display, setDisplay, uname,
     reader.readAsDataURL(file);
 
     reader.onload = () => {
-      // console.log(reader.result);
       if (!reader.result) {
         setErrorDisplay(true);
       setErrorMessage('An unexpected error occured');
@@ -57,7 +54,6 @@ const FileUploadModal: FC<IFileUploadModalProps> = ({display, setDisplay, uname,
   
     }
     reader.onerror = (err) => {
-      // console.log(err);
       setErrorDisplay(true);
       setErrorMessage('An unexpected error occured');
       setErrorType('simple');
@@ -67,7 +63,7 @@ const FileUploadModal: FC<IFileUploadModalProps> = ({display, setDisplay, uname,
 const handleProfilImgUpload = async (e: React.FormEvent<HTMLFormElement>) => {
   e.preventDefault();
   if (!img) {
-    // console.log('No image selected');
+    // No image selected
     setErrorDisplay(true);
       setErrorMessage('No image chosen');
       setErrorType('simple');
@@ -75,7 +71,6 @@ const handleProfilImgUpload = async (e: React.FormEvent<HTMLFormElement>) => {
   }
 
   if (session.status !== 'authenticated') {
-    // console.log('UNAUTHORISED');
     setErrorDisplay(true);
       setErrorMessage('You need to login to upload profile picture');
       setErrorType('logout');
@@ -83,7 +78,7 @@ const handleProfilImgUpload = async (e: React.FormEvent<HTMLFormElement>) => {
   }
 
   if (uname !== session.data.user.uname) {
-    // console.log('Dont edit others pic');
+    // Dont edit others pic
     setErrorDisplay(true);
       setErrorMessage('UNAUTHORISED');
       setErrorType('logout');
@@ -97,11 +92,9 @@ const handleProfilImgUpload = async (e: React.FormEvent<HTMLFormElement>) => {
     
     
     setProfileImg(img);
-    // console.log(newImg)
     // router.push(`/user/${session.data.user.uname}`);
     // router.push('/dashboard');
   } catch(err) {
-    // console.log(err)
     setErrorDisplay(true);
     let msg = 'An unknown error occured';
     if (err instanceof TRPCClientError) {
@@ -132,9 +125,6 @@ const handleProfilImgUpload = async (e: React.FormEvent<HTMLFormElement>) => {
       p-2
       `}
       >
-        {/* <div>
-          <FiX />
-        </div> */}
         <div className="flex flex-col justify-center items-center gap-3 p-2">
           <div className={`
           ${img?'block':'hidden'}

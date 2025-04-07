@@ -21,9 +21,7 @@ export const notifsRouter = createTRPCRouter({
         
         const notif: HydratedDocument<INotification> | null =
         await NotificationModel.findOne({ uname: input.uname });
-        
-        // console.log('Notif Api\n', notif);
-        
+                
         if (!notif) {
           return {notifs: []};
         }
@@ -65,7 +63,6 @@ export const notifsRouter = createTRPCRouter({
           notifs2 = [];
         } else {
           notifs2 = dbRes.notifs.filter((notif: INotifItemHydrated) => {
-            // console.log(notif._id, notifId, notif._id == notifId);
             return notif._id?.toString() != input.notifId;
             // !=. !== won't work coz comaparing objectID with string
           });

@@ -4,10 +4,7 @@ import FriendListModel from "~/server/db/models/Friend";
 const detectFriendship = async (
   ctx: { session: Session | null },
   targetUname: string
-) => {
-
-  // console.log('CONTEXT FUNC', ctx, targetUname);
-  
+) => {  
   let isFriend = false;
 
   if (!ctx.session) {

@@ -52,10 +52,7 @@ const SharePostModal: FC<IShareModalProps> = ({
   // const privacy = 0;
 
   const handleShare = async () => {
-    console.log(postMessage);
-
     if (!postId) {
-      // console.log("BAD REQUEST");
       setErrorDisplay(true);
       setErrorMessage('BAD_REQUEST');
       setErrorType('simple');
@@ -63,7 +60,6 @@ const SharePostModal: FC<IShareModalProps> = ({
     }
 
     if (!uname) {
-      // console.log("error");
       setErrorDisplay(true);
       setErrorMessage('You need to login to perform this action');
       setErrorType('simple');
@@ -77,7 +73,6 @@ const SharePostModal: FC<IShareModalProps> = ({
       //   privacy,
       //   img: img || ''
       // });
-      // console.log(x);
       // setPostMessage("");
       await sharePostMutation.mutateAsync({
         uname,
@@ -92,7 +87,6 @@ const SharePostModal: FC<IShareModalProps> = ({
       }
       setReload({reload: 1})
     } catch (err) {
-      // console.log(err);
       setErrorDisplay(true);
       let msg = 'An unknown error occured'
       if (err instanceof TRPCClientError) {

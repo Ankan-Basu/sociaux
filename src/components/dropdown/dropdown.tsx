@@ -35,10 +35,10 @@ const Dropdown: FC<IDropdownProps> = ({additionCSS='', display, setDisplay, opti
   }
   //@ts-ignore
     if (!dropDownRef?.current.contains(e.target)) {
-      console.log('CLICK OUTSIDE menu');
+      //'CLICK OUTSIDE menu';
       setDisplay && setDisplay(false);
     } else {
-      console.log('CLICK INSIDE menu');
+      //'CLICK INSIDE menu';
       setDisplay && setDisplay(true);
     }
   }

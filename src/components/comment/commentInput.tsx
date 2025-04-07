@@ -41,7 +41,6 @@ const CommentInput: FC<ICommentInputProps> = ({ postId, customCssClass }) => {
     e.preventDefault();
 
     if (session.status !== 'authenticated') {
-      // console.log('UNAUTHORISED');
       setErrorDisplay(true);
       setErrorMessage('You need to Login to comment');
       setErrorType('simple');
@@ -65,7 +64,6 @@ const CommentInput: FC<ICommentInputProps> = ({ postId, customCssClass }) => {
     const message = inp;
 
     if (!uname) {
-      // console.log('UNauthorised');
       setErrorDisplay(true);
       setErrorMessage('UNAUTHORISED');
       setErrorType('logout');
@@ -75,7 +73,6 @@ const CommentInput: FC<ICommentInputProps> = ({ postId, customCssClass }) => {
     setInp('');
 
     const data = await commentMutation.mutateAsync({message,postId,uname});
-    console.log(data);
 
     const {data: data2} = await refetch();
     setCommentList(data2);
@@ -93,7 +90,6 @@ const CommentInput: FC<ICommentInputProps> = ({ postId, customCssClass }) => {
     e.preventDefault();
 
     if (session.status !== 'authenticated') {
-      // console.log('UNAUThorised');
       setErrorDisplay(true);
       setErrorMessage('You need to Login to comment');
       setErrorType('simple');
@@ -108,7 +104,6 @@ const CommentInput: FC<ICommentInputProps> = ({ postId, customCssClass }) => {
     const message = inp;
 
     if (!uname) {
-      // console.log('Unauthorised');
       setErrorDisplay(true);
       setErrorMessage('UNAUTHORISED');
       setErrorType('logout');

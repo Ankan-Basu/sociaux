@@ -121,8 +121,6 @@ export const commentsRouter = createTRPCRouter({
         await dbConnect();
         const dbResp = await CommentModel.findOneAndDelete({ _id: input.commentId });
 
-        // console.log('DELETE COMMENT', dbResp);
-
         if (!dbResp) {
           throw new TRPCError({
             code: "NOT_FOUND"

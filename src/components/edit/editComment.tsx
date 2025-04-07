@@ -49,7 +49,6 @@ const EditComment: FC = () => {
   }, [currEditComment]);
 
   const handleClose = () => {
-    // console.log("Close");
     // setPostMessage("");
     // setCurrEditPost(null);
     setShowCommentEditModal(false);
@@ -73,7 +72,6 @@ const EditComment: FC = () => {
     }
 
     if (!currEditComment._id) {
-      // console.log("error");
       setErrorDisplay(true);
       setErrorMessage('BAD_REQUEST');
       setErrorType('simple');
@@ -108,16 +106,11 @@ const EditComment: FC = () => {
         }
         setRefreshReplies({val: 1});
       } else {
-        console.log(currEditComment.uname);
-
         const x = await editCommentMutation.mutateAsync({
           commentId: currEditComment._id,
           uname: uname,
           message: commentMessage || '',
         });
-        // console.log(x);
-
-
 
         if (!setRefreshComments) {
           setErrorDisplay(true);
@@ -131,7 +124,6 @@ const EditComment: FC = () => {
 
       handleClose();
     } catch (err) {
-      // console.log(err);
       setErrorDisplay(true);
       let msg = 'An unknown error occured';
       if (err instanceof TRPCClientError) {

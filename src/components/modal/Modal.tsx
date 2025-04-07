@@ -42,7 +42,6 @@ const Modal: FC<IModalProps> = ({
 
   const [displayDropdown, setDisplayDropdown] = useState<boolean>(false);
 
-  // console.log(mode);
   const {setErrorDisplay, setErrorMessage, setErrorType} = useContext(ErrorContext) as ErrorContextType;
 
   const session = useSession();
@@ -53,7 +52,6 @@ const Modal: FC<IModalProps> = ({
   const formRef = useRef<HTMLInputElement>(null);
 
   const handleClose = () => {
-    // console.log("Close");
 
     setShowModal(false);
   };
@@ -66,8 +64,6 @@ const Modal: FC<IModalProps> = ({
 
   const handleImg = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
-    console.log(e);
-    console.log(e.target.files);
     const file = e.target.files?e.target.files[0]:null;
 
     const reader = new FileReader();
@@ -78,7 +74,6 @@ const Modal: FC<IModalProps> = ({
     reader.readAsDataURL(file);
 
     reader.onload = () => {
-      // console.log(reader.result);
       if (!reader.result) {
         return;
       }
@@ -93,10 +88,7 @@ const Modal: FC<IModalProps> = ({
 
 
   const handlePost = async () => {
-    console.log(postMessage);
-
     if (!uname) {
-      // console.log("error");
       setErrorDisplay(true);
       setErrorMessage('You need to login to perform this action');
       setErrorType('simple');
@@ -110,7 +102,6 @@ const Modal: FC<IModalProps> = ({
         privacy,
         img: img || ''
       });
-      console.log(x);
       setPostMessage("");
       setImg("");
       if (!formRef.current) {
@@ -119,7 +110,6 @@ const Modal: FC<IModalProps> = ({
       formRef.current.value ='';
       setShowModal(false);
     } catch (err) {
-      // console.log(err);
       setErrorDisplay(true);
       let msg = 'An unknown error occured';
       if (err instanceof TRPCClientError) {

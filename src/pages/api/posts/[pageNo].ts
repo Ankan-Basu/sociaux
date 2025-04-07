@@ -16,7 +16,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     res.status(200).json(posts);
   } catch (err) {
-    console.log('POSTS REST ROUTE');
+    // POSTS REST ROUTE
     res.status(500).json({msg: 'Error'});    
   }
 }

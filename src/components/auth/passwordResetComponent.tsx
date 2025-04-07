@@ -62,7 +62,6 @@ const PasswordResetComponent: FC = () => {
         try {
           setWaiting(true);
           const x = await otpSendMutation.mutateAsync({ email: unameEmail });
-          console.log("EMAIL veri", x);
           setWaiting(false);
           if (x.status === 200) {
             setOtpReceived(true);

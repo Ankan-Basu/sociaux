@@ -41,8 +41,7 @@ export const friendsRouter = createTRPCRouter({
         const targetUser = await FriendReqModel.findOne({uname: input.targetUname});
 
         if (!targetUser) {
-          //create
-          // console.log('Creating new');
+          //create new
           const reqs = [{source: input.requesterUname}];
           const friendListObj = {
             uname: input.targetUname,
@@ -53,7 +52,7 @@ export const friendsRouter = createTRPCRouter({
           
           return dbResp;
         } else {
-          // console.log('Modifying old');
+          // Modifying old
           targetUser.reqs.push({source: input.requesterUname});
           const dbResp = await targetUser.save();
   

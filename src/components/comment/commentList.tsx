@@ -14,9 +14,7 @@ interface ICommentListProps {
 }
 
 const CommentList: FC<ICommentListProps> = ({ postId, refresh, customCssClass }) => {
-    const router = useRouter();
-    console.log('Comment list component', postId);
-    
+    const router = useRouter();    
 
     //change Object to ICommentProps later
     // const [commentList, setCommentList] = useState<Array<Object>>();

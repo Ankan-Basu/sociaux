@@ -17,27 +17,15 @@ const NewsFeed: FC = () => {
   const [page, setPage] = useState<number>(1);
   const [reload, setReload] = useState({ reolad: 1 });
 
-  let postsQuery = api.posts.getAllPosts.useQuery({page: page});
-  // console.log('News feed', postsQuery);
-  
+  let postsQuery = api.posts.getAllPosts.useQuery({page: page});  
 
   useEffect(() => {
     (async () => {
       await postsQuery.refetch();
-      // if (postsQuery.data?.pageNo) {
-        // setPage(postsQuery.data.pageNo);
-      // }
     }
     )()
     setShowExpanded(false)
-  }, [reload])
-
-  // useEffect(() => {
-  //   postsQuery.refetch();
-  //   setShowExpanded(false)
-  // }, [page])
-
-
+  }, [reload]);
 
   const increasePageNo = () => {
     setPage((currPage) => currPage + 1)

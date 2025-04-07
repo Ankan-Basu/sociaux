@@ -38,7 +38,6 @@ const PostModal: FC<IPostModalProps> = ({
 
   const [displayDropdown, setDisplayDropdown] = useState<boolean>(false);
 
-  // console.log(mode);
   const {setErrorDisplay, setErrorMessage, setErrorType} = useContext(ErrorContext) as ErrorContextType;
 
   const {setReload} = useContext(PostEditContext) as PostEditContextType;
@@ -51,8 +50,6 @@ const PostModal: FC<IPostModalProps> = ({
   const formRef = useRef<HTMLInputElement>(null);
 
   const handleClose = () => {
-    // console.log("Close");
-
     setShowModal(false);
   };
 
@@ -64,8 +61,6 @@ const PostModal: FC<IPostModalProps> = ({
 
   const handleImg = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
-    console.log(e);
-    console.log(e.target.files);
     const file = e.target.files?e.target.files[0]:null;
 
     const reader = new FileReader();
@@ -76,7 +71,6 @@ const PostModal: FC<IPostModalProps> = ({
     reader.readAsDataURL(file);
 
     reader.onload = () => {
-      // console.log(reader.result);
       if (!reader.result) {
         return;
       }
@@ -91,15 +85,12 @@ const PostModal: FC<IPostModalProps> = ({
 
 
   const handlePost = async () => {
-    // console.log(postMessage);
-
     if (!postMessage && !img) {
       setShowModal(false);
       return;
     }
 
     if (!uname) {
-      // console.log("error");
       setErrorDisplay(true);
       setErrorMessage('You need to login to perform this action');
       setErrorType('simple');
@@ -113,7 +104,6 @@ const PostModal: FC<IPostModalProps> = ({
         privacy,
         img: img || ''
       });
-      // console.log(x);
       setPostMessage("");
       setImg("");
       if (!formRef.current) {
@@ -127,7 +117,6 @@ const PostModal: FC<IPostModalProps> = ({
       }
       setReload({reload: 1})
     } catch (err) {
-      // console.log(err);
       setErrorDisplay(true);
       let msg = 'An unknown error occured';
       if (err instanceof TRPCClientError) {
