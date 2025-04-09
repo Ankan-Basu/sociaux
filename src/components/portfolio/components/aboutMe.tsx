@@ -42,7 +42,7 @@ const AboutMe = () => {
 <br />
       <div>
         <h1 className='text-3xl font-medium text-primary2'>Download My Resume</h1>
-        <div className='pl-2 font-medium text-gray-700 pt-2'><Link href='https://drive.google.com/file/d/1CF9PnSoCXQQF7lcRhGMuk8JV699_fLKE/view?usp=sharing' target={'_blank'}>
+        <div className='pl-2 font-medium text-gray-700 pt-2'><Link href='https://drive.google.com/file/d/1RInIZnZLfMh9HrOAXzUjmuJVCWlHdIsp/view?usp=sharing' target={'_blank'}>
           <button 
           className='p-2 cursor-pointer rounded-full 
           border-2 border-solid border-primary2
